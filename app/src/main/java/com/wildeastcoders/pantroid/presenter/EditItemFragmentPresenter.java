@@ -12,14 +12,4 @@ import java.util.Date;
 public interface EditItemFragmentPresenter extends Presenter<EditItemFragmentView> {
     void onSaveItemClicked(String name, PantryItemType type, int quantity, Date addingDate,
                            Date bestBeforeDate);
-
-    void validateName(String name);
-
-    void validateType(PantryItemType type);
-
-    void validateQuantity(int quantity);
-
-    void validateAddingDate(Date addingDate);
-
-    void validateBestBeforeDate(Date addingDate);
 }
