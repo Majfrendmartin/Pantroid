@@ -1,6 +1,6 @@
 package com.wildeastcoders.pantroid.view;
 
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 
 import com.wildeastcoders.pantroid.repository.ValidationResult;
 
@@ -10,5 +10,5 @@ import com.wildeastcoders.pantroid.repository.ValidationResult;
  */
 
 public interface EditTypeFragmentView extends View {
-    void displayValidationError(ValidationResult validationResult);
+    void displayValidationError(@NonNull ValidationResult validationResult);
 }

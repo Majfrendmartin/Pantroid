@@ -1,5 +1,7 @@
 package com.wildeastcoders.pantroid.presenter;
 
+import android.support.annotation.NonNull;
+
 import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
 
 /**
@@ -7,5 +9,5 @@ import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
  */
 
 public interface EditTypeFragmentPresenter extends Presenter<EditTypeFragmentView> {
-    void onSaveItemClicked(String name);
+    void onSaveItemClicked(@NonNull String name);
 }
