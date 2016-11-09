@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid.repository;
+package com.wildeastcoders.pantroid.model.database;
 
 /**
  * Created by Majfrendmartin on 2016-11-09.

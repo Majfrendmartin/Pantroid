@@ -2,7 +2,7 @@ package com.wildeastcoders.pantroid.view;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemType;
-import com.wildeastcoders.pantroid.repository.ValidationResult;
+import com.wildeastcoders.pantroid.model.database.ValidationResult;
 
 import java.util.List;
 
