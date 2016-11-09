@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface ManageTypesFragmentView extends View {
     void onItemsListChanged(List<PantryItemType> itemTypes);
+
     void displayEditTypeDialog(PantryItemType item);
+
     void displayCreateTypeDialog();
+
     void onUpdateItem(int index, PantryItemType item);
 }
