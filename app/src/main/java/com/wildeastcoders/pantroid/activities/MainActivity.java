@@ -7,11 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.wildeastcoders.pantroid.R;
+import com.wildeastcoders.pantroid.view.MainActivityView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +21,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(view -> {
+            final Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -50,5 +47,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void navigateToManageTypesActivity() {
+
+    }
+
+    @Override
+    public void navigateToNewItemActivity() {
+
     }
 }
