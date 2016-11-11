@@ -12,13 +12,13 @@ import java.util.List;
  */
 
 public interface MainActivityFragmentPresenter extends Presenter<MainActivityFragmentView> {
-    List<PantryItem> getPantryItemsUpdate();
+    void requestPantryItemsUpdate();
 
     void onItemLongClicked(@NonNull final PantryItem pantryItem);
 
-    void onIncreseItemsCountClicked(@NonNull final PantryItem pantryItem);
+    void onIncreaseItemsCountClicked(@NonNull final PantryItem pantryItem);
 
-    void onDecreseItemsCountClicked(@NonNull final PantryItem pantryItem);
+    void onDecreaseItemsCountClicked(@NonNull final PantryItem pantryItem);
 
     void onRemoveItemClicked(@NonNull final PantryItem pantryItem);
 

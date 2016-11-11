@@ -9,6 +9,11 @@ import com.wildeastcoders.pantroid.view.View;
  */
 
 public interface Presenter<T extends View> {
+
+    T getView();
+
+    boolean isViewBound();
+
     void bindView(final T view);
 
     void unbindView();
