@@ -12,6 +12,9 @@ import java.util.List;
  */
 
 public interface MainActivityFragmentPresenter extends Presenter<MainActivityFragmentView> {
+
+    List<PantryItem> getPantryItems();
+
     void requestPantryItemsUpdate();
 
     void onItemLongClicked(@NonNull final PantryItem pantryItem);

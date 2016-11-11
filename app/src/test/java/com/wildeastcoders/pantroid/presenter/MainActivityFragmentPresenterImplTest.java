@@ -3,7 +3,9 @@ package com.wildeastcoders.pantroid.presenter;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemImpl;
 import com.wildeastcoders.pantroid.model.usecase.GetPantryItemsUsecase;
+import com.wildeastcoders.pantroid.model.usecase.RemoveItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase;
+import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation;
 import com.wildeastcoders.pantroid.view.MainActivityFragmentView;
 
 import org.junit.After;
@@ -21,7 +23,11 @@ import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.schedulers.Schedulers;
 
+import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation.DECREASE;
+import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation.INCREASE;
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +37,7 @@ import static org.mockito.Mockito.when;
 public class MainActivityFragmentPresenterImplTest {
 
     public static final int CAPACITY = 10;
+
     @Mock
     private MainActivityFragmentView mainActivityFragmentView;
 
@@ -39,6 +46,9 @@ public class MainActivityFragmentPresenterImplTest {
 
     @Mock
     private UpdateItemQuantityUsecase updateItemQuantityUsecase;
+
+    @Mock
+    private RemoveItemUsecase removeItemUsecase;
 
     @Mock
     private PantryItem pantryItem;
@@ -58,11 +68,17 @@ public class MainActivityFragmentPresenterImplTest {
             pantryItems.add(new PantryItemImpl());
         }
 
-        presenter = new MainActivityFragmentPresenterImpl(getPantryItemsUsecase, updateItemQuantityUsecase);
+        presenter = new MainActivityFragmentPresenterImpl(getPantryItemsUsecase,
+                updateItemQuantityUsecase, removeItemUsecase);
 
         when(getPantryItemsUsecase.execute()).thenReturn(Observable.just(pantryItems));
         when(updateItemQuantityUsecase.execute()).thenReturn(Observable.just(pantryItem));
+        when(removeItemUsecase.execute()).thenReturn(Observable.just(pantryItem));
 
+        setupRxAndroid();
+    }
+
+    private void setupRxAndroid() {
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
             @Override
             public Scheduler getMainThreadScheduler() {
@@ -82,6 +98,12 @@ public class MainActivityFragmentPresenterImplTest {
         presenter.requestPantryItemsUpdate();
         verify(getPantryItemsUsecase).execute();
         verify(mainActivityFragmentView).onPantryItemsListChanged(pantryItems);
+        assertEquals(pantryItems, presenter.getPantryItems());
+
+        presenter.requestPantryItemsUpdate();
+        verify(getPantryItemsUsecase, times(2)).execute();
+        verify(mainActivityFragmentView, times(2)).onPantryItemsListChanged(pantryItems);
+        assertEquals(pantryItems, presenter.getPantryItems());
     }
 
     @Test
@@ -126,29 +148,116 @@ public class MainActivityFragmentPresenterImplTest {
 
     @Test
     public void onIncreaseItemsCountClickedViewBounded() throws Exception {
-        presenter.bindView(mainActivityFragmentView);
-        presenter.onIncreaseItemsCountClicked(pantryItem);
-        verify(updateItemQuantityUsecase).execute();
-        verify(mainActivityFragmentView).onUpdateItem(pantryItem);
+        testContactItemCountChangeClickedViewBounded(INCREASE);
     }
 
     @Test
     public void onIncreaseItemsCountClickedViewNotBounded() throws Exception {
-        presenter.onIncreaseItemsCountClicked(pantryItem);
+        testContactItemCountChangeClickedViewNotBounded(INCREASE);
+    }
+
+    @Test
+    public void onDecreaseItemsCountClickedViewBounded() throws Exception {
+        testContactItemCountChangeClickedViewBounded(DECREASE);
+    }
+
+    @Test
+    public void onDecreaseItemsCountClickedViewNotBounded() throws Exception {
+        testContactItemCountChangeClickedViewNotBounded(DECREASE);
+    }
+
+    @Test
+    public void onIncreaseItemsCountClickedErrorViewBounded() throws Exception {
+        testContactItemCountChangeClickedErrorViewBounded(INCREASE);
+    }
+
+    @Test
+    public void onIncreaseItemsCountClickedErrorViewNotBounded() throws Exception {
+        testContactItemCountChangeClickedViewErrorNotBounded(INCREASE);
+    }
+
+    @Test
+    public void onDecreaseItemsCountClickedErrorViewBounded() throws Exception {
+        testContactItemCountChangeClickedErrorViewBounded(DECREASE);
+    }
+
+    @Test
+    public void onDecreaseItemsCountClickedErrorViewNotBounded() throws Exception {
+        testContactItemCountChangeClickedViewErrorNotBounded(DECREASE);
+    }
+
+    private void selectMethodByOperation(QuantityUpdateOperation operation){
+        switch (operation) {
+            case INCREASE:
+                presenter.onIncreaseItemsCountClicked(pantryItem);
+                break;
+            case DECREASE:
+                presenter.onDecreaseItemsCountClicked(pantryItem);
+                break;
+        }
+    }
+
+    private void testContactItemCountChangeClickedViewBounded(QuantityUpdateOperation operation) {
+        presenter.bindView(mainActivityFragmentView);
+        selectMethodByOperation(operation);
+        verify(updateItemQuantityUsecase).init(operation);
         verify(updateItemQuantityUsecase).execute();
+        verify(pantryItem).update(pantryItem);
+        verify(mainActivityFragmentView).onUpdateItem(pantryItem);
+    }
+
+    private void testContactItemCountChangeClickedViewNotBounded(QuantityUpdateOperation operation) {
+        selectMethodByOperation(operation);
+        verify(updateItemQuantityUsecase).init(operation);
+        verify(updateItemQuantityUsecase).execute();
+        verify(pantryItem).update(pantryItem);
         verify(mainActivityFragmentView, never()).onUpdateItem(pantryItem);
     }
 
-    //TODO: add error handling tests.
+    private void testContactItemCountChangeClickedErrorViewBounded(QuantityUpdateOperation operation) {
+        presenter.bindView(mainActivityFragmentView);
+        when(updateItemQuantityUsecase.execute()).thenReturn(Observable.error(THROWABLE));
+        selectMethodByOperation(operation);
+        verify(updateItemQuantityUsecase).init(operation);
+        verify(updateItemQuantityUsecase).execute();
+        verify(pantryItem, never()).update(pantryItem);
+        verify(mainActivityFragmentView, never()).onUpdateItem(pantryItem);
+        verify(mainActivityFragmentView).onDisplayGetItemsError(THROWABLE);
+    }
+
+    private void testContactItemCountChangeClickedViewErrorNotBounded(QuantityUpdateOperation operation) {
+        when(updateItemQuantityUsecase.execute()).thenReturn(Observable.error(THROWABLE));
+        selectMethodByOperation(operation);
+        verify(updateItemQuantityUsecase).init(operation);
+        verify(updateItemQuantityUsecase).execute();
+        verify(pantryItem, never()).update(pantryItem);
+        verify(mainActivityFragmentView, never()).onUpdateItem(pantryItem);
+        verify(mainActivityFragmentView, never()).onDisplayGetItemsError(THROWABLE);
+    }
 
     @Test
-    public void onDecreaseItemsCountClicked() throws Exception {
+    public void onRemoveItemClickedViewBounded() throws Exception {
+        presenter.bindView(mainActivityFragmentView);
+        presenter.onRemoveItemClicked(pantryItem);
+        verify(removeItemUsecase).init(pantryItem);
+        verify(removeItemUsecase).execute();
+        verify(mainActivityFragmentView).onPantryItemRemoved(pantryItem);
+    }
+
+    @Test
+    public void onRemoveItemClickedViewNotBounded() throws Exception {
 
     }
 
     @Test
-    public void onRemoveItemClicked() throws Exception {
+    public void onRemoveItemClickedErrorViewBounded() throws Exception {
+        presenter.bindView(mainActivityFragmentView);
+        when(removeItemUsecase.execute()).thenReturn(Observable.error(THROWABLE));
+    }
 
+    @Test
+    public void onRemoveItemClickedErrorViewNotBounded() throws Exception {
+        when(removeItemUsecase.execute()).thenReturn(Observable.error(THROWABLE));
     }
 
     @Test

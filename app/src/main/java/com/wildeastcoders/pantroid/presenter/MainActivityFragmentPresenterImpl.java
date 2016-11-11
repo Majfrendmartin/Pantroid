@@ -5,9 +5,14 @@ import android.support.annotation.NonNull;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.usecase.GetPantryItemsUsecase;
+import com.wildeastcoders.pantroid.model.usecase.RemoveItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation;
 import com.wildeastcoders.pantroid.view.MainActivityFragmentView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,10 +33,22 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
     private Subscription getPantryItemsSubscribtion;
     private Subscription updateItemQuantitySubscribtion;
 
+    private List<PantryItem> cachedItemsList;
+
     public MainActivityFragmentPresenterImpl(final GetPantryItemsUsecase getPantryItemsUsecase,
-                                             final UpdateItemQuantityUsecase updateItemQuantityUsecase) {
+                                             final UpdateItemQuantityUsecase updateItemQuantityUsecase, RemoveItemUsecase removeItemUsecase) {
         this.getPantryItemsUsecase = getPantryItemsUsecase;
         this.updateItemQuantityUsecase = updateItemQuantityUsecase;
+    }
+
+    @Override
+    public List<PantryItem> getPantryItems() {
+        if (cachedItemsList == null) {
+            //TODO: replace with CopyOnWriteArrayList?
+            cachedItemsList = new ArrayList<>();
+            requestPantryItemsUpdate();
+        }
+        return cachedItemsList;
     }
 
     @Override
@@ -44,8 +61,14 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
                     return null;
                 })
                 .subscribe(pantryItemList -> {
+                    if (cachedItemsList == null) {
+                        cachedItemsList = pantryItemList;
+                    } else {
+                        cachedItemsList.clear();
+                        cachedItemsList.addAll(pantryItemList);
+                    }
                     if (isViewBound()) {
-                        getView().onPantryItemsListChanged(pantryItemList);
+                        getView().onPantryItemsListChanged(cachedItemsList);
                     }
                 });
     }
@@ -65,15 +88,15 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     @Override
     public void onIncreaseItemsCountClicked(@NonNull final PantryItem pantryItem) {
-        performUpdateItemsQuantity(INCREASE);
+        performUpdateItemsQuantity(pantryItem, INCREASE);
     }
 
     @Override
     public void onDecreaseItemsCountClicked(@NonNull final PantryItem pantryItem) {
-        performUpdateItemsQuantity(DECREASE);
+        performUpdateItemsQuantity(pantryItem, DECREASE);
     }
 
-    private void performUpdateItemsQuantity(final QuantityUpdateOperation operation) {
+    private void performUpdateItemsQuantity(@NonNull final PantryItem pantryItem, final QuantityUpdateOperation operation) {
         updateItemQuantityUsecase.init(operation);
         updateItemQuantitySubscribtion = updateItemQuantityUsecase.execute()
                 .subscribeOn(Schedulers.io())
@@ -83,8 +106,11 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
                     return null;
                 })
                 .subscribe(resultPantryItem -> {
-                    if (isViewBound()) {
-                        getView().onUpdateItem(resultPantryItem);
+                    if (resultPantryItem != null) {
+                        pantryItem.update(resultPantryItem);
+                        if (isViewBound()) {
+                            getView().onUpdateItem(pantryItem);
+                        }
                     }
                 });
     }
