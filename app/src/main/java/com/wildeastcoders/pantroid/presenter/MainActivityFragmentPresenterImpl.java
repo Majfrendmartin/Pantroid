@@ -5,11 +5,16 @@ import android.support.annotation.NonNull;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.usecase.GetPantryItemsUsecase;
+import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase;
+import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation;
 import com.wildeastcoders.pantroid.view.MainActivityFragmentView;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation.DECREASE;
+import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation.INCREASE;
 
 /**
  * Created by Majfrendmartin on 2016-11-11.
@@ -18,10 +23,15 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
         implements MainActivityFragmentPresenter {
 
     private final GetPantryItemsUsecase getPantryItemsUsecase;
-    private Subscription getPantryItemsSubscribtion;
+    private final UpdateItemQuantityUsecase updateItemQuantityUsecase;
 
-    public MainActivityFragmentPresenterImpl(final GetPantryItemsUsecase getPantryItemsUsecase) {
+    private Subscription getPantryItemsSubscribtion;
+    private Subscription updateItemQuantitySubscribtion;
+
+    public MainActivityFragmentPresenterImpl(final GetPantryItemsUsecase getPantryItemsUsecase,
+                                             final UpdateItemQuantityUsecase updateItemQuantityUsecase) {
         this.getPantryItemsUsecase = getPantryItemsUsecase;
+        this.updateItemQuantityUsecase = updateItemQuantityUsecase;
     }
 
     @Override
@@ -34,9 +44,8 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
                     return null;
                 })
                 .subscribe(pantryItemList -> {
-                    final MainActivityFragmentView view = getView();
-                    if (view != null) {
-                        view.onPantryItemsListChanged(pantryItemList);
+                    if (isViewBound()) {
+                        getView().onPantryItemsListChanged(pantryItemList);
                     }
                 });
     }
@@ -56,12 +65,28 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     @Override
     public void onIncreaseItemsCountClicked(@NonNull final PantryItem pantryItem) {
-
+        performUpdateItemsQuantity(INCREASE);
     }
 
     @Override
     public void onDecreaseItemsCountClicked(@NonNull final PantryItem pantryItem) {
+        performUpdateItemsQuantity(DECREASE);
+    }
 
+    private void performUpdateItemsQuantity(final QuantityUpdateOperation operation) {
+        updateItemQuantityUsecase.init(operation);
+        updateItemQuantitySubscribtion = updateItemQuantityUsecase.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(throwable -> {
+                    handleGetDataError(throwable);
+                    return null;
+                })
+                .subscribe(resultPantryItem -> {
+                    if (isViewBound()) {
+                        getView().onUpdateItem(resultPantryItem);
+                    }
+                });
     }
 
     @Override

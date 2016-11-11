@@ -18,7 +18,7 @@ public interface MainActivityFragmentView extends View {
 
     void onNavigateToEditItemActivity(@NonNull final PantryItem item);
 
-    void onUpdateItem(final int index);
+    void onUpdateItem(@NonNull final PantryItem item);
 
     void onDisplayGetItemsError(Throwable throwable);
 }
