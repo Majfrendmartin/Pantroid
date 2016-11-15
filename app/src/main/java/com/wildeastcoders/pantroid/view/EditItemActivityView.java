@@ -9,5 +9,5 @@ public interface EditItemActivityView extends View {
 
     void displayBackConfirmation();
 
-    void performBackOperation();
+    void performBackNavigation();
 }
