@@ -261,33 +261,41 @@ public class MainActivityFragmentPresenterImplTest {
     }
 
     @Test
-    public void onEditItemClicked() throws Exception {
+    public void onEditItemClickedViewBounded() throws Exception {
+        presenter.bindView(mainActivityFragmentView);
+        presenter.onEditItemClicked(pantryItem);
+        verify(mainActivityFragmentView).onNavigateToEditItemActivity(pantryItem);
+    }
 
+    @Test
+    public void onEditItemClickedViewNotBounded() throws Exception {
+        presenter.onEditItemClicked(pantryItem);
+        verify(mainActivityFragmentView, never()).onNavigateToEditItemActivity(pantryItem);
     }
 
     @Test
     public void onStart() throws Exception {
-
+        //TODO: implement me
     }
 
     @Test
     public void onStop() throws Exception {
-
+        //TODO: implement me
     }
 
     @Test
     public void onResume() throws Exception {
-
+        //TODO: implement me
     }
 
     @Test
     public void onPause() throws Exception {
-
+        //TODO: implement me
     }
 
     @Test
     public void onSaveInstanceState() throws Exception {
-
+        //TODO: implement me
     }
 
 }

@@ -122,7 +122,9 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     @Override
     public void onEditItemClicked(@NonNull final PantryItem pantryItem) {
-
+        if (isViewBound()) {
+            getView().onNavigateToEditItemActivity(pantryItem);
+        }
     }
 
     @Override
