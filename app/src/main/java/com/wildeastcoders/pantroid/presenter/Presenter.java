@@ -16,6 +16,8 @@ public interface Presenter<T extends View> {
 
     void bindView(final T view);
 
+    void onCreate(Bundle savedInstanceState);
+
     void unbindView();
 
     void onStart();

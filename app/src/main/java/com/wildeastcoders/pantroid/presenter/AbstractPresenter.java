@@ -1,5 +1,7 @@
 package com.wildeastcoders.pantroid.presenter;
 
+import android.os.Bundle;
+
 import com.wildeastcoders.pantroid.view.View;
 
 /**
@@ -24,7 +26,37 @@ public abstract class AbstractPresenter<T extends View> implements Presenter<T> 
     }
 
     @Override
+    public void onCreate(final Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void unbindView() {
         view = null;
+    }
+
+    @Override
+    public void onStart() {
+
+    }
+
+    @Override
+    public void onStop() {
+
+    }
+
+    @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle bundle) {
+
     }
 }

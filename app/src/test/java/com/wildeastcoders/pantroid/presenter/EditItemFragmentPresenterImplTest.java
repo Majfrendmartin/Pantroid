@@ -1,7 +1,11 @@
 package com.wildeastcoders.pantroid.presenter;
 
+import android.os.Bundle;
+
+import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
+import com.wildeastcoders.pantroid.model.usecase.GetPantryItemUsecase;
 import com.wildeastcoders.pantroid.view.EditItemFragmentView;
 
 import org.junit.After;
@@ -10,9 +14,16 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import rx.Observable;
+
+import static com.wildeastcoders.pantroid.activities.IntentConstants.KEY_EDIT_ITEM_ID;
+import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -20,13 +31,16 @@ import static org.mockito.Mockito.when;
  */
 public class EditItemFragmentPresenterImplTest {
 
-
     public static final String ITEM_NAME = "ITEM_NAME";
     public static final int QUANTITY = 1;
     public static final Date ADDING_DATE = new Date();
     public static final Date BEST_BEFORE_DATE = new Date();
+    public static final int ITEM_ID = 1;
+
+    private static final Throwable THROWABLE = new Exception("EXCEPTION");
+
     @Mock
-    private EditItemFragmentView editItemFragmentView;
+    private EditItemFragmentView view;
 
     @Mock
     private PantryItemValidator pantryItemValidator;
@@ -34,14 +48,45 @@ public class EditItemFragmentPresenterImplTest {
     @Mock
     private PantryItemType pantryItemType;
 
-    private EditItemFragmentPresenter editItemFragmentPresenter;
+    @Mock
+    private PantryItem pantryItem;
+
+    @Mock
+    private GetPantryItemUsecase getPantryItemUsecase;
+
+    private EditItemFragmentPresenter presenter;
+
+    private Bundle bundle;
+
+    private List<PantryItemType> pantryItemTypes;
 
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        editItemFragmentPresenter = new EditItemFragmentPresenterImpl(pantryItemValidator);
+        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator);
+
+        bundle = new Bundle(1);
+        bundle.putInt(KEY_EDIT_ITEM_ID, ITEM_ID);
+
+        pantryItemTypes = new ArrayList<>(1);
+        pantryItemTypes.add(pantryItemType);
+
+        when(getPantryItemUsecase.execute()).thenReturn(Observable.just(pantryItem));
+
+        setupItem();
         setupValidatorMock();
+
+        setupRxAndroid();
+    }
+
+    private void setupItem() {
+        when(pantryItem.getId()).thenReturn(ITEM_ID);
+        when(pantryItem.getName()).thenReturn(ITEM_NAME);
+        when(pantryItem.getType()).thenReturn(pantryItemType);
+        when(pantryItem.getAddingDate()).thenReturn(ADDING_DATE);
+        when(pantryItem.getBestBeforeDate()).thenReturn(BEST_BEFORE_DATE);
+        when(pantryItem.getQuantity()).thenReturn(QUANTITY);
     }
 
     private void setupValidatorMock() {
@@ -58,9 +103,77 @@ public class EditItemFragmentPresenterImplTest {
     }
 
     @Test
+    public void onCreateForEditItemViewBounded() throws Exception {
+        presenter.bindView(view);
+        presenter.onCreate(bundle);
+
+        verify(view).populateTypesSpinner(pantryItemTypes);
+        verify(getPantryItemUsecase).execute();
+
+        verify(view).setupNameField(ITEM_NAME);
+        verify(view).setupQuantityField(QUANTITY);
+        verify(view).setupTypeField(pantryItemType);
+        verify(view).setupAddingDateField(ADDING_DATE);
+        verify(view).setupBestBeforeField(BEST_BEFORE_DATE);
+    }
+
+    @Test
+    public void onCreateForEditItemViewNotBounded() throws Exception {
+        presenter.onCreate(bundle);
+
+        verify(view, never()).populateTypesSpinner(pantryItemTypes);
+        verify(getPantryItemUsecase).execute();
+
+        verify(view, never()).setupNameField(ITEM_NAME);
+        verify(view, never()).setupQuantityField(QUANTITY);
+        verify(view, never()).setupTypeField(pantryItemType);
+        verify(view, never()).setupAddingDateField(ADDING_DATE);
+        verify(view, never()).setupBestBeforeField(BEST_BEFORE_DATE);
+    }
+
+    @Test
+    public void onCreateForEditErrorItemViewBounded() throws Exception {
+        presenter.bindView(view);
+        presenter.onCreate(bundle);
+        when(getPantryItemUsecase.execute()).thenReturn(Observable.error(THROWABLE));
+
+        verify(view).populateTypesSpinner(pantryItemTypes);
+        verify(getPantryItemUsecase).execute();
+
+        verify(view).displayErrorDialog();
+
+        verify(view, never()).setupNameField(ITEM_NAME);
+        verify(view, never()).setupQuantityField(QUANTITY);
+        verify(view, never()).setupTypeField(pantryItemType);
+        verify(view, never()).setupAddingDateField(ADDING_DATE);
+        verify(view, never()).setupBestBeforeField(BEST_BEFORE_DATE);
+    }
+
+    @Test
+    public void onCreateForEditItemErrorViewNotBounded() throws Exception {
+        presenter.bindView(view);
+        presenter.onCreate(bundle);
+        when(getPantryItemUsecase.execute()).thenReturn(Observable.error(THROWABLE));
+
+        verify(view, never()).populateTypesSpinner(pantryItemTypes);
+        verify(getPantryItemUsecase).execute();
+
+        verify(view, never()).displayErrorDialog();
+
+        verify(view, never()).setupNameField(ITEM_NAME);
+        verify(view, never()).setupQuantityField(QUANTITY);
+        verify(view, never()).setupTypeField(pantryItemType);
+        verify(view, never()).setupAddingDateField(ADDING_DATE);
+        verify(view, never()).setupBestBeforeField(BEST_BEFORE_DATE);
+    }
+
+
+    @Test
     public void onSaveItemClicked() throws Exception {
 
     }
+
+
 
     @Test
     public void onStart() throws Exception {

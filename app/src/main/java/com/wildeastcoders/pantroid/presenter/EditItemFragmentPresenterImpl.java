@@ -25,6 +25,11 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     }
 
     @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onStart() {
 
     }

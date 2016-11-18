@@ -28,29 +28,4 @@ public class EditItemActivityPresenterImpl extends AbstractPresenter<EditItemAct
             getView().performBackNavigation();
         }
     }
-
-    @Override
-    public void onStart() {
-
-    }
-
-    @Override
-    public void onStop() {
-
-    }
-
-    @Override
-    public void onResume() {
-
-    }
-
-    @Override
-    public void onPause() {
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle bundle) {
-
-    }
 }

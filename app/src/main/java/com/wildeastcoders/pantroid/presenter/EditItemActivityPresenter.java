@@ -7,6 +7,7 @@ import com.wildeastcoders.pantroid.view.EditItemActivityView;
  */
 
 public interface EditItemActivityPresenter extends Presenter<EditItemActivityView> {
+
     void onSaveItemClicked();
 
     void onBackClicked();

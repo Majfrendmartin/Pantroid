@@ -25,6 +25,7 @@ import rx.schedulers.Schedulers;
 
 import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation.DECREASE;
 import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation.INCREASE;
+import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -78,14 +79,14 @@ public class MainActivityFragmentPresenterImplTest {
         setupRxAndroid();
     }
 
-    private void setupRxAndroid() {
-        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
-            @Override
-            public Scheduler getMainThreadScheduler() {
-                return Schedulers.immediate();
-            }
-        });
-    }
+//    private void setupRxAndroid() {
+//        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+//            @Override
+//            public Scheduler getMainThreadScheduler() {
+//                return Schedulers.immediate();
+//            }
+//        });
+//    }
 
     @After
     public void tearDown() throws Exception {
