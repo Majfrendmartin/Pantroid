@@ -247,7 +247,10 @@ public class MainActivityFragmentPresenterImplTest {
 
     @Test
     public void onRemoveItemClickedViewNotBounded() throws Exception {
-
+        presenter.onRemoveItemClicked(pantryItem);
+        verify(removeItemUsecase).init(pantryItem);
+        verify(removeItemUsecase).execute();
+        verify(mainActivityFragmentView, never()).onPantryItemRemoved(pantryItem);
     }
 
     @Test

@@ -11,7 +11,6 @@ import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.Quant
 import com.wildeastcoders.pantroid.view.MainActivityFragmentView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import rx.Subscription;
@@ -29,16 +28,21 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     private final GetPantryItemsUsecase getPantryItemsUsecase;
     private final UpdateItemQuantityUsecase updateItemQuantityUsecase;
+    private final RemoveItemUsecase removeItemUsecase;
 
+    //TODO: handle subscribtions during lifecycle.
     private Subscription getPantryItemsSubscribtion;
+    private Subscription removeItemSubscribtion;
     private Subscription updateItemQuantitySubscribtion;
 
     private List<PantryItem> cachedItemsList;
 
     public MainActivityFragmentPresenterImpl(final GetPantryItemsUsecase getPantryItemsUsecase,
-                                             final UpdateItemQuantityUsecase updateItemQuantityUsecase, RemoveItemUsecase removeItemUsecase) {
+                                             final UpdateItemQuantityUsecase updateItemQuantityUsecase,
+                                             final RemoveItemUsecase removeItemUsecase) {
         this.getPantryItemsUsecase = getPantryItemsUsecase;
         this.updateItemQuantityUsecase = updateItemQuantityUsecase;
+        this.removeItemUsecase = removeItemUsecase;
     }
 
     @Override
@@ -76,6 +80,12 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
     private void handleGetDataError(final Throwable throwable) {
         if (isViewBound()) {
             getView().onDisplayGetItemsError(throwable);
+        }
+    }
+
+    private void handleRemoveItemError(final Throwable throwable) {
+        if (isViewBound()) {
+            getView().onDisplayRemoveItemsError(throwable);
         }
     }
 
@@ -117,7 +127,23 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     @Override
     public void onRemoveItemClicked(@NonNull final PantryItem pantryItem) {
-
+        removeItemUsecase.init(pantryItem);
+        removeItemSubscribtion = removeItemUsecase.execute().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(throwable -> {
+                    handleRemoveItemError(throwable);
+                    return null;
+                })
+                .subscribe(removedItem -> {
+                    if (removedItem != null) {
+                        if (cachedItemsList != null && cachedItemsList.contains(removedItem)) {
+                            cachedItemsList.remove(removedItem);
+                        }
+                        if (isViewBound()) {
+                            getView().onPantryItemRemoved(pantryItem);
+                        }
+                    }
+                });
     }
 
     @Override

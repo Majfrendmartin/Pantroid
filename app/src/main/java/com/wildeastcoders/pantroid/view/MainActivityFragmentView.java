@@ -22,5 +22,7 @@ public interface MainActivityFragmentView extends View {
 
     void onDisplayGetItemsError(Throwable throwable);
 
+    void onDisplayRemoveItemsError(Throwable throwable);
+
     void onPantryItemRemoved(PantryItem item);
 }

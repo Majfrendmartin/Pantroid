@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
+import com.wildeastcoders.pantroid.model.usecase.GetPantryItemTypesUsecase;
+import com.wildeastcoders.pantroid.model.usecase.GetPantryItemUsecase;
 import com.wildeastcoders.pantroid.view.EditItemFragmentView;
 
 import java.util.Date;
@@ -14,9 +16,15 @@ import java.util.Date;
 public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFragmentView>
         implements EditItemFragmentPresenter {
     private final PantryItemValidator pantryItemValidator;
+    private final GetPantryItemUsecase getPantryItemUsecase;
+    private final GetPantryItemTypesUsecase getPantryItemTypesUsecase;
 
-    public EditItemFragmentPresenterImpl(PantryItemValidator pantryItemValidator) {
+    public EditItemFragmentPresenterImpl(final PantryItemValidator pantryItemValidator,
+                                         final GetPantryItemUsecase getPantryItemUsecase,
+                                         final GetPantryItemTypesUsecase getPantryItemTypesUsecase) {
         this.pantryItemValidator = pantryItemValidator;
+        this.getPantryItemUsecase = getPantryItemUsecase;
+        this.getPantryItemTypesUsecase = getPantryItemTypesUsecase;
     }
 
     @Override
@@ -27,6 +35,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TODO: handle fragment creation
     }
 
     @Override

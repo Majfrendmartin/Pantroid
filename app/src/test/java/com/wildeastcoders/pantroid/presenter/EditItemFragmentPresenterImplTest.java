@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
+import com.wildeastcoders.pantroid.model.usecase.GetPantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.GetPantryItemUsecase;
 import com.wildeastcoders.pantroid.view.EditItemFragmentView;
 
@@ -54,6 +55,9 @@ public class EditItemFragmentPresenterImplTest {
     @Mock
     private GetPantryItemUsecase getPantryItemUsecase;
 
+    @Mock
+    private GetPantryItemTypesUsecase getPantryItemTypesUsecase;
+
     private EditItemFragmentPresenter presenter;
 
     private Bundle bundle;
@@ -64,7 +68,7 @@ public class EditItemFragmentPresenterImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator);
+        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator, getPantryItemUsecase, getPantryItemTypesUsecase);
 
         bundle = new Bundle(1);
         bundle.putInt(KEY_EDIT_ITEM_ID, ITEM_ID);
@@ -73,6 +77,8 @@ public class EditItemFragmentPresenterImplTest {
         pantryItemTypes.add(pantryItemType);
 
         when(getPantryItemUsecase.execute()).thenReturn(Observable.just(pantryItem));
+
+        when(getPantryItemTypesUsecase.execute()).thenReturn(Observable.just(pantryItemTypes));
 
         setupItem();
         setupValidatorMock();
@@ -107,9 +113,11 @@ public class EditItemFragmentPresenterImplTest {
         presenter.bindView(view);
         presenter.onCreate(bundle);
 
-        verify(view).populateTypesSpinner(pantryItemTypes);
+        verify(getPantryItemTypesUsecase).execute();
+        verify(getPantryItemUsecase).init(ITEM_ID);
         verify(getPantryItemUsecase).execute();
 
+        verify(view).populateTypesSpinner(pantryItemTypes);
         verify(view).setupNameField(ITEM_NAME);
         verify(view).setupQuantityField(QUANTITY);
         verify(view).setupTypeField(pantryItemType);
