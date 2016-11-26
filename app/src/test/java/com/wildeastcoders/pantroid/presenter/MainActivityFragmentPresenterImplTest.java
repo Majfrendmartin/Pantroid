@@ -2,7 +2,7 @@ package com.wildeastcoders.pantroid.presenter;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemImpl;
-import com.wildeastcoders.pantroid.model.usecase.GetPantryItemsUsecase;
+import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemsUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RemoveItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation;
@@ -18,14 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Scheduler;
-import rx.android.plugins.RxAndroidPlugins;
-import rx.android.plugins.RxAndroidSchedulersHook;
-import rx.schedulers.Schedulers;
 
 import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation.DECREASE;
 import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation.INCREASE;
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
+import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -43,7 +40,7 @@ public class MainActivityFragmentPresenterImplTest {
     private MainActivityFragmentView mainActivityFragmentView;
 
     @Mock
-    private GetPantryItemsUsecase getPantryItemsUsecase;
+    private RetrievePantryItemsUsecase retrievePantryItemsUsecase;
 
     @Mock
     private UpdateItemQuantityUsecase updateItemQuantityUsecase;
@@ -69,40 +66,31 @@ public class MainActivityFragmentPresenterImplTest {
             pantryItems.add(new PantryItemImpl());
         }
 
-        presenter = new MainActivityFragmentPresenterImpl(getPantryItemsUsecase,
+        presenter = new MainActivityFragmentPresenterImpl(retrievePantryItemsUsecase,
                 updateItemQuantityUsecase, removeItemUsecase);
 
-        when(getPantryItemsUsecase.execute()).thenReturn(Observable.just(pantryItems));
+        when(retrievePantryItemsUsecase.execute()).thenReturn(Observable.just(pantryItems));
         when(updateItemQuantityUsecase.execute()).thenReturn(Observable.just(pantryItem));
         when(removeItemUsecase.execute()).thenReturn(Observable.just(pantryItem));
 
         setupRxAndroid();
     }
 
-//    private void setupRxAndroid() {
-//        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
-//            @Override
-//            public Scheduler getMainThreadScheduler() {
-//                return Schedulers.immediate();
-//            }
-//        });
-//    }
-
     @After
     public void tearDown() throws Exception {
-        RxAndroidPlugins.getInstance().reset();
+        tearDownRxAndroid();
     }
 
     @Test
     public void requestPantryItemsUpdateViewBounded() throws Exception {
         presenter.bindView(mainActivityFragmentView);
         presenter.requestPantryItemsUpdate();
-        verify(getPantryItemsUsecase).execute();
+        verify(retrievePantryItemsUsecase).execute();
         verify(mainActivityFragmentView).onPantryItemsListChanged(pantryItems);
         assertEquals(pantryItems, presenter.getPantryItems());
 
         presenter.requestPantryItemsUpdate();
-        verify(getPantryItemsUsecase, times(2)).execute();
+        verify(retrievePantryItemsUsecase, times(2)).execute();
         verify(mainActivityFragmentView, times(2)).onPantryItemsListChanged(pantryItems);
         assertEquals(pantryItems, presenter.getPantryItems());
     }
@@ -110,26 +98,26 @@ public class MainActivityFragmentPresenterImplTest {
     @Test
     public void requestPantryItemsUpdateViewNotBounded() throws Exception {
         presenter.requestPantryItemsUpdate();
-        verify(getPantryItemsUsecase).execute();
+        verify(retrievePantryItemsUsecase).execute();
         verify(mainActivityFragmentView, never()).onPantryItemsListChanged(pantryItems);
     }
 
     @Test
     public void requestPantryItemsUpdateErrorViewBounded() throws Exception {
-        when(getPantryItemsUsecase.execute()).thenReturn(Observable.error(THROWABLE));
+        when(retrievePantryItemsUsecase.execute()).thenReturn(Observable.error(THROWABLE));
         presenter.bindView(mainActivityFragmentView);
 
         presenter.requestPantryItemsUpdate();
-        verify(getPantryItemsUsecase).execute();
+        verify(retrievePantryItemsUsecase).execute();
         verify(mainActivityFragmentView, never()).onPantryItemsListChanged(pantryItems);
         verify(mainActivityFragmentView).onDisplayGetItemsError(THROWABLE);
     }
 
     @Test
     public void requestPantryItemsUpdateErrorViewNotBounded() throws Exception {
-        when(getPantryItemsUsecase.execute()).thenReturn(Observable.error(THROWABLE));
+        when(retrievePantryItemsUsecase.execute()).thenReturn(Observable.error(THROWABLE));
         presenter.requestPantryItemsUpdate();
-        verify(getPantryItemsUsecase).execute();
+        verify(retrievePantryItemsUsecase).execute();
         verify(mainActivityFragmentView, never()).onPantryItemsListChanged(pantryItems);
         verify(mainActivityFragmentView, never()).onDisplayGetItemsError(THROWABLE);
     }

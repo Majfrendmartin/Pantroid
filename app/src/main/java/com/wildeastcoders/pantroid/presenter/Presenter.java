@@ -12,11 +12,11 @@ public interface Presenter<T extends View> {
 
     T getView();
 
-    boolean isViewBound();
+    boolean isViewBounded();
 
     void bindView(final T view);
 
-    void onCreate(Bundle savedInstanceState);
+    void onCreate(Bundle bundle);
 
     void unbindView();
 

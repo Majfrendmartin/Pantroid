@@ -16,7 +16,7 @@ public abstract class AbstractPresenter<T extends View> implements Presenter<T> 
     }
 
     @Override
-    public boolean isViewBound() {
+    public boolean isViewBounded() {
         return view != null;
     }
 
@@ -26,7 +26,7 @@ public abstract class AbstractPresenter<T extends View> implements Presenter<T> 
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(final Bundle bundle) {
 
     }
 

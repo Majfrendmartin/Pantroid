@@ -8,5 +8,5 @@ import java.util.List;
  * Created by Majfrendmartin on 2016-11-11.
  */
 
-public interface GetPantryItemsUsecase extends Usecase<List<PantryItem>> {
+public interface RetrievePantryItemsUsecase extends Usecase<List<PantryItem>> {
 }

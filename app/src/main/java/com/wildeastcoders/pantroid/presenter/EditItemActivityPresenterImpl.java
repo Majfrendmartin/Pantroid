@@ -1,7 +1,5 @@
 package com.wildeastcoders.pantroid.presenter;
 
-import android.os.Bundle;
-
 import com.wildeastcoders.pantroid.view.EditItemActivityView;
 
 /**
@@ -10,21 +8,21 @@ import com.wildeastcoders.pantroid.view.EditItemActivityView;
 public class EditItemActivityPresenterImpl extends AbstractPresenter<EditItemActivityView> implements EditItemActivityPresenter {
     @Override
     public void onSaveItemClicked() {
-        if (isViewBound()) {
+        if (isViewBounded()) {
             getView().handleSaveItemClicked();
         }
     }
 
     @Override
     public void onBackClicked() {
-        if (isViewBound()) {
+        if (isViewBounded()) {
             getView().displayBackConfirmation();
         }
     }
 
     @Override
     public void onBackConfirmed() {
-        if (isViewBound()) {
+        if (isViewBounded()) {
             getView().performBackNavigation();
         }
     }

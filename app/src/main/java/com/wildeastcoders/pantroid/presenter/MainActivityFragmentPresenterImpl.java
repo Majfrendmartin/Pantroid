@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
-import com.wildeastcoders.pantroid.model.usecase.GetPantryItemsUsecase;
+import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemsUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RemoveItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation;
@@ -26,7 +26,7 @@ import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecas
 public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainActivityFragmentView>
         implements MainActivityFragmentPresenter {
 
-    private final GetPantryItemsUsecase getPantryItemsUsecase;
+    private final RetrievePantryItemsUsecase retrievePantryItemsUsecase;
     private final UpdateItemQuantityUsecase updateItemQuantityUsecase;
     private final RemoveItemUsecase removeItemUsecase;
 
@@ -37,10 +37,10 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     private List<PantryItem> cachedItemsList;
 
-    public MainActivityFragmentPresenterImpl(final GetPantryItemsUsecase getPantryItemsUsecase,
+    public MainActivityFragmentPresenterImpl(final RetrievePantryItemsUsecase retrievePantryItemsUsecase,
                                              final UpdateItemQuantityUsecase updateItemQuantityUsecase,
                                              final RemoveItemUsecase removeItemUsecase) {
-        this.getPantryItemsUsecase = getPantryItemsUsecase;
+        this.retrievePantryItemsUsecase = retrievePantryItemsUsecase;
         this.updateItemQuantityUsecase = updateItemQuantityUsecase;
         this.removeItemUsecase = removeItemUsecase;
     }
@@ -57,7 +57,7 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     @Override
     public void requestPantryItemsUpdate() {
-        getPantryItemsSubscribtion = getPantryItemsUsecase.execute()
+        getPantryItemsSubscribtion = retrievePantryItemsUsecase.execute()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(throwable -> {
@@ -71,27 +71,27 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
                         cachedItemsList.clear();
                         cachedItemsList.addAll(pantryItemList);
                     }
-                    if (isViewBound()) {
+                    if (isViewBounded()) {
                         getView().onPantryItemsListChanged(cachedItemsList);
                     }
                 });
     }
 
     private void handleGetDataError(final Throwable throwable) {
-        if (isViewBound()) {
+        if (isViewBounded()) {
             getView().onDisplayGetItemsError(throwable);
         }
     }
 
     private void handleRemoveItemError(final Throwable throwable) {
-        if (isViewBound()) {
+        if (isViewBounded()) {
             getView().onDisplayRemoveItemsError(throwable);
         }
     }
 
     @Override
     public void onItemLongClicked(@NonNull final PantryItem pantryItem) {
-        if (isViewBound()) {
+        if (isViewBounded()) {
             getView().onDisplayLongClickMenu(pantryItem);
         }
     }
@@ -118,7 +118,7 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
                 .subscribe(resultPantryItem -> {
                     if (resultPantryItem != null) {
                         pantryItem.update(resultPantryItem);
-                        if (isViewBound()) {
+                        if (isViewBounded()) {
                             getView().onUpdateItem(pantryItem);
                         }
                     }
@@ -139,7 +139,7 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
                         if (cachedItemsList != null && cachedItemsList.contains(removedItem)) {
                             cachedItemsList.remove(removedItem);
                         }
-                        if (isViewBound()) {
+                        if (isViewBounded()) {
                             getView().onPantryItemRemoved(pantryItem);
                         }
                     }
@@ -148,7 +148,7 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     @Override
     public void onEditItemClicked(@NonNull final PantryItem pantryItem) {
-        if (isViewBound()) {
+        if (isViewBounded()) {
             getView().onNavigateToEditItemActivity(pantryItem);
         }
     }

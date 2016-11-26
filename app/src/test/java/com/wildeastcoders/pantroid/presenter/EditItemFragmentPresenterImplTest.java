@@ -5,8 +5,8 @@ import android.os.Bundle;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
-import com.wildeastcoders.pantroid.model.usecase.GetPantryItemTypesUsecase;
-import com.wildeastcoders.pantroid.model.usecase.GetPantryItemUsecase;
+import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
+import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
 import com.wildeastcoders.pantroid.view.EditItemFragmentView;
 
 import org.junit.After;
@@ -23,6 +23,8 @@ import rx.Observable;
 
 import static com.wildeastcoders.pantroid.activities.IntentConstants.KEY_EDIT_ITEM_ID;
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
+import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -53,13 +55,14 @@ public class EditItemFragmentPresenterImplTest {
     private PantryItem pantryItem;
 
     @Mock
-    private GetPantryItemUsecase getPantryItemUsecase;
+    private RetrievePantryItemUsecase retrievePantryItemUsecase;
 
     @Mock
-    private GetPantryItemTypesUsecase getPantryItemTypesUsecase;
+    private RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase;
 
     private EditItemFragmentPresenter presenter;
 
+    @Mock
     private Bundle bundle;
 
     private List<PantryItemType> pantryItemTypes;
@@ -68,17 +71,17 @@ public class EditItemFragmentPresenterImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator, getPantryItemUsecase, getPantryItemTypesUsecase);
+        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator, retrievePantryItemUsecase, retrievePantryItemTypesUsecase);
 
-        bundle = new Bundle(1);
-        bundle.putInt(KEY_EDIT_ITEM_ID, ITEM_ID);
+        when(bundle.getInt(KEY_EDIT_ITEM_ID)).thenReturn(ITEM_ID);
+        when(bundle.containsKey(KEY_EDIT_ITEM_ID)).thenReturn(true);
 
         pantryItemTypes = new ArrayList<>(1);
         pantryItemTypes.add(pantryItemType);
 
-        when(getPantryItemUsecase.execute()).thenReturn(Observable.just(pantryItem));
+        when(retrievePantryItemUsecase.execute()).thenReturn(Observable.just(pantryItem));
 
-        when(getPantryItemTypesUsecase.execute()).thenReturn(Observable.just(pantryItemTypes));
+        when(retrievePantryItemTypesUsecase.execute()).thenReturn(Observable.just(pantryItemTypes));
 
         setupItem();
         setupValidatorMock();
@@ -105,7 +108,7 @@ public class EditItemFragmentPresenterImplTest {
 
     @After
     public void tearDown() throws Exception {
-
+        tearDownRxAndroid();
     }
 
     @Test
@@ -113,9 +116,12 @@ public class EditItemFragmentPresenterImplTest {
         presenter.bindView(view);
         presenter.onCreate(bundle);
 
-        verify(getPantryItemTypesUsecase).execute();
-        verify(getPantryItemUsecase).init(ITEM_ID);
-        verify(getPantryItemUsecase).execute();
+        verify(retrievePantryItemTypesUsecase).execute();
+        verify(retrievePantryItemUsecase).init(ITEM_ID);
+        verify(retrievePantryItemUsecase).execute();
+
+        assertEquals(pantryItemTypes, presenter.getItemTypesCache());
+        assertEquals(pantryItem, presenter.getPantryItem());
 
         verify(view).populateTypesSpinner(pantryItemTypes);
         verify(view).setupNameField(ITEM_NAME);
@@ -129,9 +135,14 @@ public class EditItemFragmentPresenterImplTest {
     public void onCreateForEditItemViewNotBounded() throws Exception {
         presenter.onCreate(bundle);
 
-        verify(view, never()).populateTypesSpinner(pantryItemTypes);
-        verify(getPantryItemUsecase).execute();
+        verify(retrievePantryItemTypesUsecase).execute();
+        verify(retrievePantryItemUsecase).init(ITEM_ID);
+        verify(retrievePantryItemUsecase).execute();
 
+        assertEquals(pantryItemTypes, presenter.getItemTypesCache());
+        assertEquals(pantryItem, presenter.getPantryItem());
+
+        verify(view, never()).populateTypesSpinner(pantryItemTypes);
         verify(view, never()).setupNameField(ITEM_NAME);
         verify(view, never()).setupQuantityField(QUANTITY);
         verify(view, never()).setupTypeField(pantryItemType);
@@ -143,10 +154,10 @@ public class EditItemFragmentPresenterImplTest {
     public void onCreateForEditErrorItemViewBounded() throws Exception {
         presenter.bindView(view);
         presenter.onCreate(bundle);
-        when(getPantryItemUsecase.execute()).thenReturn(Observable.error(THROWABLE));
+        when(retrievePantryItemUsecase.execute()).thenReturn(Observable.error(THROWABLE));
 
         verify(view).populateTypesSpinner(pantryItemTypes);
-        verify(getPantryItemUsecase).execute();
+        verify(retrievePantryItemUsecase).execute();
 
         verify(view).displayErrorDialog();
 
@@ -161,10 +172,10 @@ public class EditItemFragmentPresenterImplTest {
     public void onCreateForEditItemErrorViewNotBounded() throws Exception {
         presenter.bindView(view);
         presenter.onCreate(bundle);
-        when(getPantryItemUsecase.execute()).thenReturn(Observable.error(THROWABLE));
+        when(retrievePantryItemUsecase.execute()).thenReturn(Observable.error(THROWABLE));
 
         verify(view, never()).populateTypesSpinner(pantryItemTypes);
-        verify(getPantryItemUsecase).execute();
+        verify(retrievePantryItemUsecase).execute();
 
         verify(view, never()).displayErrorDialog();
 

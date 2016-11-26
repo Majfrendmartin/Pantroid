@@ -22,4 +22,8 @@ public abstract class TestUtils {
             }
         });
     }
+
+    public static final void tearDownRxAndroid() {
+        RxAndroidPlugins.getInstance().reset();
+    }
 }
