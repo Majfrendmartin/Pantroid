@@ -16,9 +16,11 @@ public interface Presenter<T extends View> {
 
     void bindView(final T view);
 
+    void unbindView();
+
     void onCreate(Bundle bundle);
 
-    void unbindView();
+    void onDestroy();
 
     void onStart();
 

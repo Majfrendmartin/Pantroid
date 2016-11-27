@@ -26,4 +26,8 @@ public abstract class TestUtils {
     public static final void tearDownRxAndroid() {
         RxAndroidPlugins.getInstance().reset();
     }
+
+    public static final void waitForAsyncOperationCompleted() throws InterruptedException {
+        Thread.sleep(50);
+    }
 }

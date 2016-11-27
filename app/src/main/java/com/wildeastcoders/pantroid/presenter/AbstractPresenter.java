@@ -59,4 +59,9 @@ public abstract class AbstractPresenter<T extends View> implements Presenter<T> 
     public void onSaveInstanceState(final Bundle bundle) {
 
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

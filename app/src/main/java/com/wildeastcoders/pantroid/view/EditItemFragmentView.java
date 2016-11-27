@@ -34,5 +34,7 @@ public interface EditItemFragmentView extends View {
 
     void displayBestBeforeDateValidationResult(ValidationResult validationResult);
 
-    void displayErrorDialog();
+    void displayTypeErrorDialog();
+
+    void displayDataErrorDialog();
 }

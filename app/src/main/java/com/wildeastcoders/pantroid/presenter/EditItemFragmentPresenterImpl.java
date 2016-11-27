@@ -29,14 +29,18 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     private final RetrievePantryItemUsecase retrievePantryItemUsecase;
     private final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase;
 
-    @Nullable
-    private Subscription retrievePantryItemTypesSubsctibtion;
 
     @Nullable
     private List<PantryItemType> itemTypesCache;
 
     @Nullable
     private PantryItem itemCache;
+
+    @Nullable
+    private Subscription retrieveItemDetailsSubscription;
+
+    @Nullable
+    private Subscription retrievePantryItemTypesSubscription;
 
     public EditItemFragmentPresenterImpl(final PantryItemValidator pantryItemValidator,
                                          final RetrievePantryItemUsecase retrievePantryItemUsecase,
@@ -66,21 +70,25 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
 
     private void retrieveItemDetails(final int itemId) {
         final Observable<List<PantryItemType>> retrievePantryItemTypesObservable = createRetrievePantryItemTypesObservable();
-        final Observable<PantryItem> retrieveEditPantryItemObservable = createRetrieveEditPantryItemObservable(itemId);
-        Observable.zip(retrievePantryItemTypesObservable,
-                retrieveEditPantryItemObservable,
+        final Observable<PantryItem> retrievePantryItemObservable = createRetrievePantryItemObservable(itemId);
+        retrieveItemDetailsSubscription = Observable.zip(retrievePantryItemTypesObservable,
+                retrievePantryItemObservable,
                 (itemTypes, pantryItem) -> new RetrieveResult(itemTypes, pantryItem))
                 .subscribe(this::handleDataRetrieveResult);
     }
 
     private void handleDataRetrieveResult(final RetrieveResult retrieveResult) {
-        if (retrieveResult.itemTypes == null || retrieveResult.itemTypes.isEmpty()) {
-            handleRetrievePantryItemTypesError(null);
+        if (retrieveResult.itemTypes == null) {
+            return;
+        }
+
+        if (retrieveResult.itemTypes.isEmpty()) {
+            handleRetrievePantryItemTypesError();
             return;
         }
 
         if (retrieveResult.item == null) {
-            handleRetrievePantryItemError();
+            return;
         }
 
         handlePantryItemTypesRetrieved(retrieveResult.itemTypes);
@@ -102,11 +110,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
 
     private void populatePantryItemTypes() {
         if (itemTypesCache == null || itemTypesCache.isEmpty()) {
-            createRetrievePantryItemTypesObservable()
-                    .onErrorReturn(throwable -> {
-                        handleRetrievePantryItemTypesError(throwable);
-                        return null;
-                    })
+            retrievePantryItemTypesSubscription = createRetrievePantryItemTypesObservable()
                     .subscribe(itemTypes -> {
                         handlePantryItemTypesRetrieved(itemTypes);
                     });
@@ -126,11 +130,15 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
         }
     }
 
-    private Observable<PantryItem> createRetrieveEditPantryItemObservable(final int itemId) {
+    private Observable<PantryItem> createRetrievePantryItemObservable(final int itemId) {
         retrievePantryItemUsecase.init(itemId);
         return retrievePantryItemUsecase.execute()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(throwable -> {
+                    handleRetrievePantryItemError();
+                    return null;
+                });
     }
 
     /**
@@ -154,15 +162,23 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     private Observable<List<PantryItemType>> createRetrievePantryItemTypesObservable() {
         return retrievePantryItemTypesUsecase.execute()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(throwable -> {
+                    handleRetrievePantryItemTypesError();
+                    return null;
+                });
     }
 
-    private void handleRetrievePantryItemTypesError(@Nullable final Throwable throwable) {
-        //TODO: handle error
+    private void handleRetrievePantryItemTypesError() {
+        if (isViewBounded()) {
+            getView().displayTypeErrorDialog();
+        }
     }
 
     private void handleRetrievePantryItemError() {
-        //TODO: handle error
+        if (isViewBounded()) {
+            getView().displayDataErrorDialog();
+        }
     }
 
     @Override
@@ -198,5 +214,19 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
             this.itemTypes = itemTypes;
             this.item = item;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (retrievePantryItemTypesSubscription != null && retrievePantryItemTypesSubscription.isUnsubscribed()){
+            retrievePantryItemTypesSubscription.unsubscribe();
+        }
+
+
+        if (retrieveItemDetailsSubscription != null && retrieveItemDetailsSubscription.isUnsubscribed()){
+            retrieveItemDetailsSubscription.unsubscribe();
+        }
+
+        super.onDestroy();
     }
 }
