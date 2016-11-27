@@ -13,6 +13,7 @@ import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.schedulers.Schedulers;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -29,7 +30,7 @@ public class MainActivityPresenterImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         presenter = new MainActivityPresenterImpl();
-        presenter.bindView(mainActivityView);
+
     }
 
     @After
@@ -38,14 +39,28 @@ public class MainActivityPresenterImplTest {
 
     @Test
     public void onManageTypesMenuOptionSelected() throws Exception {
+        presenter.bindView(mainActivityView);
         presenter.onManageTypesMenuOptionSelected();
-        verify(mainActivityView, times(1)).navigateToManageTypesActivity();
+        verify(mainActivityView).navigateToManageTypesActivity();
     }
 
     @Test
     public void onAddNewItemSelected() throws Exception {
+        presenter.bindView(mainActivityView);
         presenter.onAddNewItemSelected();
-        verify(mainActivityView, times(1)).navigateToNewItemActivity();
+        verify(mainActivityView).navigateToNewItemActivity();
+    }
+
+    @Test
+    public void onManageTypesMenuOptionSelectedViewNotBounded() throws Exception {
+        presenter.onManageTypesMenuOptionSelected();
+        verify(mainActivityView, never()).navigateToManageTypesActivity();
+    }
+
+    @Test
+    public void onAddNewItemSelectedViewNotBounded() throws Exception {
+        presenter.onAddNewItemSelected();
+        verify(mainActivityView, never()).navigateToNewItemActivity();
     }
 
     @Test

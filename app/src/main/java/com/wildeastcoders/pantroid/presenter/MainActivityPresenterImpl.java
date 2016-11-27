@@ -10,12 +10,16 @@ import com.wildeastcoders.pantroid.view.MainActivityView;
 public class MainActivityPresenterImpl extends AbstractPresenter<MainActivityView> implements MainActivityPresenter {
     @Override
     public void onManageTypesMenuOptionSelected() {
-
+        if (isViewBounded()) {
+            getView().navigateToManageTypesActivity();
+        }
     }
 
     @Override
     public void onAddNewItemSelected() {
-
+        if (isViewBounded()) {
+            getView().navigateToNewItemActivity();
+        }
     }
 
     @Override
