@@ -109,8 +109,6 @@ public class MainActivityFragmentPresenterImplTest {
         tearDownRxAndroid();
     }
 
-
-
     @Test
     public void requestPantryItemsUpdateViewBounded() throws Exception {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemUsecase);
@@ -323,17 +321,26 @@ public class MainActivityFragmentPresenterImplTest {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemFailingUsecase);
         presenter.bindView(mainActivityFragmentView);
 
+        presenter.onRemoveItemClicked(pantryItem);
         waitForAsyncOperationCompleted();
 
-        //TODO: finish this
+        verify(removeItemFailingUsecase).init(pantryItem);
+        verify(removeItemFailingUsecase).execute();
+        verify(mainActivityFragmentView, never()).onPantryItemRemoved(pantryItem);
+        verify(mainActivityFragmentView).onDisplayRemoveItemsError(REMOVE_ITEM_EXCEPTION);
     }
 
     @Test
     public void onRemoveItemClickedErrorViewNotBounded() throws Exception {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemFailingUsecase);
-        //TODO: finish this
 
+        presenter.onRemoveItemClicked(pantryItem);
         waitForAsyncOperationCompleted();
+
+        verify(removeItemFailingUsecase).init(pantryItem);
+        verify(removeItemFailingUsecase).execute();
+        verify(mainActivityFragmentView, never()).onPantryItemRemoved(pantryItem);
+        verify(mainActivityFragmentView, never()).onDisplayRemoveItemsError(REMOVE_ITEM_EXCEPTION);
     }
 
     @Test
@@ -355,6 +362,17 @@ public class MainActivityFragmentPresenterImplTest {
         waitForAsyncOperationCompleted();
 
         verify(mainActivityFragmentView, never()).onNavigateToEditItemActivity(pantryItem);
+    }
+
+    @Test
+    public void onCreateViewBounded() throws Exception {
+        setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemUsecase);
+        presenter.bindView(mainActivityFragmentView);
+        presenter.onCreate(null);
+
+        waitForAsyncOperationCompleted();
+
+
     }
 
     @Test

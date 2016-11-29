@@ -57,6 +57,10 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     @Override
     public void requestPantryItemsUpdate() {
+        if (getPantryItemsSubscribtion != null && !getPantryItemsSubscribtion.isUnsubscribed()) {
+            getPantryItemsSubscribtion.unsubscribe();
+        }
+
         getPantryItemsSubscribtion = retrievePantryItemsUsecase.execute()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -153,28 +157,5 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
         }
     }
 
-    @Override
-    public void onStart() {
 
-    }
-
-    @Override
-    public void onStop() {
-
-    }
-
-    @Override
-    public void onResume() {
-
-    }
-
-    @Override
-    public void onPause() {
-
-    }
-
-    @Override
-    public void onSaveInstanceState(final Bundle bundle) {
-
-    }
 }
