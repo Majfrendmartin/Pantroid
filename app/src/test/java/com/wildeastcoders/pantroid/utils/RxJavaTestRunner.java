@@ -23,6 +23,16 @@ public class RxJavaTestRunner extends RobolectricTestRunner {
             public Scheduler getIOScheduler() {
                 return Schedulers.immediate();
             }
+
+            @Override
+            public Scheduler getNewThreadScheduler() {
+                return Schedulers.immediate();
+            }
+
+            @Override
+            public Scheduler getComputationScheduler() {
+                return Schedulers.immediate();
+            }
         });
     }
 }

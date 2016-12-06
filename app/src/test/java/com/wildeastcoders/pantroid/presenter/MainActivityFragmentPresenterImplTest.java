@@ -371,7 +371,7 @@ public class MainActivityFragmentPresenterImplTest {
         presenter.onCreate(null);
 
         waitForAsyncOperationCompleted();
-
+        //TODO: is this test really needed?
 
     }
 
