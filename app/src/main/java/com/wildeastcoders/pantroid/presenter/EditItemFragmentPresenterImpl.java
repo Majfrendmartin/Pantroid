@@ -8,6 +8,7 @@ import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
+import com.wildeastcoders.pantroid.model.usecase.SavePantryItemUsecase;
 import com.wildeastcoders.pantroid.view.EditItemFragmentView;
 
 import java.util.Date;
@@ -28,6 +29,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     private final PantryItemValidator pantryItemValidator;
     private final RetrievePantryItemUsecase retrievePantryItemUsecase;
     private final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase;
+    private final SavePantryItemUsecase savePantryItemUsecase;
 
 
     @Nullable
@@ -44,10 +46,12 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
 
     public EditItemFragmentPresenterImpl(final PantryItemValidator pantryItemValidator,
                                          final RetrievePantryItemUsecase retrievePantryItemUsecase,
-                                         final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase) {
+                                         final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase,
+    final SavePantryItemUsecase savePantryItemUsecase) {
         this.pantryItemValidator = pantryItemValidator;
         this.retrievePantryItemUsecase = retrievePantryItemUsecase;
         this.retrievePantryItemTypesUsecase = retrievePantryItemTypesUsecase;
+        this.savePantryItemUsecase = savePantryItemUsecase;
     }
 
     @Override
@@ -56,10 +60,9 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     }
 
     @Override
-    public void onCreate(final Bundle bundle) {
+    public void onCreate(@Nullable final Bundle bundle) {
         super.onCreate(bundle);
-
-        if (bundle.containsKey(KEY_EDIT_ITEM_ID)) {
+        if (bundle != null && bundle.containsKey(KEY_EDIT_ITEM_ID)) {
             final int itemId = bundle.getInt(KEY_EDIT_ITEM_ID);
             retrieveItemDetails(itemId);
         } else {

@@ -1,6 +1,7 @@
 package com.wildeastcoders.pantroid.presenter;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.wildeastcoders.pantroid.view.View;
 
@@ -18,7 +19,7 @@ public interface Presenter<T extends View> {
 
     void unbindView();
 
-    void onCreate(Bundle bundle);
+    void onCreate(@Nullable Bundle bundle);
 
     void onDestroy();
 

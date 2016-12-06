@@ -8,6 +8,7 @@ import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
+import com.wildeastcoders.pantroid.model.usecase.SavePantryItemUsecase;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
 import com.wildeastcoders.pantroid.view.EditItemFragmentView;
 
@@ -49,6 +50,7 @@ public class EditItemFragmentPresenterImplTest {
     public static final int ITEM_ID = 1;
     public static final String ITEM_RETRIEVING_EXCEPTION = "ITEM RETRIEVING EXCEPTION";
     public static final String ITEM_TYPES_RETRIEVING_EXCEPTION = "ITEM TYPES RETRIEVING EXCEPTION";
+    public static final String ITEM_SAVING_EXCEPTION = "ITEM TYPES RETRIEVING EXCEPTION";
 
     @Mock
     private EditItemFragmentView view;
@@ -74,6 +76,12 @@ public class EditItemFragmentPresenterImplTest {
     @Mock
     private RetrievePantryItemTypesUsecase retrievePantryItemTypesFailingUsecase;
 
+    @Mock
+    private SavePantryItemUsecase savePantryItemUsecase;
+
+    @Mock
+    private SavePantryItemUsecase savePantryItemFailingUsecase;
+
     private EditItemFragmentPresenter presenter;
 
     @Mock
@@ -97,12 +105,21 @@ public class EditItemFragmentPresenterImplTest {
 
         when(retrievePantryItemUsecase.execute()).thenReturn(Observable.just(pantryItem));
         when(retrievePantryItemTypesUsecase.execute()).thenReturn(Observable.just(pantryItemTypes));
+        when(savePantryItemUsecase.execute()).thenReturn(Observable.just(pantryItem));
         when(retrievePantryItemFailingUsecase.execute()).thenReturn(Observable.error(new Throwable(ITEM_RETRIEVING_EXCEPTION)));
         when(retrievePantryItemTypesFailingUsecase.execute()).thenReturn(Observable.error(new Throwable(ITEM_TYPES_RETRIEVING_EXCEPTION)));
+        when(savePantryItemFailingUsecase.execute()).thenReturn(Observable.error(new Throwable(ITEM_SAVING_EXCEPTION)));
     }
 
-    private void setupPresenter(final RetrievePantryItemUsecase retrievePantryItemUsecase, final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase) {
-        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator, retrievePantryItemUsecase, retrievePantryItemTypesUsecase);
+    private void setupPresenter(final RetrievePantryItemUsecase retrievePantryItemUsecase,
+                                final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase) {
+        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
+                retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
+    }
+
+    private void setupPresenter(final SavePantryItemUsecase savePantryItemUsecase) {
+        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
+                retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
     }
 
     private void setupItem() {
@@ -221,10 +238,57 @@ public class EditItemFragmentPresenterImplTest {
         verifyFieldsPopulationMethodsNeverCalled();
     }
 
+    @Test
+    public void onCreateForNewItemViewBounded() throws Exception {
+        setupPresenter(retrievePantryItemUsecase, retrievePantryItemTypesUsecase);
+        presenter.bindView(view);
+        presenter.onCreate(null);
+        waitForAsyncOperationCompleted();
+        verify(view).populateTypesSpinner(pantryItemTypes);
+    }
 
     @Test
-    public void onSaveItemClicked() throws Exception {
+    public void onCreateForNewItemViewNotBounded() throws Exception {
+        setupPresenter(retrievePantryItemUsecase, retrievePantryItemTypesUsecase);
+        presenter.onCreate(null);
+        waitForAsyncOperationCompleted();
+        verify(view, never()).populateTypesSpinner(pantryItemTypes);
+    }
 
+    @Test
+    public void onCreateForNewItemErrorViewBounded() throws Exception {
+        setupPresenter(retrievePantryItemUsecase, retrievePantryItemTypesFailingUsecase);
+        presenter.bindView(view);
+        presenter.onCreate(null);
+        waitForAsyncOperationCompleted();
+        verify(view, never()).populateTypesSpinner(pantryItemTypes);
+        verify(view).displayTypeErrorDialog();
+    }
+
+    @Test
+    public void onCreateForNewItemErrorViewNotBounded() throws Exception {
+        setupPresenter(retrievePantryItemUsecase, retrievePantryItemTypesFailingUsecase);
+        presenter.onCreate(null);
+        waitForAsyncOperationCompleted();
+        verify(view, never()).populateTypesSpinner(pantryItemTypes);
+        verify(view, never()).displayTypeErrorDialog();
+    }
+
+    @Test
+    public void onSaveItemClickedValidationSucceedViewBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        presenter.bindView(view);
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        waitForAsyncOperationCompleted();
+        verify(pantryItemValidator).validateName(ITEM_NAME);
+        verify(pantryItemValidator).validateType(pantryItemType);
+        verify(pantryItemValidator).validateQuantity(QUANTITY);
+        verify(pantryItemValidator).validateAddingDate(ADDING_DATE);
+        verify(pantryItemValidator).validateBestBeforeDate(BEST_BEFORE_DATE);
+
+        final PantryItem createdItem = presenter.getPantryItem();
+
+        verify(savePantryItemUsecase).init(createdItem);
     }
 
 

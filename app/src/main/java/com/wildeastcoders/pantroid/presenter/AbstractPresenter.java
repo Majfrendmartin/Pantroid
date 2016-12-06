@@ -1,6 +1,7 @@
 package com.wildeastcoders.pantroid.presenter;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.wildeastcoders.pantroid.view.View;
 
@@ -26,7 +27,7 @@ public abstract class AbstractPresenter<T extends View> implements Presenter<T> 
     }
 
     @Override
-    public void onCreate(final Bundle bundle) {
+    public void onCreate(@Nullable final Bundle bundle) {
 
     }
 
