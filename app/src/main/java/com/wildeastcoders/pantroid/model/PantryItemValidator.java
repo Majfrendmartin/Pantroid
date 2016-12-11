@@ -1,5 +1,7 @@
 package com.wildeastcoders.pantroid.model;
 
+import com.wildeastcoders.pantroid.model.database.ValidationResult;
+
 import java.util.Date;
 
 /**
@@ -7,9 +9,9 @@ import java.util.Date;
  */
 
 public interface PantryItemValidator {
-    boolean validateName(String name);
-    boolean validateType(PantryItemType type);
-    boolean validateQuantity(int quantity);
-    boolean validateAddingDate(Date addingDate);
-    boolean validateBestBeforeDate(Date addingDate);
+    ValidationResult validateName(String name);
+    ValidationResult validateType(PantryItemType type);
+    ValidationResult validateQuantity(int quantity);
+    ValidationResult validateAddingDate(Date addingDate);
+    ValidationResult validateBestBeforeDate(Date addingDate);
 }

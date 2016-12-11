@@ -6,6 +6,7 @@ import com.wildeastcoders.pantroid.BuildConfig;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
+import com.wildeastcoders.pantroid.model.database.ValidationResult;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemUsecase;
@@ -22,11 +23,15 @@ import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 
 import static com.wildeastcoders.pantroid.activities.IntentConstants.KEY_EDIT_ITEM_ID;
+import static com.wildeastcoders.pantroid.model.database.ValidationResult.INVALID;
+import static com.wildeastcoders.pantroid.model.database.ValidationResult.VALID;
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.waitForAsyncOperationCompleted;
@@ -132,11 +137,20 @@ public class EditItemFragmentPresenterImplTest {
     }
 
     private void setupValidatorMock() {
-        when(pantryItemValidator.validateName(ITEM_NAME)).thenReturn(true);
-        when(pantryItemValidator.validateType(pantryItemType)).thenReturn(true);
-        when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(true);
-        when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(true);
-        when(pantryItemValidator.validateBestBeforeDate(BEST_BEFORE_DATE)).thenReturn(true);
+        when(pantryItemValidator.validateName(ITEM_NAME)).thenReturn(VALID);
+        when(pantryItemValidator.validateType(pantryItemType)).thenReturn(VALID);
+        when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(VALID);
+        when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(VALID);
+        when(pantryItemValidator.validateBestBeforeDate(BEST_BEFORE_DATE)).thenReturn(VALID);
+    }
+
+
+    private void setupInvalidValidatorMock() {
+        when(pantryItemValidator.validateName(ITEM_NAME)).thenReturn(INVALID);
+        when(pantryItemValidator.validateType(pantryItemType)).thenReturn(INVALID);
+        when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(INVALID);
+        when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(INVALID);
+        when(pantryItemValidator.validateBestBeforeDate(BEST_BEFORE_DATE)).thenReturn(INVALID);
     }
 
     @After
@@ -279,19 +293,130 @@ public class EditItemFragmentPresenterImplTest {
         setupPresenter(savePantryItemUsecase);
         presenter.bindView(view);
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
         waitForAsyncOperationCompleted();
+
+        verifyValidationMethodsWereCalled();
+
+        verify(savePantryItemUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view).displayPantryItemSavedDialog(pantryItem);
+    }
+
+    private void verifyValidationMethodsWereCalled() {
         verify(pantryItemValidator).validateName(ITEM_NAME);
         verify(pantryItemValidator).validateType(pantryItemType);
         verify(pantryItemValidator).validateQuantity(QUANTITY);
         verify(pantryItemValidator).validateAddingDate(ADDING_DATE);
         verify(pantryItemValidator).validateBestBeforeDate(BEST_BEFORE_DATE);
+    }
 
-        final PantryItem createdItem = presenter.getPantryItem();
+    @Test
+    public void onSaveItemClickedValidationSucceedViewNotBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
 
-        verify(savePantryItemUsecase).init(createdItem);
+        waitForAsyncOperationCompleted();
+
+        verifyValidationMethodsWereCalled();
+
+        verify(savePantryItemUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view, never()).displayPantryItemSavedDialog(pantryItem);
+    }
+
+    private void verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType pantryItemFieldType) throws InterruptedException {
+        presenter.bindView(view);
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
+        waitForAsyncOperationCompleted();
+
+        verifyValidationMethodsWereCalled();
+
+        verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view, never()).displayPantryItemSavedDialog(pantryItem);
+        final Map<PantryItem.PantryItemFieldType, ValidationResult> resultMap = new HashMap<>(1);
+        resultMap.put(pantryItemFieldType, INVALID);
+        verify(view).displayValidationResults(resultMap);
+    }
+
+    @Test
+    public void onSaveItemClickedNameValidationFailedViewBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        when(pantryItemValidator.validateName(ITEM_NAME)).thenReturn(INVALID);
+        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.NAME);
+    }
+
+    @Test
+    public void onSaveItemClickedTypeValidationFailedViewBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        when(pantryItemValidator.validateType(pantryItemType)).thenReturn(INVALID);
+        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.TYPE);
+    }
+
+    @Test
+    public void onSaveItemClickedQuantityValidationFailedViewBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(INVALID);
+        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.QUANTITY);
+    }
+
+    @Test
+    public void onSaveItemClickedAddingDateValidationFailedViewBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(INVALID);
+        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.ADDING_DATE);
+    }
+
+    @Test
+    public void onSaveItemClickedBestBeforeDateValidationFailedViewBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        when(pantryItemValidator.validateBestBeforeDate(BEST_BEFORE_DATE)).thenReturn(INVALID);
+        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.BEST_BEFORE_DATE);
+    }
+
+    @Test
+    public void verifyFieldValidationFailedViewNotBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        setupInvalidValidatorMock();
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
+        waitForAsyncOperationCompleted();
+
+        verifyValidationMethodsWereCalled();
+
+        verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view, never()).displayPantryItemSavedDialog(pantryItem);
+        final Map<PantryItem.PantryItemFieldType, ValidationResult> resultMap = new HashMap<>(5);
+        resultMap.put(PantryItem.PantryItemFieldType.NAME, INVALID);
+        resultMap.put(PantryItem.PantryItemFieldType.TYPE, INVALID);
+        resultMap.put(PantryItem.PantryItemFieldType.QUANTITY, INVALID);
+        resultMap.put(PantryItem.PantryItemFieldType.ADDING_DATE, INVALID);
+        resultMap.put(PantryItem.PantryItemFieldType.BEST_BEFORE_DATE, INVALID);
+        verify(view, never()).displayValidationResults(resultMap);
     }
 
 
+
+    @Test
+    public void verifyAllFieldValidationFailedViewBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        setupInvalidValidatorMock();
+        presenter.bindView(view);
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
+        waitForAsyncOperationCompleted();
+
+        verifyValidationMethodsWereCalled();
+
+        verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view, never()).displayPantryItemSavedDialog(pantryItem);
+        final Map<PantryItem.PantryItemFieldType, ValidationResult> resultMap = new HashMap<>(5);
+        resultMap.put(PantryItem.PantryItemFieldType.NAME, INVALID);
+        resultMap.put(PantryItem.PantryItemFieldType.TYPE, INVALID);
+        resultMap.put(PantryItem.PantryItemFieldType.QUANTITY, INVALID);
+        resultMap.put(PantryItem.PantryItemFieldType.ADDING_DATE, INVALID);
+        resultMap.put(PantryItem.PantryItemFieldType.BEST_BEFORE_DATE, INVALID);
+        verify(view).displayValidationResults(resultMap);
+    }
 
     @Test
     public void onStart() throws Exception {

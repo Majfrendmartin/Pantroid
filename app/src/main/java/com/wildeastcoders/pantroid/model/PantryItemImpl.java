@@ -16,6 +16,22 @@ public class PantryItemImpl implements PantryItem {
     private Date bestBeforeDate;
     private int quantity;
 
+    public PantryItemImpl(final String name, final int quantity, final PantryItemType type, final Date addingDate, final Date bestBeforeDate) {
+        id = -1;
+        this.name = name;
+        this.type = type;
+        this.addingDate = addingDate;
+        this.bestBeforeDate = bestBeforeDate;
+        this.quantity = quantity;
+    }
+
+    /**
+     * For tests only.
+     */
+    public PantryItemImpl() {
+        id = -1;
+    }
+
     @Override
     public int getId() {
         return id;

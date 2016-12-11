@@ -9,6 +9,15 @@ import java.util.Date;
  */
 
 public interface PantryItem {
+    public enum PantryItemFieldType {
+        ID,
+        NAME,
+        TYPE,
+        QUANTITY,
+        ADDING_DATE,
+        BEST_BEFORE_DATE
+    }
+
     int getId();
 
     void setId(int id);
