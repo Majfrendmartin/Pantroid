@@ -128,6 +128,10 @@ public class EditItemFragmentPresenterImplTest {
         presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
                 retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
     }
+    private void setupPresenter() {
+        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
+                retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
+    }
 
     private void setupItem() {
         when(pantryItem.getId()).thenReturn(ITEM_ID);
@@ -531,6 +535,22 @@ public class EditItemFragmentPresenterImplTest {
         verify(view, never()).displayDataErrorDialog();
     }
 
+    @Test
+    public void onBackPressedViewBounded() throws Exception {
+        setupPresenter();
+        presenter.bindView(view);
+        presenter.onBackPressed();
+
+        verify(view).displayDiscardChangesDialog();
+    }
+
+    @Test
+    public void onBackPressedViewNotBounded() throws Exception {
+        setupPresenter();
+        presenter.onBackPressed();
+
+        verify(view, never()).displayDiscardChangesDialog();
+    }
 
     @Test
     public void onStart() throws Exception {
@@ -556,5 +576,4 @@ public class EditItemFragmentPresenterImplTest {
     public void onSaveInstanceState() throws Exception {
 
     }
-
 }

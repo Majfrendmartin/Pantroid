@@ -287,9 +287,16 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     }
 
     @Override
-    public void handleSaveItemConfirmationDialogButtonClicked() {
+    public void handleFinishDialogConfirmButtonClicked() {
         if (isViewBounded()) {
             getView().finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isViewBounded()) {
+            getView().displayDiscardChangesDialog();
         }
     }
 

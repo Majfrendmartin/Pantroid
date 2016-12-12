@@ -25,5 +25,7 @@ public interface EditItemFragmentPresenter extends Presenter<EditItemFragmentVie
 
     void setPantryItem(PantryItem pantryItem);
 
-    void handleSaveItemConfirmationDialogButtonClicked();
+    void handleFinishDialogConfirmButtonClicked();
+
+    void onBackPressed();
 }

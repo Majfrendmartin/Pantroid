@@ -37,5 +37,7 @@ public interface EditItemFragmentView extends View {
 
     void displayValidationResults(Map<PantryItemFieldType, ValidationResult> resultsMap);
 
+    void displayDiscardChangesDialog();
+
     void finish();
 }
