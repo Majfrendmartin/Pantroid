@@ -380,7 +380,7 @@ public class EditItemFragmentPresenterImplTest {
     }
 
     @Test
-    public void verifyFieldValidationFailedViewNotBounded() throws Exception {
+    public void onFieldValidationFailedViewNotBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
         setupInvalidValidatorMock();
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
@@ -401,7 +401,7 @@ public class EditItemFragmentPresenterImplTest {
     }
 
     @Test
-    public void verifyAllFieldValidationFailedViewBounded() throws Exception {
+    public void onAllFieldValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
         setupInvalidValidatorMock();
         presenter.bindView(view);
@@ -434,7 +434,6 @@ public class EditItemFragmentPresenterImplTest {
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
         verify(view).displayDataErrorDialog();
     }
-
 
     @Test
     public void onSaveItemClickedExceptionOccursViewNotBounded() throws Exception {
@@ -492,6 +491,7 @@ public class EditItemFragmentPresenterImplTest {
         verify(view).displayNothingChangedDialog();
         verify(view, never()).displayDataErrorDialog();
     }
+
     @Test
     public void onSaveItemClickedForUpdateViewNotBounded () throws Exception {
         setupPresenter(savePantryItemUsecase);
