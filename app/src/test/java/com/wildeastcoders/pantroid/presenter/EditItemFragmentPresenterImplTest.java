@@ -553,6 +553,23 @@ public class EditItemFragmentPresenterImplTest {
     }
 
     @Test
+    public void handleFinishDialogConfirmButtonClickedViewBounded() throws Exception {
+        setupPresenter();
+        presenter.bindView(view);
+        presenter.handleFinishDialogConfirmButtonClicked();
+
+        verify(view).finish();
+    }
+
+    @Test
+    public void handleFinishDialogConfirmButtonClickedViewNotBounded() throws Exception {
+        setupPresenter();
+        presenter.handleFinishDialogConfirmButtonClicked();
+
+        verify(view, never()).finish();
+    }
+
+    @Test
     public void onStart() throws Exception {
 
     }
