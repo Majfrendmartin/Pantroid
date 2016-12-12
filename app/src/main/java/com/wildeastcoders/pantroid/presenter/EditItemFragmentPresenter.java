@@ -22,4 +22,8 @@ public interface EditItemFragmentPresenter extends Presenter<EditItemFragmentVie
 
     @Nullable
     PantryItem getPantryItem();
+
+    void setPantryItem(PantryItem pantryItem);
+
+    void handleSaveItemConfirmationDialogButtonClicked();
 }

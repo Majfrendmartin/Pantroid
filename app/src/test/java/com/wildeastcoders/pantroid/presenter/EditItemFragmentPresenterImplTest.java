@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.wildeastcoders.pantroid.BuildConfig;
 import com.wildeastcoders.pantroid.model.PantryItem;
+import com.wildeastcoders.pantroid.model.PantryItemImpl;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
 import com.wildeastcoders.pantroid.model.database.ValidationResult;
@@ -49,6 +50,7 @@ import static org.mockito.Mockito.when;
 public class EditItemFragmentPresenterImplTest {
 
     public static final String ITEM_NAME = "ITEM_NAME";
+    public static final String ITEM_NAME_2 = "ITEM_NAME_2";
     public static final int QUANTITY = 1;
     public static final Date ADDING_DATE = new Date();
     public static final Date BEST_BEFORE_DATE = new Date();
@@ -441,6 +443,94 @@ public class EditItemFragmentPresenterImplTest {
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
         verify(view, never()).displayDataErrorDialog();
     }
+
+    @Test
+    public void onSaveItemClickedForUpdateViewBounded () throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        final PantryItem item = new PantryItemImpl();
+        item.setId(ITEM_ID);
+        item.setName(ITEM_NAME_2);
+        item.setType(pantryItemType);
+        item.setAddingDate(ADDING_DATE);
+        item.setBestBeforeDate(BEST_BEFORE_DATE);
+        presenter.setPantryItem(item);
+        presenter.bindView(view);
+
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
+        waitForAsyncOperationCompleted();
+
+        verify(savePantryItemUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view).displayPantryItemSavedDialog(pantryItem);
+        verify(view, never()).displayNothingChangedDialog();
+        verify(view, never()).displayDataErrorDialog();
+    }
+
+    @Test
+    public void onSaveItemClickedForUpdateNothingChangedViewBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        final PantryItem item = new PantryItemImpl();
+        item.setId(ITEM_ID);
+        item.setName(ITEM_NAME);
+        item.setType(pantryItemType);
+        item.setAddingDate(ADDING_DATE);
+        item.setQuantity(QUANTITY);
+        item.setBestBeforeDate(BEST_BEFORE_DATE);
+        presenter.setPantryItem(item);
+        presenter.bindView(view);
+
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
+        waitForAsyncOperationCompleted();
+
+        verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view, never()).displayPantryItemSavedDialog(pantryItem);
+        verify(view).displayNothingChangedDialog();
+        verify(view, never()).displayDataErrorDialog();
+    }
+    @Test
+    public void onSaveItemClickedForUpdateViewNotBounded () throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        final PantryItem item = new PantryItemImpl();
+        item.setId(ITEM_ID);
+        item.setName(ITEM_NAME_2);
+        item.setType(pantryItemType);
+        item.setAddingDate(ADDING_DATE);
+        item.setBestBeforeDate(BEST_BEFORE_DATE);
+        presenter.setPantryItem(item);
+
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
+        waitForAsyncOperationCompleted();
+
+        verify(savePantryItemUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view, never()).displayPantryItemSavedDialog(pantryItem);
+        verify(view, never()).displayNothingChangedDialog();
+        verify(view, never()).displayDataErrorDialog();
+    }
+
+    @Test
+    public void onSaveItemClickedForUpdateNothingChangedViewNotBounded() throws Exception {
+        setupPresenter(savePantryItemUsecase);
+        final PantryItem item = new PantryItemImpl();
+        item.setId(ITEM_ID);
+        item.setName(ITEM_NAME);
+        item.setType(pantryItemType);
+        item.setAddingDate(ADDING_DATE);
+        item.setQuantity(QUANTITY);
+        item.setBestBeforeDate(BEST_BEFORE_DATE);
+        presenter.setPantryItem(item);
+
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
+        waitForAsyncOperationCompleted();
+
+        verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view, never()).displayPantryItemSavedDialog(pantryItem);
+        verify(view, never()).displayNothingChangedDialog();
+        verify(view, never()).displayDataErrorDialog();
+    }
+
 
     @Test
     public void onStart() throws Exception {

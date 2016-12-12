@@ -77,6 +77,13 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     public void onSaveItemClicked(@NonNull String name, @NonNull PantryItemType type, int quantity,
                                   @NonNull Date addingDate, @NonNull Date bestBeforeDate) {
 
+        if (!verifyItemHasChanged(name, type, quantity, addingDate, bestBeforeDate)) {
+            if (isViewBounded()) {
+                getView().displayNothingChangedDialog();
+            }
+            return;
+        }
+
         final Map<PantryItemFieldType,ValidationResult> validationResults = new HashMap<>(VALIDATION_RESULTS_CAPACITY);
 
         handleValidationResult(NAME, pantryItemValidator.validateName(name), validationResults);
@@ -110,6 +117,18 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
                         }
                     }
                 });
+    }
+
+    private boolean verifyItemHasChanged(final String name, final PantryItemType type, final int quantity, final Date addingDate, final Date bestBeforeDate) {
+        if (itemCache == null) {
+            return true;
+        }
+
+        return !itemCache.getName().equals(name) ||
+                !itemCache.getType().equals(type) ||
+                (itemCache.getQuantity() != quantity) ||
+                !itemCache.getAddingDate().equals(addingDate) ||
+                !itemCache.getBestBeforeDate().equals(bestBeforeDate);
     }
 
     @Override
@@ -215,6 +234,11 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
         return itemCache;
     }
 
+    @Override
+    public void setPantryItem(final PantryItem pantryItem) {
+        itemCache = pantryItem;
+    }
+
     private Observable<List<PantryItemType>> createRetrievePantryItemTypesObservable() {
         return retrievePantryItemTypesUsecase.execute()
                 .subscribeOn(Schedulers.io())
@@ -260,6 +284,13 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     @Override
     public void onSaveInstanceState(Bundle bundle) {
 
+    }
+
+    @Override
+    public void handleSaveItemConfirmationDialogButtonClicked() {
+        if (isViewBounded()) {
+            getView().finish();
+        }
     }
 
     private class RetrieveResult {
