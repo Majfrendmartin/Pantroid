@@ -27,6 +27,10 @@ public abstract class TestUtils {
         RxAndroidPlugins.getInstance().reset();
     }
 
+    /**
+     * This is just a workaround for test of Subscribers
+     * @throws InterruptedException
+     */
     public static final void waitForAsyncOperationCompleted() throws InterruptedException {
         Thread.sleep(50);
     }

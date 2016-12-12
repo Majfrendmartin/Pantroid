@@ -97,7 +97,9 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(throwable -> {
-                    //TODO: handle save/update error
+                    if (isViewBounded()) {
+                        getView().displayDataErrorDialog();
+                    }
                     return null;
                 })
                 .subscribe(pantryItem -> {

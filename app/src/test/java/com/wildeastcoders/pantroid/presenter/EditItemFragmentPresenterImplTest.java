@@ -394,8 +394,6 @@ public class EditItemFragmentPresenterImplTest {
         verify(view, never()).displayValidationResults(resultMap);
     }
 
-
-
     @Test
     public void verifyAllFieldValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
@@ -416,6 +414,32 @@ public class EditItemFragmentPresenterImplTest {
         resultMap.put(PantryItem.PantryItemFieldType.ADDING_DATE, INVALID);
         resultMap.put(PantryItem.PantryItemFieldType.BEST_BEFORE_DATE, INVALID);
         verify(view).displayValidationResults(resultMap);
+    }
+
+    @Test
+    public void onSaveItemClickedExceptionOccursViewBounded() throws Exception {
+        setupPresenter(savePantryItemFailingUsecase);
+        presenter.bindView(view);
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
+        waitForAsyncOperationCompleted();
+
+        verify(savePantryItemFailingUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view, never()).displayPantryItemSavedDialog(pantryItem);
+        verify(view).displayDataErrorDialog();
+    }
+
+
+    @Test
+    public void onSaveItemClickedExceptionOccursViewNotBounded() throws Exception {
+        setupPresenter(savePantryItemFailingUsecase);
+        presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+
+        waitForAsyncOperationCompleted();
+
+        verify(savePantryItemFailingUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
+        verify(view, never()).displayPantryItemSavedDialog(pantryItem);
+        verify(view, never()).displayDataErrorDialog();
     }
 
     @Test
