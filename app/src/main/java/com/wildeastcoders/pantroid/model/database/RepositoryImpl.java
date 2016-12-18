@@ -38,26 +38,26 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public Observable<PantryItemType> addType(final PantryItemType item) {
-        return null;
+        return daoSession.getPantryItemTypeDao().rx().insert(item);
     }
 
     @Override
-    public Observable<Boolean> updateItem(final PantryItem item) {
-        return null;
+    public Observable<PantryItem> updateItem(final PantryItem item) {
+        return daoSession.getPantryItemDao().rx().update(item);
     }
 
     @Override
-    public Observable<Boolean> updateType(final PantryItemType item) {
-        return null;
+    public Observable<PantryItemType> updateType(final PantryItemType item) {
+        return daoSession.getPantryItemTypeDao().rx().update(item);
     }
 
     @Override
-    public Observable<Boolean> removeItem(final PantryItem item) {
-        return null;
+    public Observable<Void> removeItem(final PantryItem item) {
+        return daoSession.getPantryItemDao().rx().delete(item);
     }
 
     @Override
-    public Observable<Boolean> removeType(final PantryItemType item) {
-        return null;
+    public Observable<Void> removeType(final PantryItemType item) {
+        return daoSession.getPantryItemTypeDao().rx().delete(item);
     }
 }

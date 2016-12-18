@@ -21,11 +21,11 @@ public interface Repository {
 
     Observable<PantryItemType> addType(PantryItemType item);
 
-    Observable<Boolean> updateItem(PantryItem item);
+    Observable<PantryItem> updateItem(PantryItem item);
 
-    Observable<Boolean> updateType(PantryItemType item);
+    Observable<PantryItemType> updateType(PantryItemType item);
 
-    Observable<Boolean> removeItem(PantryItem item);
+    Observable<Void> removeItem(PantryItem item);
 
-    Observable<Boolean> removeType(PantryItemType item);
+    Observable<Void> removeType(PantryItemType item);
 }
