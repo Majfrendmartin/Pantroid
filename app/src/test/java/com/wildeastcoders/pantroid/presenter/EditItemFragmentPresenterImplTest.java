@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.wildeastcoders.pantroid.BuildConfig;
 import com.wildeastcoders.pantroid.model.PantryItem;
-import com.wildeastcoders.pantroid.model.PantryItemImpl;
+import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
 import com.wildeastcoders.pantroid.model.database.ValidationResult;
@@ -54,7 +54,7 @@ public class EditItemFragmentPresenterImplTest {
     public static final int QUANTITY = 1;
     public static final Date ADDING_DATE = new Date();
     public static final Date BEST_BEFORE_DATE = new Date();
-    public static final int ITEM_ID = 1;
+    public static final Long ITEM_ID = 1L;
     public static final String ITEM_RETRIEVING_EXCEPTION = "ITEM RETRIEVING EXCEPTION";
     public static final String ITEM_TYPES_RETRIEVING_EXCEPTION = "ITEM TYPES RETRIEVING EXCEPTION";
     public static final String ITEM_SAVING_EXCEPTION = "ITEM TYPES RETRIEVING EXCEPTION";
@@ -101,7 +101,7 @@ public class EditItemFragmentPresenterImplTest {
         MockitoAnnotations.initMocks(this);
         setupRxAndroid();
 
-        when(bundle.getInt(KEY_EDIT_ITEM_ID)).thenReturn(ITEM_ID);
+        when(bundle.getLong(KEY_EDIT_ITEM_ID)).thenReturn(ITEM_ID);
         when(bundle.containsKey(KEY_EDIT_ITEM_ID)).thenReturn(true);
 
         pantryItemTypes = new ArrayList<>(1);
@@ -329,7 +329,7 @@ public class EditItemFragmentPresenterImplTest {
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
     }
 
-    private void verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType pantryItemFieldType) throws InterruptedException {
+    private void verifyFieldValidationFailedViewBounded(PantryItemFieldType pantryItemFieldType) throws InterruptedException {
         presenter.bindView(view);
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
 
@@ -339,7 +339,7 @@ public class EditItemFragmentPresenterImplTest {
 
         verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
-        final Map<PantryItem.PantryItemFieldType, ValidationResult> resultMap = new HashMap<>(1);
+        final Map<PantryItemFieldType, ValidationResult> resultMap = new HashMap<>(1);
         resultMap.put(pantryItemFieldType, INVALID);
         verify(view).displayValidationResults(resultMap);
     }
@@ -348,35 +348,35 @@ public class EditItemFragmentPresenterImplTest {
     public void onSaveItemClickedNameValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
         when(pantryItemValidator.validateName(ITEM_NAME)).thenReturn(INVALID);
-        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.NAME);
+        verifyFieldValidationFailedViewBounded(PantryItemFieldType.NAME);
     }
 
     @Test
     public void onSaveItemClickedTypeValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
         when(pantryItemValidator.validateType(pantryItemType)).thenReturn(INVALID);
-        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.TYPE);
+        verifyFieldValidationFailedViewBounded(PantryItemFieldType.TYPE);
     }
 
     @Test
     public void onSaveItemClickedQuantityValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
         when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(INVALID);
-        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.QUANTITY);
+        verifyFieldValidationFailedViewBounded(PantryItemFieldType.QUANTITY);
     }
 
     @Test
     public void onSaveItemClickedAddingDateValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
         when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(INVALID);
-        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.ADDING_DATE);
+        verifyFieldValidationFailedViewBounded(PantryItemFieldType.ADDING_DATE);
     }
 
     @Test
     public void onSaveItemClickedBestBeforeDateValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
         when(pantryItemValidator.validateBestBeforeDate(BEST_BEFORE_DATE)).thenReturn(INVALID);
-        verifyFieldValidationFailedViewBounded(PantryItem.PantryItemFieldType.BEST_BEFORE_DATE);
+        verifyFieldValidationFailedViewBounded(PantryItemFieldType.BEST_BEFORE_DATE);
     }
 
     @Test
@@ -391,12 +391,12 @@ public class EditItemFragmentPresenterImplTest {
 
         verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
-        final Map<PantryItem.PantryItemFieldType, ValidationResult> resultMap = new HashMap<>(5);
-        resultMap.put(PantryItem.PantryItemFieldType.NAME, INVALID);
-        resultMap.put(PantryItem.PantryItemFieldType.TYPE, INVALID);
-        resultMap.put(PantryItem.PantryItemFieldType.QUANTITY, INVALID);
-        resultMap.put(PantryItem.PantryItemFieldType.ADDING_DATE, INVALID);
-        resultMap.put(PantryItem.PantryItemFieldType.BEST_BEFORE_DATE, INVALID);
+        final Map<PantryItemFieldType, ValidationResult> resultMap = new HashMap<>(5);
+        resultMap.put(PantryItemFieldType.NAME, INVALID);
+        resultMap.put(PantryItemFieldType.TYPE, INVALID);
+        resultMap.put(PantryItemFieldType.QUANTITY, INVALID);
+        resultMap.put(PantryItemFieldType.ADDING_DATE, INVALID);
+        resultMap.put(PantryItemFieldType.BEST_BEFORE_DATE, INVALID);
         verify(view, never()).displayValidationResults(resultMap);
     }
 
@@ -413,12 +413,12 @@ public class EditItemFragmentPresenterImplTest {
 
         verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
-        final Map<PantryItem.PantryItemFieldType, ValidationResult> resultMap = new HashMap<>(5);
-        resultMap.put(PantryItem.PantryItemFieldType.NAME, INVALID);
-        resultMap.put(PantryItem.PantryItemFieldType.TYPE, INVALID);
-        resultMap.put(PantryItem.PantryItemFieldType.QUANTITY, INVALID);
-        resultMap.put(PantryItem.PantryItemFieldType.ADDING_DATE, INVALID);
-        resultMap.put(PantryItem.PantryItemFieldType.BEST_BEFORE_DATE, INVALID);
+        final Map<PantryItemFieldType, ValidationResult> resultMap = new HashMap<>(5);
+        resultMap.put(PantryItemFieldType.NAME, INVALID);
+        resultMap.put(PantryItemFieldType.TYPE, INVALID);
+        resultMap.put(PantryItemFieldType.QUANTITY, INVALID);
+        resultMap.put(PantryItemFieldType.ADDING_DATE, INVALID);
+        resultMap.put(PantryItemFieldType.BEST_BEFORE_DATE, INVALID);
         verify(view).displayValidationResults(resultMap);
     }
 
@@ -450,7 +450,7 @@ public class EditItemFragmentPresenterImplTest {
     @Test
     public void onSaveItemClickedForUpdateViewBounded () throws Exception {
         setupPresenter(savePantryItemUsecase);
-        final PantryItem item = new PantryItemImpl();
+        final PantryItem item = new PantryItem();
         item.setId(ITEM_ID);
         item.setName(ITEM_NAME_2);
         item.setType(pantryItemType);
@@ -472,7 +472,7 @@ public class EditItemFragmentPresenterImplTest {
     @Test
     public void onSaveItemClickedForUpdateNothingChangedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
-        final PantryItem item = new PantryItemImpl();
+        final PantryItem item = new PantryItem();
         item.setId(ITEM_ID);
         item.setName(ITEM_NAME);
         item.setType(pantryItemType);
@@ -495,7 +495,7 @@ public class EditItemFragmentPresenterImplTest {
     @Test
     public void onSaveItemClickedForUpdateViewNotBounded () throws Exception {
         setupPresenter(savePantryItemUsecase);
-        final PantryItem item = new PantryItemImpl();
+        final PantryItem item = new PantryItem();
         item.setId(ITEM_ID);
         item.setName(ITEM_NAME_2);
         item.setType(pantryItemType);
@@ -516,7 +516,7 @@ public class EditItemFragmentPresenterImplTest {
     @Test
     public void onSaveItemClickedForUpdateNothingChangedViewNotBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
-        final PantryItem item = new PantryItemImpl();
+        final PantryItem item = new PantryItem();
         item.setId(ITEM_ID);
         item.setName(ITEM_NAME);
         item.setType(pantryItemType);

@@ -11,7 +11,7 @@ import rx.Observable;
  * Created by Majfrendmartin on 2016-11-09.
  */
 
-public interface Database {
+public interface Repository {
     //TODO: add sorting and filtering
     Observable<List<PantryItem>> getItems();
 

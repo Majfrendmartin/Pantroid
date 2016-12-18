@@ -1,7 +1,7 @@
 package com.wildeastcoders.pantroid.view;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
-import com.wildeastcoders.pantroid.model.PantryItem.PantryItemFieldType;
+import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.database.ValidationResult;
 

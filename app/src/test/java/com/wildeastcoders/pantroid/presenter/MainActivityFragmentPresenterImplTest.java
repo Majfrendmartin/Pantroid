@@ -2,7 +2,6 @@ package com.wildeastcoders.pantroid.presenter;
 
 import com.wildeastcoders.pantroid.BuildConfig;
 import com.wildeastcoders.pantroid.model.PantryItem;
-import com.wildeastcoders.pantroid.model.PantryItemImpl;
 import com.wildeastcoders.pantroid.model.usecase.RemoveItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemsUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase;
@@ -81,7 +80,7 @@ public class MainActivityFragmentPresenterImplTest {
         pantryItems = new ArrayList<>(CAPACITY);
 
         for (int i = 0; i < CAPACITY; i++) {
-            pantryItems.add(new PantryItemImpl());
+            pantryItems.add(new PantryItem());
         }
 
         when(retrievePantryItemsUsecase.execute()).thenReturn(Observable.just(pantryItems));

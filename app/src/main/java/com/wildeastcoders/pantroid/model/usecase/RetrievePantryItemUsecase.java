@@ -7,5 +7,5 @@ import com.wildeastcoders.pantroid.model.PantryItem;
  */
 
 public interface RetrievePantryItemUsecase extends Usecase<PantryItem> {
-    void init(int itemId);
+    void init(Long itemId);
 }

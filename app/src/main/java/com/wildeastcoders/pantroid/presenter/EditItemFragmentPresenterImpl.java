@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
-import com.wildeastcoders.pantroid.model.PantryItem.PantryItemFieldType;
+import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
 import com.wildeastcoders.pantroid.model.database.ValidationResult;
@@ -25,11 +25,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.wildeastcoders.pantroid.activities.IntentConstants.KEY_EDIT_ITEM_ID;
-import static com.wildeastcoders.pantroid.model.PantryItem.PantryItemFieldType.ADDING_DATE;
-import static com.wildeastcoders.pantroid.model.PantryItem.PantryItemFieldType.BEST_BEFORE_DATE;
-import static com.wildeastcoders.pantroid.model.PantryItem.PantryItemFieldType.NAME;
-import static com.wildeastcoders.pantroid.model.PantryItem.PantryItemFieldType.QUANTITY;
-import static com.wildeastcoders.pantroid.model.PantryItem.PantryItemFieldType.TYPE;
+import static com.wildeastcoders.pantroid.model.PantryItemFieldType.ADDING_DATE;
+import static com.wildeastcoders.pantroid.model.PantryItemFieldType.BEST_BEFORE_DATE;
+import static com.wildeastcoders.pantroid.model.PantryItemFieldType.NAME;
+import static com.wildeastcoders.pantroid.model.PantryItemFieldType.QUANTITY;
+import static com.wildeastcoders.pantroid.model.PantryItemFieldType.TYPE;
 import static com.wildeastcoders.pantroid.model.database.ValidationResult.VALID;
 
 /**
@@ -135,7 +135,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     public void onCreate(@Nullable final Bundle bundle) {
         super.onCreate(bundle);
         if (bundle != null && bundle.containsKey(KEY_EDIT_ITEM_ID)) {
-            final int itemId = bundle.getInt(KEY_EDIT_ITEM_ID);
+            final Long itemId = bundle.getLong(KEY_EDIT_ITEM_ID);
             retrieveItemDetails(itemId);
         } else {
             populatePantryItemTypes();
@@ -143,7 +143,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
 
     }
 
-    private void retrieveItemDetails(final int itemId) {
+    private void retrieveItemDetails(final Long itemId) {
         final Observable<List<PantryItemType>> retrievePantryItemTypesObservable = createRetrievePantryItemTypesObservable();
         final Observable<PantryItem> retrievePantryItemObservable = createRetrievePantryItemObservable(itemId);
         retrieveItemDetailsSubscription = Observable.zip(retrievePantryItemTypesObservable,
@@ -205,7 +205,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
         }
     }
 
-    private Observable<PantryItem> createRetrievePantryItemObservable(final int itemId) {
+    private Observable<PantryItem> createRetrievePantryItemObservable(final Long itemId) {
         retrievePantryItemUsecase.init(itemId);
         return retrievePantryItemUsecase.execute()
                 .subscribeOn(Schedulers.io())
