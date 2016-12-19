@@ -60,4 +60,9 @@ public class RepositoryImpl implements Repository {
     public Observable<Void> removeType(final PantryItemType item) {
         return daoSession.getPantryItemTypeDao().rx().delete(item);
     }
+
+    @Override
+    public Observable<PantryItemType> getTypeById(Long id) {
+        return daoSession.getPantryItemTypeDao().rx().load(id);
+    }
 }

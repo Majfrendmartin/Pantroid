@@ -3,7 +3,7 @@ package com.wildeastcoders.pantroid.view;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
-import com.wildeastcoders.pantroid.model.database.ValidationResult;
+import com.wildeastcoders.pantroid.model.ValidationResult;
 
 import java.util.Date;
 import java.util.List;

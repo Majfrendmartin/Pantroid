@@ -2,7 +2,7 @@ package com.wildeastcoders.pantroid.view;
 
 import android.support.annotation.NonNull;
 
-import com.wildeastcoders.pantroid.model.database.ValidationResult;
+import com.wildeastcoders.pantroid.model.ValidationResult;
 
 
 /**

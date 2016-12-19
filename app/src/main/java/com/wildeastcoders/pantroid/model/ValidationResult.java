@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid.model.database;
+package com.wildeastcoders.pantroid.model;
 
 /**
  * Created by Majfrendmartin on 2016-11-09.
@@ -6,6 +6,5 @@ package com.wildeastcoders.pantroid.model.database;
 
 public enum ValidationResult {
     VALID,
-    INVALID,
-    ALREADY_EXISTS
+    INVALID
 }

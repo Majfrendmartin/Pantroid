@@ -8,7 +8,7 @@ import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemValidator;
-import com.wildeastcoders.pantroid.model.database.ValidationResult;
+import com.wildeastcoders.pantroid.model.ValidationResult;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemUsecase;
@@ -30,7 +30,7 @@ import static com.wildeastcoders.pantroid.model.PantryItemFieldType.BEST_BEFORE_
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.NAME;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.QUANTITY;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.TYPE;
-import static com.wildeastcoders.pantroid.model.database.ValidationResult.VALID;
+import static com.wildeastcoders.pantroid.model.ValidationResult.VALID;
 
 /**
  * Created by Majfrendmartin on 15.11.2016.

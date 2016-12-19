@@ -1,7 +1,5 @@
 package com.wildeastcoders.pantroid.model;
 
-import com.wildeastcoders.pantroid.model.database.ValidationResult;
-
 import java.util.Date;
 
 /**

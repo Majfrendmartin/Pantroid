@@ -28,4 +28,6 @@ public interface Repository {
     Observable<Void> removeItem(PantryItem item);
 
     Observable<Void> removeType(PantryItemType item);
+
+    Observable<PantryItemType> getTypeById(Long id);
 }
