@@ -11,5 +11,5 @@ public interface PantryItemValidator {
     ValidationResult validateType(PantryItemType type);
     ValidationResult validateQuantity(int quantity);
     ValidationResult validateAddingDate(Date addingDate);
-    ValidationResult validateBestBeforeDate(Date addingDate);
+    ValidationResult validateBestBeforeDate(Date addingDate, Date bestBeforeDate);
 }

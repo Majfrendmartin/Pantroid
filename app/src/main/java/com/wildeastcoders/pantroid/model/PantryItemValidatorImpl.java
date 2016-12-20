@@ -1,9 +1,5 @@
 package com.wildeastcoders.pantroid.model;
 
-import android.text.TextUtils;
-
-import com.wildeastcoders.pantroid.model.database.Repository;
-
 import java.util.Date;
 
 import static android.text.TextUtils.isEmpty;
@@ -14,35 +10,31 @@ import static com.wildeastcoders.pantroid.model.ValidationResult.*;
  */
 public class PantryItemValidatorImpl implements PantryItemValidator {
     public static final int MAX_NAME_LENGTH = 40;
-    private final Repository repository;
-
-    public PantryItemValidatorImpl(Repository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public ValidationResult validateName(String name) {
-        return getValidationResult(name != null && !isEmpty(name.trim()) && name.length() <= MAX_NAME_LENGTH);
+        return getValidationResult((name != null) && !isEmpty(name.trim()) && (name.length() <= MAX_NAME_LENGTH));
     }
 
     @Override
     public ValidationResult validateType(PantryItemType type) {
-        return null;
+        return getValidationResult((type != null) && (type.getId() > 0) && !isEmpty(type.getName().trim()));
     }
 
     @Override
     public ValidationResult validateQuantity(int quantity) {
-        return null;
+        return getValidationResult(quantity > 0);
     }
 
     @Override
     public ValidationResult validateAddingDate(Date addingDate) {
-        return null;
+        return getValidationResult(addingDate != null);
     }
 
     @Override
-    public ValidationResult validateBestBeforeDate(Date addingDate) {
-        return null;
+    public ValidationResult validateBestBeforeDate(Date addingDate, Date bestBeforeDate) {
+        return addingDate == null || bestBeforeDate == null ? INVALID :
+                getValidationResult(bestBeforeDate.after(addingDate));
     }
 
     private ValidationResult getValidationResult(boolean isValid) {

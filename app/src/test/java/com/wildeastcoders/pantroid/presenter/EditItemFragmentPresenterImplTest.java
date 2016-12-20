@@ -147,7 +147,7 @@ public class EditItemFragmentPresenterImplTest {
         when(pantryItemValidator.validateType(pantryItemType)).thenReturn(VALID);
         when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(VALID);
         when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(VALID);
-        when(pantryItemValidator.validateBestBeforeDate(BEST_BEFORE_DATE)).thenReturn(VALID);
+        when(pantryItemValidator.validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE)).thenReturn(VALID);
     }
 
 
@@ -156,7 +156,7 @@ public class EditItemFragmentPresenterImplTest {
         when(pantryItemValidator.validateType(pantryItemType)).thenReturn(INVALID);
         when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(INVALID);
         when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(INVALID);
-        when(pantryItemValidator.validateBestBeforeDate(BEST_BEFORE_DATE)).thenReturn(INVALID);
+        when(pantryItemValidator.validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE)).thenReturn(INVALID);
     }
 
     @After
@@ -313,7 +313,7 @@ public class EditItemFragmentPresenterImplTest {
         verify(pantryItemValidator).validateType(pantryItemType);
         verify(pantryItemValidator).validateQuantity(QUANTITY);
         verify(pantryItemValidator).validateAddingDate(ADDING_DATE);
-        verify(pantryItemValidator).validateBestBeforeDate(BEST_BEFORE_DATE);
+        verify(pantryItemValidator).validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE);
     }
 
     @Test
@@ -375,7 +375,7 @@ public class EditItemFragmentPresenterImplTest {
     @Test
     public void onSaveItemClickedBestBeforeDateValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
-        when(pantryItemValidator.validateBestBeforeDate(BEST_BEFORE_DATE)).thenReturn(INVALID);
+        when(pantryItemValidator.validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE)).thenReturn(INVALID);
         verifyFieldValidationFailedViewBounded(PantryItemFieldType.BEST_BEFORE_DATE);
     }
 

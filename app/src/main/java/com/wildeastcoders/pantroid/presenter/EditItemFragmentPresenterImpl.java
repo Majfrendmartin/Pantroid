@@ -90,7 +90,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
         handleValidationResult(TYPE, pantryItemValidator.validateType(type), validationResults);
         handleValidationResult(QUANTITY, pantryItemValidator.validateQuantity(quantity), validationResults);
         handleValidationResult(ADDING_DATE, pantryItemValidator.validateAddingDate(addingDate), validationResults);
-        handleValidationResult(BEST_BEFORE_DATE, pantryItemValidator.validateBestBeforeDate(bestBeforeDate), validationResults);
+        handleValidationResult(BEST_BEFORE_DATE, pantryItemValidator.validateBestBeforeDate(addingDate, bestBeforeDate), validationResults);
 
         if (!validationResults.isEmpty()) {
             if (isViewBounded()) {
