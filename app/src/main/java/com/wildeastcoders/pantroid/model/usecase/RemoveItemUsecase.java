@@ -8,4 +8,6 @@ import com.wildeastcoders.pantroid.model.PantryItem;
 
 public interface RemoveItemUsecase extends Usecase<PantryItem> {
     void init(PantryItem pantryItem);
+
+    PantryItem getPantryItem();
 }
