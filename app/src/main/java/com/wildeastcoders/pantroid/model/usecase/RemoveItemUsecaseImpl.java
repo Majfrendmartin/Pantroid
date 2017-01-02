@@ -6,6 +6,7 @@ import com.wildeastcoders.pantroid.model.database.Repository;
 import rx.Observable;
 
 public class RemoveItemUsecaseImpl implements RemoveItemUsecase {
+    public static final String MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT = "Missing pantry item object";
     private final Repository repository;
     private PantryItem pantryItem;
 
@@ -25,6 +26,10 @@ public class RemoveItemUsecaseImpl implements RemoveItemUsecase {
 
     @Override
     public Observable<PantryItem> execute() {
-        return null;
+        if (pantryItem == null) {
+            return Observable.error(new NullPointerException(MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT));
+        }
+
+        return repository.removeItem(pantryItem).map(aVoid -> pantryItem);
     }
 }

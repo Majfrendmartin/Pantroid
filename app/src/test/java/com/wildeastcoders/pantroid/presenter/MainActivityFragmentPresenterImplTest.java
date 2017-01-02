@@ -94,7 +94,6 @@ public class MainActivityFragmentPresenterImplTest {
         when(removeItemFailingUsecase.execute())
                 .thenReturn(Observable.error(REMOVE_ITEM_EXCEPTION));
 
-        setupRxAndroid();
     }
 
     private void setupPresenter(RetrievePantryItemsUsecase retrievePantryItemsUsecase,

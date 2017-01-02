@@ -8,6 +8,7 @@ import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemTypeDao;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.query.Query;
 import org.junit.After;
 import org.junit.Before;
@@ -271,6 +272,26 @@ public class RepositoryImplTest {
     }
 
     @Test
+    public void removeItemNotExisting() throws Exception {
+        final long typeId = daoSession.getPantryItemTypeDao().insert(PANTRY_ITEM_TYPE);
+        final PantryItem pantryItem = new PantryItem(null, "Name", typeId, new Date(), new Date(), 1);
+        final PantryItemDao pantryItemDao = daoSession.getPantryItemDao();
+
+        final Query<PantryItem> query = pantryItemDao.queryBuilder()
+                .where(PantryItemDao.Properties.Id.eq(1)).build();
+        final List<PantryItem> result = query.list();
+
+        assertEquals(0, result.size());
+
+        final TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
+        repository.removeItem(pantryItem).subscribe(testSubscriber);
+
+        waitForAsyncOperationCompleted();
+
+        testSubscriber.assertError(DaoException.class);
+    }
+
+    @Test
     public void removeType() throws Exception {
         final PantryItemType pantryItemType = new PantryItemType(null, "Name1");
         final PantryItemTypeDao pantryItemDao = daoSession.getPantryItemTypeDao();
@@ -291,6 +312,25 @@ public class RepositoryImplTest {
         testSubscriber.assertNoErrors();
 
         assertEquals(0, query.list().size());
+    }
+
+    @Test
+    public void removeTypeNotExisting() throws Exception {
+        final PantryItemType pantryItemType = new PantryItemType(null, "Name1");
+        final PantryItemTypeDao pantryItemDao = daoSession.getPantryItemTypeDao();
+
+        final Query<PantryItemType> query = pantryItemDao.queryBuilder()
+                .where(PantryItemTypeDao.Properties.Id.eq(1)).build();
+        final List<PantryItemType> result = query.list();
+
+        assertEquals(0, result.size());
+
+        final TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
+        repository.removeType(pantryItemType).subscribe(testSubscriber);
+
+        waitForAsyncOperationCompleted();
+
+        testSubscriber.assertError(DaoException.class);
     }
 
     @Test
