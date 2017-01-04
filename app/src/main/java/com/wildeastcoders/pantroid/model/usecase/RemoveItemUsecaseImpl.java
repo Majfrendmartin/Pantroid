@@ -5,8 +5,9 @@ import com.wildeastcoders.pantroid.model.database.Repository;
 
 import rx.Observable;
 
+import static com.wildeastcoders.pantroid.model.Constants.MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT;
+
 public class RemoveItemUsecaseImpl implements RemoveItemUsecase {
-    public static final String MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT = "Missing pantry item object";
     private final Repository repository;
     private PantryItem pantryItem;
 

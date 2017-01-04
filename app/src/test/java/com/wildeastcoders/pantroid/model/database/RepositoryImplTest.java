@@ -334,7 +334,7 @@ public class RepositoryImplTest {
 
     @Test
     public void getTypeById() throws Exception {
-        long id = daoSession.getPantryItemTypeDao().insert(PANTRY_ITEM_TYPE);
+        final long id = daoSession.getPantryItemTypeDao().insert(PANTRY_ITEM_TYPE);
 
         daoSession.clear();
 
@@ -349,5 +349,26 @@ public class RepositoryImplTest {
 
         assertEquals(1, result.size());
         assertEquals(PANTRY_ITEM_TYPE, result.get(0));
+    }
+
+    @Test
+    public void getItemById() throws Exception {
+        final long typeId = daoSession.getPantryItemTypeDao().insert(PANTRY_ITEM_TYPE);
+        final PantryItem pantryItem = new PantryItem(null, "Name", typeId, new Date(), new Date(), 1);
+        final PantryItemDao pantryItemDao = daoSession.getPantryItemDao();
+        final long id = pantryItemDao.insert(pantryItem);
+        daoSession.clear();
+
+        final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
+        repository.getItemById(id).subscribe(testSubscriber);
+
+        waitForAsyncOperationCompleted();
+
+        testSubscriber.assertNoErrors();
+
+        final List<PantryItem> result = testSubscriber.getOnNextEvents();
+
+        assertEquals(1, result.size());
+        assertEquals(pantryItem, result.get(0));
     }
 }

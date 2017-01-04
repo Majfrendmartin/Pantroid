@@ -62,6 +62,11 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
+    public Observable<PantryItem> getItemById(final Long id) {
+        return daoSession.getPantryItemDao().rx().load(id);
+    }
+
+    @Override
     public Observable<PantryItemType> getTypeById(Long id) {
         return daoSession.getPantryItemTypeDao().rx().load(id);
     }

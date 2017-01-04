@@ -28,10 +28,11 @@ public abstract class TestUtils {
     }
 
     /**
-     * This is just a workaround for test of Subscribers
+     * This is just a workaround for test of Subscribers.
+     * Needs to be fixed.
      * @throws InterruptedException
      */
     public static final void waitForAsyncOperationCompleted() throws InterruptedException {
-        Thread.sleep(50);
+        Thread.sleep(500);
     }
 }
