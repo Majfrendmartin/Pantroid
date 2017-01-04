@@ -20,7 +20,7 @@ import java.util.List;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
-import static com.wildeastcoders.pantroid.model.usecase.RemoveItemUsecaseImpl.MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT;
+import static com.wildeastcoders.pantroid.model.Constants.MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT;
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.waitForAsyncOperationCompleted;
@@ -33,6 +33,7 @@ import static org.mockito.Mockito.when;
 public class RemoveItemUsecaseImplTest {
 
     public static final DaoException DAO_EXCEPTION = new DaoException("Test Dao Exception");
+
     @Mock
     Repository repository;
 
