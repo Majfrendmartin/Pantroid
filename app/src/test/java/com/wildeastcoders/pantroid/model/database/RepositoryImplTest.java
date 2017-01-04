@@ -42,7 +42,6 @@ public class RepositoryImplTest {
 
     private DaoSession daoSession;
 
-
     private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(null, "PANTRY_ITEM_TYPE_0");
     private static final PantryItem PANTRY_ITEM = new PantryItem(null, "PANTRY_ITEM_0", 1L, new Date(), new Date(), 1);
 
