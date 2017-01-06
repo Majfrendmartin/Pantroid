@@ -74,8 +74,6 @@ public class RemoveItemUsecaseImplTest {
         final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
         observable.subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
-
         testSubscriber.assertNoErrors();
         final List<PantryItem> events = testSubscriber.getOnNextEvents();
         assertNotNull(events);
@@ -88,8 +86,6 @@ public class RemoveItemUsecaseImplTest {
         final Observable<PantryItem> observable = removeItemUsecase.execute();
         final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
         observable.subscribe(testSubscriber);
-
-        waitForAsyncOperationCompleted();
 
         testSubscriber.assertError(NullPointerException.class);
         assertEquals(MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT, testSubscriber.getOnErrorEvents().get(0).getMessage());
@@ -105,8 +101,6 @@ public class RemoveItemUsecaseImplTest {
         final Observable<PantryItem> observable = removeItemUsecase.execute();
         final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
         observable.subscribe(testSubscriber);
-
-        waitForAsyncOperationCompleted();
 
         testSubscriber.assertError(DaoException.class);
         final List<Throwable> errors = testSubscriber.getOnErrorEvents();

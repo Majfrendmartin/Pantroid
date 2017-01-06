@@ -27,7 +27,6 @@ import rx.observers.TestSubscriber;
 
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
-import static com.wildeastcoders.pantroid.utils.TestUtils.waitForAsyncOperationCompleted;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -68,7 +67,7 @@ public class RepositoryImplTest {
         final TestSubscriber<List<PantryItem>> testSubscriber2 = new TestSubscriber<>();
         final Subscription subscription = observable.subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
         List<List<PantryItem>> result = testSubscriber.getOnNextEvents();
@@ -81,7 +80,7 @@ public class RepositoryImplTest {
 
         observable.subscribe(testSubscriber2);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber2.awaitTerminalEvent();
 
         testSubscriber2.assertNoErrors();
         result = testSubscriber2.getOnNextEvents();
@@ -96,7 +95,7 @@ public class RepositoryImplTest {
         final TestSubscriber<List<PantryItemType>> testSubscriber2 = new TestSubscriber<>();
         final Subscription subscription = observable.subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
         List<List<PantryItemType>> result = testSubscriber.getOnNextEvents();
@@ -108,7 +107,7 @@ public class RepositoryImplTest {
 
         observable.subscribe(testSubscriber2);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber2.awaitTerminalEvent();
 
         testSubscriber2.assertNoErrors();
         result = testSubscriber2.getOnNextEvents();
@@ -125,7 +124,7 @@ public class RepositoryImplTest {
         final Observable<PantryItem> observable = repository.addItem(pantryItem);
         observable.subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
         final PantryItem result = testSubscriber.getOnNextEvents().get(0);
@@ -142,7 +141,7 @@ public class RepositoryImplTest {
         final TestSubscriber<List<PantryItem>> testSubscriber2 = new TestSubscriber<>();
         repository.getItems().subscribe(testSubscriber2);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber2.awaitTerminalEvent();
         testSubscriber2.assertNoErrors();
         final List<List<PantryItem>> getItemsResult = testSubscriber2.getOnNextEvents();
         assertEquals(1, getItemsResult.get(0).size());
@@ -158,7 +157,7 @@ public class RepositoryImplTest {
         final Observable<PantryItemType> observable = repository.addType(pantryItemType);
         observable.subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
         final PantryItemType result = testSubscriber.getOnNextEvents().get(0);
@@ -175,7 +174,7 @@ public class RepositoryImplTest {
         final TestSubscriber<List<PantryItemType>> testSubscriber2 = new TestSubscriber<>();
         repository.getTypes().subscribe(testSubscriber2);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber2.awaitTerminalEvent();
         testSubscriber2.assertNoErrors();
         final List<List<PantryItemType>> getItemsResult = testSubscriber2.getOnNextEvents();
         assertEquals(1, getItemsResult.get(0).size());
@@ -203,7 +202,7 @@ public class RepositoryImplTest {
 
         final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
         repository.updateItem(pantryItem).subscribe(testSubscriber);
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
         final List<PantryItem> result = testSubscriber.getOnNextEvents();
@@ -232,7 +231,7 @@ public class RepositoryImplTest {
 
         final TestSubscriber<PantryItemType> testSubscriber = new TestSubscriber<>();
         repository.updateType(pantryItemType).subscribe(testSubscriber);
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
         final List<PantryItemType> result = testSubscriber.getOnNextEvents();
@@ -263,7 +262,7 @@ public class RepositoryImplTest {
         final TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
         repository.removeItem(pantryItem).subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
 
@@ -285,7 +284,7 @@ public class RepositoryImplTest {
         final TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
         repository.removeItem(pantryItem).subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertError(DaoException.class);
     }
@@ -306,7 +305,7 @@ public class RepositoryImplTest {
         final TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
         repository.removeType(pantryItemType).subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
 
@@ -327,7 +326,7 @@ public class RepositoryImplTest {
         final TestSubscriber<Void> testSubscriber = new TestSubscriber<>();
         repository.removeType(pantryItemType).subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertError(DaoException.class);
     }
@@ -341,7 +340,7 @@ public class RepositoryImplTest {
         final TestSubscriber<PantryItemType> testSubscriber = new TestSubscriber<>();
         repository.getTypeById(id).subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
 
@@ -362,7 +361,7 @@ public class RepositoryImplTest {
         final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
         repository.getItemById(id).subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
+        testSubscriber.awaitTerminalEvent();
 
         testSubscriber.assertNoErrors();
 

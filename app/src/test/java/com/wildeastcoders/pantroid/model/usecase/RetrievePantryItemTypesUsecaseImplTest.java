@@ -21,7 +21,6 @@ import rx.observers.TestSubscriber;
 
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
-import static com.wildeastcoders.pantroid.utils.TestUtils.waitForAsyncOperationCompleted;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -67,8 +66,6 @@ public class RetrievePantryItemTypesUsecaseImplTest {
         final TestSubscriber<List<PantryItemType>> testSubscriber = new TestSubscriber<>();
         retrievePantryItemTypesUsecase.execute().subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
-
         testSubscriber.assertNoErrors();
         final List<List<PantryItemType>> events = testSubscriber.getOnNextEvents();
         assertEquals(1, events.size());
@@ -80,10 +77,7 @@ public class RetrievePantryItemTypesUsecaseImplTest {
         when(repository.getTypes()).thenReturn(Observable.error(THROWABLE));
         final TestSubscriber<List<PantryItemType>> testSubscriber = new TestSubscriber<>();
 
-        retrievePantryItemTypesUsecase.execute()
-                .subscribe(testSubscriber);
-
-        waitForAsyncOperationCompleted();
+        retrievePantryItemTypesUsecase.execute().subscribe(testSubscriber);
 
         testSubscriber.assertError(Throwable.class);
         final List<Throwable> throwables = testSubscriber.getOnErrorEvents();

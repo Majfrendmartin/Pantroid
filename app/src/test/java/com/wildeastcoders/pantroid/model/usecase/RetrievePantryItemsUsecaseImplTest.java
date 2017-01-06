@@ -70,8 +70,6 @@ public class RetrievePantryItemsUsecaseImplTest {
         retrievePantryItemsUsecase.execute()
                 .subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
-
         testSubscriber.assertNoErrors();
         final List<List<PantryItem>> events = testSubscriber.getOnNextEvents();
         assertEquals(1, events.size());
@@ -86,8 +84,6 @@ public class RetrievePantryItemsUsecaseImplTest {
 
         retrievePantryItemsUsecase.execute()
                 .subscribe(testSubscriber);
-
-        waitForAsyncOperationCompleted();
 
         testSubscriber.assertError(Throwable.class);
         final List<Throwable> throwables = testSubscriber.getOnErrorEvents();

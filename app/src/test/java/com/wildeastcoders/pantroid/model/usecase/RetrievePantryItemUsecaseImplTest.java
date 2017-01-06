@@ -65,8 +65,6 @@ public class RetrievePantryItemUsecaseImplTest {
         TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
         retrievePantryItemUsecase.execute().subscribe(testSubscriber);
 
-        waitForAsyncOperationCompleted();
-
         testSubscriber.assertError(NullPointerException.class);
         final List<Throwable> errors = testSubscriber.getOnErrorEvents();
         assertEquals(1, errors.size());
