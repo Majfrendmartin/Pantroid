@@ -22,7 +22,6 @@ import rx.observers.TestSubscriber;
 
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
-import static com.wildeastcoders.pantroid.utils.TestUtils.waitForAsyncOperationCompleted;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 

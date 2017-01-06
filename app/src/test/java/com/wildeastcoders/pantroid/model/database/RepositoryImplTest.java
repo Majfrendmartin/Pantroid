@@ -6,6 +6,7 @@ import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemDao;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemTypeDao;
+import com.wildeastcoders.pantroid.utils.RobolectricRxJavaTestRunner;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
 
 import org.greenrobot.greendao.DaoException;
@@ -33,7 +34,7 @@ import static org.junit.Assert.assertEquals;
  * Created by Majfrendmartin on 2016-12-14.
  */
 
-@RunWith(RxJavaTestRunner.class)
+@RunWith(RobolectricRxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class RepositoryImplTest {
 

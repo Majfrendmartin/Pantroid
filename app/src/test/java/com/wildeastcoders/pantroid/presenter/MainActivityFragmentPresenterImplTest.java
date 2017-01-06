@@ -26,7 +26,6 @@ import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecas
 import static com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation.INCREASE;
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
-import static com.wildeastcoders.pantroid.utils.TestUtils.waitForAsyncOperationCompleted;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -77,6 +76,7 @@ public class MainActivityFragmentPresenterImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        setupRxAndroid();
         pantryItems = new ArrayList<>(CAPACITY);
 
         for (int i = 0; i < CAPACITY; i++) {
@@ -114,14 +114,12 @@ public class MainActivityFragmentPresenterImplTest {
         presenter.bindView(mainActivityFragmentView);
 
         presenter.requestPantryItemsUpdate();
-        waitForAsyncOperationCompleted();
 
         verify(retrievePantryItemsUsecase).execute();
         verify(mainActivityFragmentView).onPantryItemsListChanged(pantryItems);
         assertEquals(pantryItems, presenter.getPantryItems());
 
         presenter.requestPantryItemsUpdate();
-        waitForAsyncOperationCompleted();
 
         verify(retrievePantryItemsUsecase, times(2)).execute();
         verify(mainActivityFragmentView, times(2)).onPantryItemsListChanged(pantryItems);
@@ -134,8 +132,6 @@ public class MainActivityFragmentPresenterImplTest {
 
         presenter.requestPantryItemsUpdate();
 
-        waitForAsyncOperationCompleted();
-
         verify(retrievePantryItemsUsecase).execute();
         verify(mainActivityFragmentView, never()).onPantryItemsListChanged(pantryItems);
     }
@@ -147,8 +143,6 @@ public class MainActivityFragmentPresenterImplTest {
         presenter.bindView(mainActivityFragmentView);
         presenter.requestPantryItemsUpdate();
 
-        waitForAsyncOperationCompleted();
-
         verify(retrievePantryItemsFailingUsecase).execute();
         verify(mainActivityFragmentView, never()).onPantryItemsListChanged(pantryItems);
         verify(mainActivityFragmentView).onDisplayGetItemsError(RETRIEVE_PANTRY_ITEMS_EXCEPTION);
@@ -159,8 +153,6 @@ public class MainActivityFragmentPresenterImplTest {
         setupPresenter(retrievePantryItemsFailingUsecase, updateItemQuantityUsecase, removeItemUsecase);
 
         presenter.requestPantryItemsUpdate();
-
-        waitForAsyncOperationCompleted();
 
         verify(retrievePantryItemsFailingUsecase).execute();
         verify(mainActivityFragmentView, never()).onPantryItemsListChanged(pantryItems);
@@ -174,8 +166,6 @@ public class MainActivityFragmentPresenterImplTest {
         presenter.bindView(mainActivityFragmentView);
         presenter.onItemLongClicked(pantryItem);
 
-        waitForAsyncOperationCompleted();
-
         verify(mainActivityFragmentView).onDisplayLongClickMenu(pantryItem);
     }
 
@@ -184,8 +174,6 @@ public class MainActivityFragmentPresenterImplTest {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemUsecase);
 
         presenter.onItemLongClicked(pantryItem);
-
-        waitForAsyncOperationCompleted();
 
         verify(mainActivityFragmentView, never()).onDisplayLongClickMenu(pantryItem);
     }
@@ -239,8 +227,6 @@ public class MainActivityFragmentPresenterImplTest {
                 presenter.onDecreaseItemsCountClicked(pantryItem);
                 break;
         }
-
-        waitForAsyncOperationCompleted();
     }
 
     private void testContactItemCountChangeClickedViewBounded(QuantityUpdateOperation operation) throws InterruptedException {
@@ -294,8 +280,6 @@ public class MainActivityFragmentPresenterImplTest {
         presenter.bindView(mainActivityFragmentView);
         presenter.onRemoveItemClicked(pantryItem);
 
-        waitForAsyncOperationCompleted();
-
         verify(removeItemUsecase).init(pantryItem);
         verify(removeItemUsecase).execute();
         verify(mainActivityFragmentView).onPantryItemRemoved(pantryItem);
@@ -306,8 +290,6 @@ public class MainActivityFragmentPresenterImplTest {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemUsecase);
 
         presenter.onRemoveItemClicked(pantryItem);
-
-        waitForAsyncOperationCompleted();
 
         verify(removeItemUsecase).init(pantryItem);
         verify(removeItemUsecase).execute();
@@ -320,7 +302,6 @@ public class MainActivityFragmentPresenterImplTest {
         presenter.bindView(mainActivityFragmentView);
 
         presenter.onRemoveItemClicked(pantryItem);
-        waitForAsyncOperationCompleted();
 
         verify(removeItemFailingUsecase).init(pantryItem);
         verify(removeItemFailingUsecase).execute();
@@ -333,7 +314,6 @@ public class MainActivityFragmentPresenterImplTest {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemFailingUsecase);
 
         presenter.onRemoveItemClicked(pantryItem);
-        waitForAsyncOperationCompleted();
 
         verify(removeItemFailingUsecase).init(pantryItem);
         verify(removeItemFailingUsecase).execute();
@@ -347,8 +327,6 @@ public class MainActivityFragmentPresenterImplTest {
         presenter.bindView(mainActivityFragmentView);
         presenter.onEditItemClicked(pantryItem);
 
-        waitForAsyncOperationCompleted();
-
         verify(mainActivityFragmentView).onNavigateToEditItemActivity(pantryItem);
     }
 
@@ -356,8 +334,6 @@ public class MainActivityFragmentPresenterImplTest {
     public void onEditItemClickedViewNotBounded() throws Exception {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemUsecase);
         presenter.onEditItemClicked(pantryItem);
-
-        waitForAsyncOperationCompleted();
 
         verify(mainActivityFragmentView, never()).onNavigateToEditItemActivity(pantryItem);
     }
@@ -367,8 +343,6 @@ public class MainActivityFragmentPresenterImplTest {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemUsecase);
         presenter.bindView(mainActivityFragmentView);
         presenter.onCreate(null);
-
-        waitForAsyncOperationCompleted();
         //TODO: is this test really needed?
 
     }

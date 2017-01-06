@@ -35,16 +35,14 @@ import static com.wildeastcoders.pantroid.model.ValidationResult.INVALID;
 import static com.wildeastcoders.pantroid.model.ValidationResult.VALID;
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
-import static com.wildeastcoders.pantroid.utils.TestUtils.waitForAsyncOperationCompleted;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by Majfrendmartin on 15.11.2016.
+ * Created by Majfrendmartin on 2017-01-06.
  */
-
 @RunWith(RxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class EditItemFragmentPresenterImplTest {
@@ -63,13 +61,13 @@ public class EditItemFragmentPresenterImplTest {
     private EditItemFragmentView view;
 
     @Mock
-    private PantryItemValidator pantryItemValidator;
-
-    @Mock
     private PantryItemType pantryItemType;
 
     @Mock
     private PantryItem pantryItem;
+
+    @Mock
+    private PantryItemValidator pantryItemValidator;
 
     @Mock
     private RetrievePantryItemUsecase retrievePantryItemUsecase;
@@ -101,8 +99,7 @@ public class EditItemFragmentPresenterImplTest {
         MockitoAnnotations.initMocks(this);
         setupRxAndroid();
 
-        when(bundle.getLong(KEY_EDIT_ITEM_ID)).thenReturn(ITEM_ID);
-        when(bundle.containsKey(KEY_EDIT_ITEM_ID)).thenReturn(true);
+        setupBundle();
 
         pantryItemTypes = new ArrayList<>(1);
         pantryItemTypes.add(pantryItemType);
@@ -116,6 +113,11 @@ public class EditItemFragmentPresenterImplTest {
         when(retrievePantryItemFailingUsecase.execute()).thenReturn(Observable.error(new Throwable(ITEM_RETRIEVING_EXCEPTION)));
         when(retrievePantryItemTypesFailingUsecase.execute()).thenReturn(Observable.error(new Throwable(ITEM_TYPES_RETRIEVING_EXCEPTION)));
         when(savePantryItemFailingUsecase.execute()).thenReturn(Observable.error(new Throwable(ITEM_SAVING_EXCEPTION)));
+    }
+
+    private void setupBundle() {
+        when(bundle.getLong(KEY_EDIT_ITEM_ID)).thenReturn(ITEM_ID);
+        when(bundle.containsKey(KEY_EDIT_ITEM_ID)).thenReturn(true);
     }
 
     private void setupPresenter(final RetrievePantryItemUsecase retrievePantryItemUsecase,
@@ -189,8 +191,6 @@ public class EditItemFragmentPresenterImplTest {
         presenter.bindView(view);
         presenter.onCreate(bundle);
 
-        waitForAsyncOperationCompleted();
-
         verify(retrievePantryItemTypesUsecase).execute();
         verify(retrievePantryItemUsecase).init(ITEM_ID);
         verify(retrievePantryItemUsecase).execute();
@@ -206,8 +206,6 @@ public class EditItemFragmentPresenterImplTest {
         setupPresenter(retrievePantryItemUsecase, retrievePantryItemTypesUsecase);
 
         presenter.onCreate(bundle);
-
-        waitForAsyncOperationCompleted();
 
         verify(retrievePantryItemTypesUsecase).execute();
         verify(retrievePantryItemUsecase).init(ITEM_ID);
@@ -226,8 +224,6 @@ public class EditItemFragmentPresenterImplTest {
         presenter.bindView(view);
         presenter.onCreate(bundle);
 
-        waitForAsyncOperationCompleted();
-
         verify(retrievePantryItemTypesFailingUsecase).execute();
         verify(retrievePantryItemUsecase).init(ITEM_ID);
         verify(retrievePantryItemUsecase).execute();
@@ -245,8 +241,6 @@ public class EditItemFragmentPresenterImplTest {
 
         presenter.onCreate(bundle);
 
-        waitForAsyncOperationCompleted();
-
         verify(retrievePantryItemTypesFailingUsecase).execute();
         verify(retrievePantryItemUsecase).init(ITEM_ID);
         verify(retrievePantryItemUsecase).execute();
@@ -263,7 +257,6 @@ public class EditItemFragmentPresenterImplTest {
         setupPresenter(retrievePantryItemUsecase, retrievePantryItemTypesUsecase);
         presenter.bindView(view);
         presenter.onCreate(null);
-        waitForAsyncOperationCompleted();
         verify(view).populateTypesSpinner(pantryItemTypes);
     }
 
@@ -271,16 +264,15 @@ public class EditItemFragmentPresenterImplTest {
     public void onCreateForNewItemViewNotBounded() throws Exception {
         setupPresenter(retrievePantryItemUsecase, retrievePantryItemTypesUsecase);
         presenter.onCreate(null);
-        waitForAsyncOperationCompleted();
         verify(view, never()).populateTypesSpinner(pantryItemTypes);
     }
 
     @Test
     public void onCreateForNewItemErrorViewBounded() throws Exception {
-        setupPresenter(retrievePantryItemUsecase, retrievePantryItemTypesFailingUsecase);
+        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
+                retrievePantryItemUsecase, retrievePantryItemTypesFailingUsecase, savePantryItemUsecase);
         presenter.bindView(view);
         presenter.onCreate(null);
-        waitForAsyncOperationCompleted();
         verify(view, never()).populateTypesSpinner(pantryItemTypes);
         verify(view).displayTypeErrorDialog();
     }
@@ -289,7 +281,6 @@ public class EditItemFragmentPresenterImplTest {
     public void onCreateForNewItemErrorViewNotBounded() throws Exception {
         setupPresenter(retrievePantryItemUsecase, retrievePantryItemTypesFailingUsecase);
         presenter.onCreate(null);
-        waitForAsyncOperationCompleted();
         verify(view, never()).populateTypesSpinner(pantryItemTypes);
         verify(view, never()).displayTypeErrorDialog();
     }
@@ -299,8 +290,6 @@ public class EditItemFragmentPresenterImplTest {
         setupPresenter(savePantryItemUsecase);
         presenter.bindView(view);
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
-
-        waitForAsyncOperationCompleted();
 
         verifyValidationMethodsWereCalled();
 
@@ -321,8 +310,6 @@ public class EditItemFragmentPresenterImplTest {
         setupPresenter(savePantryItemUsecase);
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
 
-        waitForAsyncOperationCompleted();
-
         verifyValidationMethodsWereCalled();
 
         verify(savePantryItemUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
@@ -332,8 +319,6 @@ public class EditItemFragmentPresenterImplTest {
     private void verifyFieldValidationFailedViewBounded(PantryItemFieldType pantryItemFieldType) throws InterruptedException {
         presenter.bindView(view);
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
-
-        waitForAsyncOperationCompleted();
 
         verifyValidationMethodsWereCalled();
 
@@ -385,8 +370,6 @@ public class EditItemFragmentPresenterImplTest {
         setupInvalidValidatorMock();
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
 
-        waitForAsyncOperationCompleted();
-
         verifyValidationMethodsWereCalled();
 
         verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
@@ -407,8 +390,6 @@ public class EditItemFragmentPresenterImplTest {
         presenter.bindView(view);
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
 
-        waitForAsyncOperationCompleted();
-
         verifyValidationMethodsWereCalled();
 
         verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
@@ -428,8 +409,6 @@ public class EditItemFragmentPresenterImplTest {
         presenter.bindView(view);
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
 
-        waitForAsyncOperationCompleted();
-
         verify(savePantryItemFailingUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
         verify(view).displayDataErrorDialog();
@@ -439,8 +418,6 @@ public class EditItemFragmentPresenterImplTest {
     public void onSaveItemClickedExceptionOccursViewNotBounded() throws Exception {
         setupPresenter(savePantryItemFailingUsecase);
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
-
-        waitForAsyncOperationCompleted();
 
         verify(savePantryItemFailingUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
@@ -460,8 +437,6 @@ public class EditItemFragmentPresenterImplTest {
         presenter.bindView(view);
 
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
-
-        waitForAsyncOperationCompleted();
 
         verify(savePantryItemUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
         verify(view).displayPantryItemSavedDialog(pantryItem);
@@ -484,8 +459,6 @@ public class EditItemFragmentPresenterImplTest {
 
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
 
-        waitForAsyncOperationCompleted();
-
         verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
         verify(view).displayNothingChangedDialog();
@@ -504,8 +477,6 @@ public class EditItemFragmentPresenterImplTest {
         presenter.setPantryItem(item);
 
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
-
-        waitForAsyncOperationCompleted();
 
         verify(savePantryItemUsecase).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);
@@ -526,8 +497,6 @@ public class EditItemFragmentPresenterImplTest {
         presenter.setPantryItem(item);
 
         presenter.onSaveItemClicked(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
-
-        waitForAsyncOperationCompleted();
 
         verify(savePantryItemUsecase, never()).init(ITEM_NAME, pantryItemType, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
         verify(view, never()).displayPantryItemSavedDialog(pantryItem);

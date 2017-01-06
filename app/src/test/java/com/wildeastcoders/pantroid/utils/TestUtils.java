@@ -3,6 +3,8 @@ package com.wildeastcoders.pantroid.utils;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.plugins.RxJavaPlugins;
+import rx.plugins.RxJavaSchedulersHook;
 import rx.schedulers.Schedulers;
 
 /**
@@ -27,12 +29,23 @@ public abstract class TestUtils {
         RxAndroidPlugins.getInstance().reset();
     }
 
-    /**
-     * This is just a workaround for test of Subscribers.
-     * Needs to be fixed.
-     * @throws InterruptedException
-     */
-    public static final void waitForAsyncOperationCompleted() throws InterruptedException {
-        Thread.sleep(500);
+    public static final void setupTestRunner() {
+        RxJavaPlugins.getInstance().reset();
+        RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
+            @Override
+            public Scheduler getIOScheduler() {
+                return Schedulers.immediate();
+            }
+
+            @Override
+            public Scheduler getNewThreadScheduler() {
+                return Schedulers.immediate();
+            }
+
+            @Override
+            public Scheduler getComputationScheduler() {
+                return Schedulers.immediate();
+            }
+        });
     }
 }
