@@ -1,6 +1,7 @@
 package com.wildeastcoders.pantroid.model.usecase;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.wildeastcoders.pantroid.model.Constants;
 import com.wildeastcoders.pantroid.model.PantryItem;
@@ -36,6 +37,7 @@ public class SavePantryItemUsecaseImpl implements SavePantryItemUsecase {
         item = new PantryItem(null, itemName, pantryItemType.getId(), addingDate, bestBeforeDate, quantity);
     }
 
+    @NonNull
     @Override
     public Observable<PantryItem> execute() {
         if (item == null) {
@@ -50,8 +52,9 @@ public class SavePantryItemUsecaseImpl implements SavePantryItemUsecase {
 
     /**
      * Package visible method for tests use only.
-     * @return
+     * @return Pantry item used for initialization or null.
      */
+    @Nullable
     PantryItem getItem() {
         return item;
     }

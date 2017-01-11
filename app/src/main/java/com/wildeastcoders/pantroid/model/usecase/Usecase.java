@@ -1,5 +1,7 @@
 package com.wildeastcoders.pantroid.model.usecase;
 
+import android.support.annotation.NonNull;
+
 import rx.Observable;
 
 /**
@@ -7,5 +9,6 @@ import rx.Observable;
  */
 
 public interface Usecase<T> {
+    @NonNull
     Observable<T> execute();
 }

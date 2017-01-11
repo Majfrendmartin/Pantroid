@@ -130,6 +130,7 @@ public class EditItemFragmentPresenterImplTest {
         presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
                 retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
     }
+
     private void setupPresenter() {
         presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
                 retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
@@ -425,7 +426,7 @@ public class EditItemFragmentPresenterImplTest {
     }
 
     @Test
-    public void onSaveItemClickedForUpdateViewBounded () throws Exception {
+    public void onSaveItemClickedForUpdateViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
         final PantryItem item = new PantryItem();
         item.setId(ITEM_ID);
@@ -466,7 +467,7 @@ public class EditItemFragmentPresenterImplTest {
     }
 
     @Test
-    public void onSaveItemClickedForUpdateViewNotBounded () throws Exception {
+    public void onSaveItemClickedForUpdateViewNotBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
         final PantryItem item = new PantryItem();
         item.setId(ITEM_ID);
