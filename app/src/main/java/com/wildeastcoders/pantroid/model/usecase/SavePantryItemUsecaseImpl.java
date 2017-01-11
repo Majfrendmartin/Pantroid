@@ -2,18 +2,27 @@ package com.wildeastcoders.pantroid.model.usecase;
 
 import android.support.annotation.NonNull;
 
+import com.wildeastcoders.pantroid.model.Constants;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemType;
+import com.wildeastcoders.pantroid.model.database.Repository;
 
 import java.util.Date;
 
 import rx.Observable;
 
+import static com.wildeastcoders.pantroid.model.Constants.MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT;
+
 /**
  * Created by Majfrendmartin on 2017-01-08.
  */
 public class SavePantryItemUsecaseImpl implements SavePantryItemUsecase {
+    private final Repository repository;
     private PantryItem item;
+
+    public SavePantryItemUsecaseImpl(final Repository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public void init(final PantryItem pantryItem) {
@@ -29,7 +38,14 @@ public class SavePantryItemUsecaseImpl implements SavePantryItemUsecase {
 
     @Override
     public Observable<PantryItem> execute() {
-        return null;
+        if (item == null) {
+            return Observable.error(new NullPointerException(
+                    MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT));
+        }
+
+        return item.getId() != null ?
+                repository.updateItem(item) :
+                repository.addItem(item);
     }
 
     /**

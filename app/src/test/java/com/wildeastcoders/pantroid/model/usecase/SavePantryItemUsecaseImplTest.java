@@ -57,7 +57,7 @@ public class SavePantryItemUsecaseImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         setupRxAndroid();
-        savePantryItemUsecase = new SavePantryItemUsecaseImpl();
+        savePantryItemUsecase = new SavePantryItemUsecaseImpl(repository);
 
     }
 
