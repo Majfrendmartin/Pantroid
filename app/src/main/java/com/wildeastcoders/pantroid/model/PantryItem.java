@@ -73,6 +73,16 @@ public class PantryItem {
     public PantryItem() {
     }
 
+    public PantryItem(final PantryItem pantryItem) {
+        id = pantryItem.id;
+        name = pantryItem.name;
+        typeId = pantryItem.typeId;
+        type = pantryItem.type;
+        addingDate = pantryItem.addingDate;
+        bestBeforeDate = pantryItem.bestBeforeDate;
+        quantity = pantryItem.quantity;
+    }
+
     public void update(@NonNull PantryItem otherItem) {
         // TODO: 11.11.2016 - implement this
     }
