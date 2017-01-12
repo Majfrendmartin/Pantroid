@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class SavePantryItemUsecaseImplTest {
+public class SavePantryItemUsecaseTest {
 
     private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(1L, "TYPE_NAME");
     public static final String NAME = "";

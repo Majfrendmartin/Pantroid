@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(RxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class EditItemFragmentPresenterImplTest {
+public class EditItemFragmentPresenterTest {
 
     public static final String ITEM_NAME = "ITEM_NAME";
     public static final String ITEM_NAME_2 = "ITEM_NAME_2";

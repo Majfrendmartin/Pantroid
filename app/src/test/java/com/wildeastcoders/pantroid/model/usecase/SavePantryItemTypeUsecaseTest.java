@@ -20,7 +20,7 @@ import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
 
 @RunWith(RxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class SavePantryItemTypeUsecaseImplTest {
+public class SavePantryItemTypeUsecaseTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);

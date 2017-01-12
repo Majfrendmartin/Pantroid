@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class RemoveItemUsecaseImplTest {
+public class RemoveItemUsecaseTest {
 
     public static final DaoException DAO_EXCEPTION = new DaoException("Test Dao Exception");
 

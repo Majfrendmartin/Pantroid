@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class MainActivityFragmentPresenterImplTest {
+public class MainActivityFragmentPresenterTest {
 
     public static final int CAPACITY = 10;
     public static final Exception RETRIEVE_PANTRY_ITEMS_EXCEPTION = new Exception("RETRIEVE_PANTRY_ITEMS_EXCEPTION");

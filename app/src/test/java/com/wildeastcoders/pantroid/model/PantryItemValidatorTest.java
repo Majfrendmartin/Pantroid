@@ -21,7 +21,7 @@ import static junit.framework.Assert.assertEquals;
  */
 
 @RunWith(RobolectricTestRunner.class)
-public class PantryItemValidatorImplTest {
+public class PantryItemValidatorTest {
     private static final Long TYPE_ID = 1L;
     private static final String TYPE_NAME = "TYPE_NAME";
     private static final PantryItemType TYPE = new PantryItemType(TYPE_ID, TYPE_NAME);

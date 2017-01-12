@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 /**
  * Created by Majfrendmartin on 15.11.2016.
  */
-public class EditItemActivityPresenterImplTest {
+public class EditItemActivityPresenterTest {
 
     @Mock
     private EditItemActivityView editItemActivityView;

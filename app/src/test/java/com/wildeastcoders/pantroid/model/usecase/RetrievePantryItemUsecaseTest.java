@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class RetrievePantryItemUsecaseImplTest {
+public class RetrievePantryItemUsecaseTest {
 
     private static final Long ID = 1L;
     private static final PantryItem PANTRY_ITEM = new PantryItem(ID, "name", 1L, new Date(), new Date(), 1);

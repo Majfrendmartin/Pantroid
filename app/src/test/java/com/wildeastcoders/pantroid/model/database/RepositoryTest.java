@@ -36,7 +36,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricRxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class RepositoryImplTest {
+public class RepositoryTest {
 
     private Repository repository;
 

@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 /**
  * Created by Majfrendmartin on 2016-11-11.
  */
-public class MainActivityPresenterImplTest {
+public class MainActivityPresenterTest {
 
     @Mock
     private MainActivityView mainActivityView;
