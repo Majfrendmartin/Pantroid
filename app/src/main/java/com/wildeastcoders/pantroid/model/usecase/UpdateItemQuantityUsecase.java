@@ -1,5 +1,7 @@
 package com.wildeastcoders.pantroid.model.usecase;
 
+import android.support.annotation.NonNull;
+
 import com.wildeastcoders.pantroid.model.PantryItem;
 
 /**
@@ -12,5 +14,5 @@ public interface UpdateItemQuantityUsecase extends Usecase<PantryItem> {
         DECREASE
     }
 
-    void init(QuantityUpdateOperation operation);
+    void init(@NonNull PantryItem item, @NonNull QuantityUpdateOperation operation);
 }

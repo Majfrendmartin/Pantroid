@@ -234,7 +234,7 @@ public class MainActivityFragmentPresenterTest {
 
         presenter.bindView(mainActivityFragmentView);
         selectMethodByOperation(operation);
-        verify(updateItemQuantityUsecase).init(operation);
+        verify(updateItemQuantityUsecase).init(pantryItem, operation);
         verify(updateItemQuantityUsecase).execute();
         verify(pantryItem).update(pantryItem);
         verify(mainActivityFragmentView).onUpdateItem(pantryItem);
@@ -244,7 +244,7 @@ public class MainActivityFragmentPresenterTest {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityUsecase, removeItemUsecase);
 
         selectMethodByOperation(operation);
-        verify(updateItemQuantityUsecase).init(operation);
+        verify(updateItemQuantityUsecase).init(pantryItem, operation);
         verify(updateItemQuantityUsecase).execute();
         verify(pantryItem).update(pantryItem);
         verify(mainActivityFragmentView, never()).onUpdateItem(pantryItem);
@@ -255,7 +255,7 @@ public class MainActivityFragmentPresenterTest {
 
         presenter.bindView(mainActivityFragmentView);
         selectMethodByOperation(operation);
-        verify(updateItemQuantityFailingUsecase).init(operation);
+        verify(updateItemQuantityFailingUsecase).init(pantryItem, operation);
         verify(updateItemQuantityFailingUsecase).execute();
         verify(pantryItem, never()).update(pantryItem);
         verify(mainActivityFragmentView, never()).onUpdateItem(pantryItem);
@@ -266,7 +266,7 @@ public class MainActivityFragmentPresenterTest {
         setupPresenter(retrievePantryItemsUsecase, updateItemQuantityFailingUsecase, removeItemUsecase);
 
         selectMethodByOperation(operation);
-        verify(updateItemQuantityFailingUsecase).init(operation);
+        verify(updateItemQuantityFailingUsecase).init(pantryItem, operation);
         verify(updateItemQuantityFailingUsecase).execute();
         verify(pantryItem, never()).update(pantryItem);
         verify(mainActivityFragmentView, never()).onUpdateItem(pantryItem);

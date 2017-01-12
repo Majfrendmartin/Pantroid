@@ -111,7 +111,7 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
     }
 
     private void performUpdateItemsQuantity(@NonNull final PantryItem pantryItem, final QuantityUpdateOperation operation) {
-        updateItemQuantityUsecase.init(operation);
+        updateItemQuantityUsecase.init(pantryItem, operation);
         updateItemQuantitySubscribtion = updateItemQuantityUsecase.execute()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
