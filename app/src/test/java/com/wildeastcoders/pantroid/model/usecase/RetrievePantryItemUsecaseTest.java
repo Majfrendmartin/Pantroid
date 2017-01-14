@@ -60,7 +60,7 @@ public class RetrievePantryItemUsecaseTest {
     }
 
     @Test
-    public void execute() throws Exception {
+    public void executeNotInitialized() throws Exception {
         TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
         retrievePantryItemUsecase.execute().subscribe(testSubscriber);
 
@@ -68,10 +68,13 @@ public class RetrievePantryItemUsecaseTest {
         final List<Throwable> errors = testSubscriber.getOnErrorEvents();
         assertEquals(1, errors.size());
         assertEquals(MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT, errors.get(0).getMessage());
+    }
 
+    @Test
+    public void executeInitialized() throws Exception {
         when(repository.getItemById(ID)).thenReturn(Observable.just(PANTRY_ITEM));
 
-        testSubscriber = new TestSubscriber<>();
+        final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
         retrievePantryItemUsecase.init(ID);
         retrievePantryItemUsecase.execute().subscribe(testSubscriber);
 

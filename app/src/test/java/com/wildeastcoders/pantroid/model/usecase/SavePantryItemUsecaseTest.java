@@ -35,14 +35,14 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class)
 public class SavePantryItemUsecaseTest {
 
-    private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(1L, "TYPE_NAME");
     public static final String NAME = "";
     public static final Long TYPE_ID = 1L;
     public static final Date ADDING_DATE = new Date();
     public static final Date BEST_BEFORE_DATE = new Date();
     public static final int QUANTITY = 1;
-    private static final PantryItem PANTRY_ITEM = new PantryItem(null, NAME, TYPE_ID, ADDING_DATE, BEST_BEFORE_DATE, QUANTITY);
     public static final Long ID = 1L;
+    private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(1L, "TYPE_NAME");
+    private static final PantryItem PANTRY_ITEM = new PantryItem(null, NAME, TYPE_ID, ADDING_DATE, BEST_BEFORE_DATE, QUANTITY);
 
     static {
         PANTRY_ITEM.setType(PANTRY_ITEM_TYPE);
@@ -53,12 +53,17 @@ public class SavePantryItemUsecaseTest {
     @Mock
     private Repository repository;
 
+    private static Observable<PantryItem> createSavedItemObservable() {
+        final PantryItem item = new PantryItem(PANTRY_ITEM);
+        item.setId(ID);
+        return Observable.just(item);
+    }
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         setupRxAndroid();
         savePantryItemUsecase = new SavePantryItemUsecaseImpl(repository);
-
     }
 
     @After
@@ -76,12 +81,6 @@ public class SavePantryItemUsecaseTest {
 
     private PantryItem getItem() {
         return ((SavePantryItemUsecaseImpl) savePantryItemUsecase).getItem();
-    }
-
-    private static Observable<PantryItem> createSavedItemObservable() {
-        final PantryItem item = new PantryItem(PANTRY_ITEM);
-        item.setId(ID);
-        return Observable.just(item);
     }
 
     @Test
@@ -119,7 +118,7 @@ public class SavePantryItemUsecaseTest {
         execute();
     }
 
-    private void execute() throws Exception  {
+    private void execute() throws Exception {
         final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
         when(repository.addItem(getItem())).thenReturn(createSavedItemObservable());
 
