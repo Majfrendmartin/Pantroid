@@ -11,4 +11,6 @@ import com.wildeastcoders.pantroid.model.ValidationResult;
 
 public interface EditTypeFragmentView extends View {
     void displayValidationError(@NonNull ValidationResult validationResult);
+    void displayDiscardChangesDialog();
+    void finish();
 }
