@@ -1,6 +1,5 @@
 package com.wildeastcoders.pantroid.presenter;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
