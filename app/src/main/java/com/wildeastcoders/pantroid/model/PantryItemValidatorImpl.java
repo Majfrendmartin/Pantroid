@@ -9,11 +9,10 @@ import static com.wildeastcoders.pantroid.model.ValidationResult.*;
  * Created by Majfrendmartin on 19.12.2016.
  */
 public class PantryItemValidatorImpl implements PantryItemValidator {
-    public static final int MAX_NAME_LENGTH = 40;
 
     @Override
     public ValidationResult validateName(String name) {
-        return getValidationResult((name != null) && !isEmpty(name.trim()) && (name.length() <= MAX_NAME_LENGTH));
+        return getValidationResult((name != null) && !isEmpty(name.trim()) && (name.length() <= Constants.MAX_NAME_LENGTH));
     }
 
     @Override

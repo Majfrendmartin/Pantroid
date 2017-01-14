@@ -30,7 +30,6 @@ public class PantryItemValidatorTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-
         pantryItemValidator = new PantryItemValidatorImpl();
     }
 
@@ -47,7 +46,6 @@ public class PantryItemValidatorTest {
         assertEquals(VALID, pantryItemValidator.validateName(name1));
         assertEquals(INVALID, pantryItemValidator.validateName(name2));
         assertEquals(INVALID, pantryItemValidator.validateName(name3));
-
     }
 
     @Test
