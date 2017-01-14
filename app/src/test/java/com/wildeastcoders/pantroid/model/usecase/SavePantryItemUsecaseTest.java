@@ -25,6 +25,9 @@ import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -43,6 +46,7 @@ public class SavePantryItemUsecaseTest {
     public static final Long ID = 1L;
     private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(1L, "TYPE_NAME");
     private static final PantryItem PANTRY_ITEM = new PantryItem(null, NAME, TYPE_ID, ADDING_DATE, BEST_BEFORE_DATE, QUANTITY);
+    private static final PantryItem PANTRY_ITEM_WITH_ID = new PantryItem(ID, NAME, TYPE_ID, ADDING_DATE, BEST_BEFORE_DATE, QUANTITY);
 
     static {
         PANTRY_ITEM.setType(PANTRY_ITEM_TYPE);
@@ -109,18 +113,27 @@ public class SavePantryItemUsecaseTest {
     @Test
     public void executeInitializedByObject() throws Exception {
         savePantryItemUsecase.init(PANTRY_ITEM);
-        execute();
+        execute(true);
+    }
+
+    @Test
+    public void executeInitializedByObjectWithId() throws Exception {
+        savePantryItemUsecase.init(PANTRY_ITEM_WITH_ID);
+        execute(false);
     }
 
     @Test
     public void executeInitializedByParameters() throws Exception {
         savePantryItemUsecase.init(NAME, PANTRY_ITEM_TYPE, QUANTITY, ADDING_DATE, BEST_BEFORE_DATE);
-        execute();
+        execute(true);
     }
 
-    private void execute() throws Exception {
+    private void execute(final boolean shouldAddNewItem) throws Exception {
         final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
-        when(repository.addItem(getItem())).thenReturn(createSavedItemObservable());
+        final Observable<PantryItem> savedItemObservable = createSavedItemObservable();
+        final PantryItem item = getItem();
+        when(repository.addItem(item)).thenReturn(savedItemObservable);
+        when(repository.updateItem(item)).thenReturn(savedItemObservable);
 
         savePantryItemUsecase.execute().subscribe(testSubscriber);
         testSubscriber.assertNoErrors();
@@ -131,6 +144,9 @@ public class SavePantryItemUsecaseTest {
         assertNotNull(object);
         assertEquals(ID, object.getId());
         assertPantryItemEquals(object);
+
+        verify(repository, shouldAddNewItem ? times(1) : never()).addItem(item);
+        verify(repository, !shouldAddNewItem ? times(1) : never()).updateItem(item);
     }
 
 }
