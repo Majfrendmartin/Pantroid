@@ -7,6 +7,7 @@ package com.wildeastcoders.pantroid.model;
 public final class Constants {
 
     public static final String MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT = "Missing pantry item object";
+    public static final String MISSING_PANTRY_ITEM_TYPE_OBJECT_ERROR_TEXT = "Missing pantry item type object";
 
     private Constants() {
         //no-op
