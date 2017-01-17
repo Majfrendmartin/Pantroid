@@ -9,10 +9,15 @@ import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypeUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemTypeUsecase;
 import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import static com.wildeastcoders.pantroid.activities.IntentConstants.KEY_EDIT_ITEM_ID;
+
 /**
  * Created by Majfrendmartin on 2017-01-14.
  */
-public class EditTypeFragmentPresenterImpl implements EditTypeFragmentPresenter {
+public class EditTypeFragmentPresenterImpl extends AbstractPresenter<EditTypeFragmentView> implements EditTypeFragmentPresenter {
     private final SavePantryItemTypeUsecase savePantryItemTypeUsecase;
     private final RetrievePantryItemTypeUsecase retrievePantryItemTypeUsecase;
 
@@ -37,28 +42,23 @@ public class EditTypeFragmentPresenterImpl implements EditTypeFragmentPresenter 
     }
 
     @Override
-    public EditTypeFragmentView getView() {
-        return null;
-    }
-
-    @Override
-    public boolean isViewBounded() {
-        return false;
-    }
-
-    @Override
-    public void bindView(final EditTypeFragmentView view) {
-
-    }
-
-    @Override
-    public void unbindView() {
-
-    }
-
-    @Override
     public void onCreate(@Nullable final Bundle bundle) {
-
+        if (bundle != null &&  bundle.containsKey(KEY_EDIT_ITEM_ID)) {
+            retrievePantryItemTypeUsecase.init(bundle.getLong(KEY_EDIT_ITEM_ID));
+            retrievePantryItemTypeUsecase.execute()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .onErrorReturn(throwable -> null)
+                    .subscribe(pantryItemType -> {
+                        if (isViewBounded()) {
+                            if (pantryItemType != null) {
+                                getView().populateTypeDetails(pantryItemType);
+                            } else {
+                                getView().displayTypeNotFoundErrorMessage();
+                            }
+                        }
+                    });
+        }
     }
 
     @Override

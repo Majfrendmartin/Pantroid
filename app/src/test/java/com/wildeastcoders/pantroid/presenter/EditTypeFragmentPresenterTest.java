@@ -22,6 +22,8 @@ import rx.Observable;
 import static com.wildeastcoders.pantroid.activities.IntentConstants.KEY_EDIT_ITEM_ID;
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -35,6 +37,7 @@ public class EditTypeFragmentPresenterTest {
     private static final Long ITEM_ID = 1L;
     private static final String ITEM_NAME = "ITEM_NAME";
     private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(ITEM_ID, ITEM_NAME);
+    public static final Exception DATABASE_EXCEPTION = new Exception("DatabaseException");
 
     @Mock
     private EditTypeFragmentView editTypeFragmentView;
@@ -63,6 +66,7 @@ public class EditTypeFragmentPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         setupRxAndroid();
+        setupBundle();
         presenter = new EditTypeFragmentPresenterImpl(savePantryItemTypeUsecase, retrievePantryItemTypeUsecase);
         when(retrievePantryItemTypeUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
         when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
@@ -76,41 +80,54 @@ public class EditTypeFragmentPresenterTest {
     @Test
     public void onCreateForEditTypeViewBounded() throws Exception {
         bindView();
+        presenter.onCreate(bundle);
+        verify(retrievePantryItemTypeUsecase).init(ITEM_ID);
+        verify(retrievePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView).populateTypeDetails(PANTRY_ITEM_TYPE);
     }
 
     @Test
     public void onCreateForEditTypeViewNotBounded() throws Exception {
-
+        presenter.onCreate(bundle);
+        verify(retrievePantryItemTypeUsecase).init(ITEM_ID);
+        verify(retrievePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView, never()).populateTypeDetails(PANTRY_ITEM_TYPE);
     }
 
     @Test
     public void onCreateForEditTypeErrorViewBounded() throws Exception {
-
+        when(retrievePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        bindView();
+        presenter.onCreate(bundle);
+        verify(retrievePantryItemTypeUsecase).init(ITEM_ID);
+        verify(retrievePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView, never()).populateTypeDetails(PANTRY_ITEM_TYPE);
+        verify(editTypeFragmentView).displayTypeNotFoundErrorMessage();
     }
 
     @Test
     public void onCreateForEditTypeErrorViewNotBounded() throws Exception {
-
+        when(retrievePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        presenter.onCreate(bundle);
+        verify(retrievePantryItemTypeUsecase).init(ITEM_ID);
+        verify(retrievePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView, never()).populateTypeDetails(PANTRY_ITEM_TYPE);
+        verify(editTypeFragmentView, never()).displayTypeNotFoundErrorMessage();
     }
 
     @Test
     public void onCreateForNewTypeViewBounded() throws Exception {
-
+        bindView();
+        presenter.onCreate(null);
+        verify(retrievePantryItemTypeUsecase, never()).execute();
+        verify(editTypeFragmentView, never()).populateTypeDetails(PANTRY_ITEM_TYPE);
     }
 
     @Test
     public void onCreateForNewTypeViewNotBounded() throws Exception {
-
-    }
-
-    @Test
-    public void onCreateForNewTypeErrorViewBounded() throws Exception {
-
-    }
-
-    @Test
-    public void onCreateForNewTypeErrorViewNotBounded() throws Exception {
-
+        presenter.onCreate(null);
+        verify(retrievePantryItemTypeUsecase, never()).execute();
+        verify(editTypeFragmentView, never()).populateTypeDetails(PANTRY_ITEM_TYPE);
     }
 
     @Test
