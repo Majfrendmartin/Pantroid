@@ -21,16 +21,16 @@ import static junit.framework.Assert.assertEquals;
  */
 
 @RunWith(RobolectricTestRunner.class)
-public class PantryItemValidatorTest {
+public class FieldsValidatorTest {
     private static final Long TYPE_ID = 1L;
     private static final String TYPE_NAME = "TYPE_NAME";
     private static final PantryItemType TYPE = new PantryItemType(TYPE_ID, TYPE_NAME);
-    private PantryItemValidatorImpl pantryItemValidator;
+    private FieldsValidatorImpl fieldsValidator;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        pantryItemValidator = new PantryItemValidatorImpl();
+        fieldsValidator = new FieldsValidatorImpl();
     }
 
     @After
@@ -43,29 +43,29 @@ public class PantryItemValidatorTest {
         final String name1 = "Dżem jabłkowo-truskawkowo-rabarbarowy";
         final String name2 = "             ";
         final String name3 = "Konstantynopolitańczykowianeczka_stółzpowyłamywanyminogami";
-        assertEquals(VALID, pantryItemValidator.validateName(name1));
-        assertEquals(INVALID, pantryItemValidator.validateName(name2));
-        assertEquals(INVALID, pantryItemValidator.validateName(name3));
+        assertEquals(VALID, fieldsValidator.validateName(name1));
+        assertEquals(INVALID, fieldsValidator.validateName(name2));
+        assertEquals(INVALID, fieldsValidator.validateName(name3));
     }
 
     @Test
     public void validateType() throws Exception {
-        assertEquals(VALID, pantryItemValidator.validateType(TYPE));
-        assertEquals(INVALID, pantryItemValidator.validateType(new PantryItemType(-10L, "name")));
-        assertEquals(INVALID, pantryItemValidator.validateType(new PantryItemType(10L, "    ")));
+        assertEquals(VALID, fieldsValidator.validateType(TYPE));
+        assertEquals(INVALID, fieldsValidator.validateType(new PantryItemType(-10L, "name")));
+        assertEquals(INVALID, fieldsValidator.validateType(new PantryItemType(10L, "    ")));
     }
 
     @Test
     public void validateQuantity() throws Exception {
-        assertEquals(VALID, pantryItemValidator.validateQuantity(1));
-        assertEquals(INVALID, pantryItemValidator.validateQuantity(0));
-        assertEquals(INVALID, pantryItemValidator.validateQuantity(-1));
+        assertEquals(VALID, fieldsValidator.validateQuantity(1));
+        assertEquals(INVALID, fieldsValidator.validateQuantity(0));
+        assertEquals(INVALID, fieldsValidator.validateQuantity(-1));
     }
 
     @Test
     public void validateAddingDate() throws Exception {
-        assertEquals(VALID, pantryItemValidator.validateAddingDate(new Date()));
-        assertEquals(INVALID, pantryItemValidator.validateAddingDate(null));
+        assertEquals(VALID, fieldsValidator.validateAddingDate(new Date()));
+        assertEquals(INVALID, fieldsValidator.validateAddingDate(null));
     }
 
     @Test
@@ -77,11 +77,11 @@ public class PantryItemValidatorTest {
         calendar.add(Calendar.DAY_OF_YEAR, 1);
         final Date future = calendar.getTime();
 
-        assertEquals(VALID, pantryItemValidator.validateBestBeforeDate(now, future));
-        assertEquals(INVALID, pantryItemValidator.validateBestBeforeDate(now, past));
-        assertEquals(INVALID, pantryItemValidator.validateBestBeforeDate(now, now));
-        assertEquals(INVALID, pantryItemValidator.validateBestBeforeDate(null, future));
-        assertEquals(INVALID, pantryItemValidator.validateBestBeforeDate(now, null));
-        assertEquals(INVALID, pantryItemValidator.validateBestBeforeDate(null, null));
+        assertEquals(VALID, fieldsValidator.validateBestBeforeDate(now, future));
+        assertEquals(INVALID, fieldsValidator.validateBestBeforeDate(now, past));
+        assertEquals(INVALID, fieldsValidator.validateBestBeforeDate(now, now));
+        assertEquals(INVALID, fieldsValidator.validateBestBeforeDate(null, future));
+        assertEquals(INVALID, fieldsValidator.validateBestBeforeDate(now, null));
+        assertEquals(INVALID, fieldsValidator.validateBestBeforeDate(null, null));
     }
 }

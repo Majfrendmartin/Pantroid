@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by Majfrendmartin on 15.11.2016.
  */
 
-public interface PantryItemValidator {
+public interface FieldsValidator {
     ValidationResult validateName(String name);
     ValidationResult validateType(PantryItemType type);
     ValidationResult validateQuantity(int quantity);

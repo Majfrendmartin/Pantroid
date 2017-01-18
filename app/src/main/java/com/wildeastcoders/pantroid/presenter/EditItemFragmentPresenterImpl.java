@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
-import com.wildeastcoders.pantroid.model.PantryItemValidator;
+import com.wildeastcoders.pantroid.model.FieldsValidator;
 import com.wildeastcoders.pantroid.model.ValidationResult;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
@@ -40,7 +40,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
 
     public static final int VALIDATION_RESULTS_CAPACITY = 5;
 
-    private final PantryItemValidator pantryItemValidator;
+    private final FieldsValidator fieldsValidator;
     private final RetrievePantryItemUsecase retrievePantryItemUsecase;
     private final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase;
     private final SavePantryItemUsecase savePantryItemUsecase;
@@ -61,11 +61,11 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     @Nullable
     private Subscription savePantryItemSubscription;
 
-    public EditItemFragmentPresenterImpl(final PantryItemValidator pantryItemValidator,
+    public EditItemFragmentPresenterImpl(final FieldsValidator fieldsValidator,
                                          final RetrievePantryItemUsecase retrievePantryItemUsecase,
                                          final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase,
     final SavePantryItemUsecase savePantryItemUsecase) {
-        this.pantryItemValidator = pantryItemValidator;
+        this.fieldsValidator = fieldsValidator;
         this.retrievePantryItemUsecase = retrievePantryItemUsecase;
         this.retrievePantryItemTypesUsecase = retrievePantryItemTypesUsecase;
         this.savePantryItemUsecase = savePantryItemUsecase;
@@ -86,11 +86,11 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
 
         final Map<PantryItemFieldType,ValidationResult> validationResults = new HashMap<>(VALIDATION_RESULTS_CAPACITY);
 
-        handleValidationResult(NAME, pantryItemValidator.validateName(name), validationResults);
-        handleValidationResult(TYPE, pantryItemValidator.validateType(type), validationResults);
-        handleValidationResult(QUANTITY, pantryItemValidator.validateQuantity(quantity), validationResults);
-        handleValidationResult(ADDING_DATE, pantryItemValidator.validateAddingDate(addingDate), validationResults);
-        handleValidationResult(BEST_BEFORE_DATE, pantryItemValidator.validateBestBeforeDate(addingDate, bestBeforeDate), validationResults);
+        handleValidationResult(NAME, fieldsValidator.validateName(name), validationResults);
+        handleValidationResult(TYPE, fieldsValidator.validateType(type), validationResults);
+        handleValidationResult(QUANTITY, fieldsValidator.validateQuantity(quantity), validationResults);
+        handleValidationResult(ADDING_DATE, fieldsValidator.validateAddingDate(addingDate), validationResults);
+        handleValidationResult(BEST_BEFORE_DATE, fieldsValidator.validateBestBeforeDate(addingDate, bestBeforeDate), validationResults);
 
         if (!validationResults.isEmpty()) {
             if (isViewBounded()) {

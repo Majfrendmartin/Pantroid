@@ -3,16 +3,17 @@ package com.wildeastcoders.pantroid.model;
 import java.util.Date;
 
 import static android.text.TextUtils.isEmpty;
+import static com.wildeastcoders.pantroid.model.Constants.MAX_NAME_LENGTH;
 import static com.wildeastcoders.pantroid.model.ValidationResult.*;
 
 /**
  * Created by Majfrendmartin on 19.12.2016.
  */
-public class PantryItemValidatorImpl implements PantryItemValidator {
+public class FieldsValidatorImpl implements FieldsValidator {
 
     @Override
     public ValidationResult validateName(String name) {
-        return getValidationResult((name != null) && !isEmpty(name.trim()) && (name.length() <= Constants.MAX_NAME_LENGTH));
+        return getValidationResult((name != null) && !isEmpty(name.trim()) && (name.length() <= MAX_NAME_LENGTH));
     }
 
     @Override

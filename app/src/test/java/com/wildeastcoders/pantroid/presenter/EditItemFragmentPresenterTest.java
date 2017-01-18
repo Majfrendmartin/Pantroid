@@ -6,7 +6,7 @@ import com.wildeastcoders.pantroid.BuildConfig;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
-import com.wildeastcoders.pantroid.model.PantryItemValidator;
+import com.wildeastcoders.pantroid.model.FieldsValidator;
 import com.wildeastcoders.pantroid.model.ValidationResult;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
@@ -67,7 +67,7 @@ public class EditItemFragmentPresenterTest {
     private PantryItem pantryItem;
 
     @Mock
-    private PantryItemValidator pantryItemValidator;
+    private FieldsValidator fieldsValidator;
 
     @Mock
     private RetrievePantryItemUsecase retrievePantryItemUsecase;
@@ -122,17 +122,17 @@ public class EditItemFragmentPresenterTest {
 
     private void setupPresenter(final RetrievePantryItemUsecase retrievePantryItemUsecase,
                                 final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase) {
-        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
+        presenter = new EditItemFragmentPresenterImpl(fieldsValidator,
                 retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
     }
 
     private void setupPresenter(final SavePantryItemUsecase savePantryItemUsecase) {
-        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
+        presenter = new EditItemFragmentPresenterImpl(fieldsValidator,
                 retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
     }
 
     private void setupPresenter() {
-        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
+        presenter = new EditItemFragmentPresenterImpl(fieldsValidator,
                 retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
     }
 
@@ -146,20 +146,20 @@ public class EditItemFragmentPresenterTest {
     }
 
     private void setupValidatorMock() {
-        when(pantryItemValidator.validateName(ITEM_NAME)).thenReturn(VALID);
-        when(pantryItemValidator.validateType(pantryItemType)).thenReturn(VALID);
-        when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(VALID);
-        when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(VALID);
-        when(pantryItemValidator.validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE)).thenReturn(VALID);
+        when(fieldsValidator.validateName(ITEM_NAME)).thenReturn(VALID);
+        when(fieldsValidator.validateType(pantryItemType)).thenReturn(VALID);
+        when(fieldsValidator.validateQuantity(QUANTITY)).thenReturn(VALID);
+        when(fieldsValidator.validateAddingDate(ADDING_DATE)).thenReturn(VALID);
+        when(fieldsValidator.validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE)).thenReturn(VALID);
     }
 
 
     private void setupInvalidValidatorMock() {
-        when(pantryItemValidator.validateName(ITEM_NAME)).thenReturn(INVALID);
-        when(pantryItemValidator.validateType(pantryItemType)).thenReturn(INVALID);
-        when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(INVALID);
-        when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(INVALID);
-        when(pantryItemValidator.validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE)).thenReturn(INVALID);
+        when(fieldsValidator.validateName(ITEM_NAME)).thenReturn(INVALID);
+        when(fieldsValidator.validateType(pantryItemType)).thenReturn(INVALID);
+        when(fieldsValidator.validateQuantity(QUANTITY)).thenReturn(INVALID);
+        when(fieldsValidator.validateAddingDate(ADDING_DATE)).thenReturn(INVALID);
+        when(fieldsValidator.validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE)).thenReturn(INVALID);
     }
 
     @After
@@ -270,7 +270,7 @@ public class EditItemFragmentPresenterTest {
 
     @Test
     public void onCreateForNewItemErrorViewBounded() throws Exception {
-        presenter = new EditItemFragmentPresenterImpl(pantryItemValidator,
+        presenter = new EditItemFragmentPresenterImpl(fieldsValidator,
                 retrievePantryItemUsecase, retrievePantryItemTypesFailingUsecase, savePantryItemUsecase);
         presenter.bindView(view);
         presenter.onCreate(null);
@@ -299,11 +299,11 @@ public class EditItemFragmentPresenterTest {
     }
 
     private void verifyValidationMethodsWereCalled() {
-        verify(pantryItemValidator).validateName(ITEM_NAME);
-        verify(pantryItemValidator).validateType(pantryItemType);
-        verify(pantryItemValidator).validateQuantity(QUANTITY);
-        verify(pantryItemValidator).validateAddingDate(ADDING_DATE);
-        verify(pantryItemValidator).validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE);
+        verify(fieldsValidator).validateName(ITEM_NAME);
+        verify(fieldsValidator).validateType(pantryItemType);
+        verify(fieldsValidator).validateQuantity(QUANTITY);
+        verify(fieldsValidator).validateAddingDate(ADDING_DATE);
+        verify(fieldsValidator).validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE);
     }
 
     @Test
@@ -333,35 +333,35 @@ public class EditItemFragmentPresenterTest {
     @Test
     public void onSaveItemClickedNameValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
-        when(pantryItemValidator.validateName(ITEM_NAME)).thenReturn(INVALID);
+        when(fieldsValidator.validateName(ITEM_NAME)).thenReturn(INVALID);
         verifyFieldValidationFailedViewBounded(PantryItemFieldType.NAME);
     }
 
     @Test
     public void onSaveItemClickedTypeValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
-        when(pantryItemValidator.validateType(pantryItemType)).thenReturn(INVALID);
+        when(fieldsValidator.validateType(pantryItemType)).thenReturn(INVALID);
         verifyFieldValidationFailedViewBounded(PantryItemFieldType.TYPE);
     }
 
     @Test
     public void onSaveItemClickedQuantityValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
-        when(pantryItemValidator.validateQuantity(QUANTITY)).thenReturn(INVALID);
+        when(fieldsValidator.validateQuantity(QUANTITY)).thenReturn(INVALID);
         verifyFieldValidationFailedViewBounded(PantryItemFieldType.QUANTITY);
     }
 
     @Test
     public void onSaveItemClickedAddingDateValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
-        when(pantryItemValidator.validateAddingDate(ADDING_DATE)).thenReturn(INVALID);
+        when(fieldsValidator.validateAddingDate(ADDING_DATE)).thenReturn(INVALID);
         verifyFieldValidationFailedViewBounded(PantryItemFieldType.ADDING_DATE);
     }
 
     @Test
     public void onSaveItemClickedBestBeforeDateValidationFailedViewBounded() throws Exception {
         setupPresenter(savePantryItemUsecase);
-        when(pantryItemValidator.validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE)).thenReturn(INVALID);
+        when(fieldsValidator.validateBestBeforeDate(ADDING_DATE, BEST_BEFORE_DATE)).thenReturn(INVALID);
         verifyFieldValidationFailedViewBounded(PantryItemFieldType.BEST_BEFORE_DATE);
     }
 
