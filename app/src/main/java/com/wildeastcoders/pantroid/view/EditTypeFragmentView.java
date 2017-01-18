@@ -13,7 +13,9 @@ import com.wildeastcoders.pantroid.model.ValidationResult;
 public interface EditTypeFragmentView extends View {
     void populateTypeDetails(@NonNull PantryItemType pantryItemType);
     void displayValidationError(@NonNull ValidationResult validationResult);
-    void displayDiscardChangesDialogMessage();
+    void displayDiscardChangesMessage();
     void displayTypeNotFoundErrorMessage();
+    void displaySaveSucceedMessage();
+    void displaySaveFailedMessage();
     void finish();
 }

@@ -12,7 +12,9 @@ import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
 public interface EditTypeFragmentPresenter extends Presenter<EditTypeFragmentView> {
     void onSaveItemClicked(@NonNull String name);
 
-    void onSaveItemClicked(@NonNull PantryItemType pantryItemType);
+//    void onSaveItemClicked(@NonNull PantryItemType pantryItemType);
 
     void onCancelClicked();
+
+    void onFinishClicked();
 }

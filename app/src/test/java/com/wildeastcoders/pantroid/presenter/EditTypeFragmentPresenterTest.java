@@ -3,6 +3,7 @@ package com.wildeastcoders.pantroid.presenter;
 import android.os.Bundle;
 
 import com.wildeastcoders.pantroid.BuildConfig;
+import com.wildeastcoders.pantroid.model.FieldsValidator;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypeUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemTypeUsecase;
@@ -20,6 +21,8 @@ import org.robolectric.annotation.Config;
 import rx.Observable;
 
 import static com.wildeastcoders.pantroid.activities.IntentConstants.KEY_EDIT_ITEM_ID;
+import static com.wildeastcoders.pantroid.model.ValidationResult.INVALID;
+import static com.wildeastcoders.pantroid.model.ValidationResult.VALID;
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
 import static org.mockito.Mockito.never;
@@ -34,11 +37,13 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class)
 public class EditTypeFragmentPresenterTest {
 
+    public static final Exception DATABASE_EXCEPTION = new Exception("DatabaseException");
+    public static final String EMPTY_NAME = "";
     private static final Long ITEM_ID = 1L;
     private static final String ITEM_NAME = "ITEM_NAME";
+    private static final String ITEM_NAME_2 = "ITEM_NAME_2";
     private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(ITEM_ID, ITEM_NAME);
-    public static final Exception DATABASE_EXCEPTION = new Exception("DatabaseException");
-
+    private static final PantryItemType PANTRY_ITEM_TYPE_2 = new PantryItemType(ITEM_ID, ITEM_NAME_2);
     @Mock
     private EditTypeFragmentView editTypeFragmentView;
 
@@ -50,6 +55,9 @@ public class EditTypeFragmentPresenterTest {
 
     @Mock
     private RetrievePantryItemTypeUsecase retrievePantryItemTypeUsecase;
+
+    @Mock
+    private FieldsValidator fieldsValidator;
 
     private EditTypeFragmentPresenter presenter;
 
@@ -70,6 +78,8 @@ public class EditTypeFragmentPresenterTest {
         presenter = new EditTypeFragmentPresenterImpl(savePantryItemTypeUsecase, retrievePantryItemTypeUsecase);
         when(retrievePantryItemTypeUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
         when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
+        when(fieldsValidator.validateName(ITEM_NAME)).thenReturn(VALID);
+        when(fieldsValidator.validateName("")).thenReturn(INVALID);
     }
 
     @After
@@ -132,61 +142,163 @@ public class EditTypeFragmentPresenterTest {
 
     @Test
     public void onSaveItemClickedValidationSucceedForNewItemViewBounded() throws Exception {
-
+        bindView();
+        presenter.onSaveItemClicked(ITEM_NAME);
+        verify(savePantryItemTypeUsecase).init(ITEM_NAME);
+        verify(savePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView).displaySaveSucceedMessage();
+        verify(editTypeFragmentView).finish();
     }
 
     @Test
     public void onSaveItemClickedValidationSucceedForNewItemViewNotBounded() throws Exception {
-
+        presenter.onSaveItemClicked(ITEM_NAME);
+        verify(savePantryItemTypeUsecase).init(ITEM_NAME);
+        verify(savePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
     }
 
     @Test
     public void onSaveItemClickedValidationFailedForNewItemViewBounded() throws Exception {
-
+        bindView();
+        presenter.onSaveItemClicked(EMPTY_NAME);
+        verify(savePantryItemTypeUsecase, never()).init(ITEM_NAME);
+        verify(savePantryItemTypeUsecase, never()).execute();
+        verify(editTypeFragmentView).displayValidationError(INVALID);
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
     }
 
     @Test
     public void onSaveItemClickedValidationFailedForNewItemViewNotBounded() throws Exception {
-
+        presenter.onSaveItemClicked(EMPTY_NAME);
+        verify(savePantryItemTypeUsecase, never()).init(ITEM_NAME);
+        verify(savePantryItemTypeUsecase, never()).execute();
+        verify(editTypeFragmentView, never()).displayValidationError(INVALID);
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
     }
 
     @Test
-    public void onCancelClickedForNewItemViewBounded() throws Exception {
-
+    public void onSaveItemClickedValidationSucceedForNewItemSaveFailedViewBounded() throws Exception {
+        bindView();
+        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        presenter.onSaveItemClicked(ITEM_NAME);
+        verify(savePantryItemTypeUsecase).init(ITEM_NAME);
+        verify(savePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView).displaySaveFailedMessage();
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
     }
 
     @Test
-    public void onCancelClickedForNewItemViewNotBounded() throws Exception {
-
+    public void onSaveItemClickedValidationSucceedForNewItemSaveFailedViewNotBounded() throws Exception {
+        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        presenter.onSaveItemClicked(ITEM_NAME);
+        verify(savePantryItemTypeUsecase).init(ITEM_NAME);
+        verify(savePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView, never()).displaySaveFailedMessage();
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
     }
 
     @Test
     public void onSaveItemClickedValidationSucceedForEditItemViewBounded() throws Exception {
-
+        bindView();
+        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
+        presenter.onSaveItemClicked(ITEM_NAME_2);
+        verify(savePantryItemTypeUsecase).init(PANTRY_ITEM_TYPE_2);
+        verify(savePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView).displaySaveSucceedMessage();
+        verify(editTypeFragmentView).finish();
     }
 
     @Test
     public void onSaveItemClickedValidationSucceedForEditItemViewNotBounded() throws Exception {
-
+        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
+        presenter.onSaveItemClicked(ITEM_NAME_2);
+        verify(savePantryItemTypeUsecase).init(PANTRY_ITEM_TYPE_2);
+        verify(savePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
     }
 
     @Test
     public void onSaveItemClickedValidationFailedForEditItemViewBounded() throws Exception {
-
+        bindView();
+        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
+        presenter.onSaveItemClicked(ITEM_NAME_2);
+        verify(savePantryItemTypeUsecase, never()).init(PANTRY_ITEM_TYPE_2);
+        verify(savePantryItemTypeUsecase, never()).execute();
+        verify(editTypeFragmentView).displayValidationError(INVALID);
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
     }
 
     @Test
     public void onSaveItemClickedValidationFailedForEditItemViewNotBounded() throws Exception {
-
+        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
+        presenter.onSaveItemClicked(ITEM_NAME_2);
+        verify(savePantryItemTypeUsecase, never()).init(PANTRY_ITEM_TYPE_2);
+        verify(savePantryItemTypeUsecase, never()).execute();
+        verify(editTypeFragmentView, never()).displayValidationError(INVALID);
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
     }
 
     @Test
-    public void onCancelClickedForEditItemViewBounded() throws Exception {
-
+    public void onSaveItemClickedValidationSucceedForEditItemSaveFailedViewBounded() throws Exception {
+        bindView();
+        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
+        presenter.onSaveItemClicked(ITEM_NAME_2);
+        verify(savePantryItemTypeUsecase).init(PANTRY_ITEM_TYPE_2);
+        verify(savePantryItemTypeUsecase).execute();
+        verify(editTypeFragmentView).displaySaveFailedMessage();
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
     }
 
     @Test
-    public void onCancelClickedForEditItemViewNotBounded() throws Exception {
+    public void onSaveItemClickedValidationSucceedForEditItemSaveFailedViewNotBounded() throws Exception {
+        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
+        ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
+        presenter.onSaveItemClicked(ITEM_NAME_2);
+        verify(savePantryItemTypeUsecase).init(PANTRY_ITEM_TYPE_2);
+        verify(editTypeFragmentView, never()).displaySaveFailedMessage();
+        verify(editTypeFragmentView, never()).displaySaveSucceedMessage();
+        verify(editTypeFragmentView, never()).finish();
+    }
 
+    @Test
+    public void onCancelClickedForNewItemViewBounded() throws Exception {
+        bindView();
+        presenter.onCancelClicked();
+        verify(editTypeFragmentView).displayDiscardChangesMessage();
+    }
+
+    @Test
+    public void onCancelClickedForNewItemViewNotBounded() throws Exception {
+        presenter.onCancelClicked();
+        verify(editTypeFragmentView, never()).displayDiscardChangesMessage();
+    }
+
+    @Test
+    public void onFinishClickedForNewItemViewBounded() throws Exception {
+        bindView();
+        presenter.onFinishClicked();
+        verify(editTypeFragmentView).finish();
+    }
+
+    @Test
+    public void onFinishClickedForNewItemViewNotBounded() throws Exception {
+        bindView();
+        presenter.onFinishClicked();
+        verify(editTypeFragmentView).finish();
     }
 }

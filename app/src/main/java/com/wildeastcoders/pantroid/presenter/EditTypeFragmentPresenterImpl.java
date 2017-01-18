@@ -21,9 +21,19 @@ public class EditTypeFragmentPresenterImpl extends AbstractPresenter<EditTypeFra
     private final SavePantryItemTypeUsecase savePantryItemTypeUsecase;
     private final RetrievePantryItemTypeUsecase retrievePantryItemTypeUsecase;
 
+    private PantryItemType pantryItemType;
+
     public EditTypeFragmentPresenterImpl(final SavePantryItemTypeUsecase savePantryItemTypeUsecase, final RetrievePantryItemTypeUsecase retrievePantryItemTypeUsecase) {
         this.savePantryItemTypeUsecase = savePantryItemTypeUsecase;
         this.retrievePantryItemTypeUsecase = retrievePantryItemTypeUsecase;
+    }
+
+    /**
+     * For unit tests only!
+     * @param pantryItemType
+     */
+    void setPantryItemType(final PantryItemType pantryItemType) {
+        this.pantryItemType = pantryItemType;
     }
 
     @Override
@@ -31,13 +41,18 @@ public class EditTypeFragmentPresenterImpl extends AbstractPresenter<EditTypeFra
 
     }
 
+//    @Override
+//    public void onSaveItemClicked(@NonNull final PantryItemType pantryItemType) {
+//
+//    }
+
     @Override
-    public void onSaveItemClicked(@NonNull final PantryItemType pantryItemType) {
+    public void onCancelClicked() {
 
     }
 
     @Override
-    public void onCancelClicked() {
+    public void onFinishClicked() {
 
     }
 
@@ -90,4 +105,6 @@ public class EditTypeFragmentPresenterImpl extends AbstractPresenter<EditTypeFra
     public void onSaveInstanceState(final Bundle bundle) {
 
     }
+
+
 }
