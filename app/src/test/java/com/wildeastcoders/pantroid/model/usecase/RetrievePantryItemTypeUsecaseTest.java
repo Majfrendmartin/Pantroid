@@ -1,7 +1,7 @@
 package com.wildeastcoders.pantroid.model.usecase;
 
 import com.wildeastcoders.pantroid.BuildConfig;
-import com.wildeastcoders.pantroid.model.PantryItem;
+import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.database.Repository;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
 
@@ -13,39 +13,38 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.annotation.Config;
 
-import java.util.Date;
 import java.util.List;
 
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
-import static com.wildeastcoders.pantroid.model.Constants.MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT;
+import static com.wildeastcoders.pantroid.model.Constants.MISSING_PANTRY_ITEM_TYPE_OBJECT_ERROR_TEXT;
 import static com.wildeastcoders.pantroid.utils.TestUtils.setupRxAndroid;
 import static com.wildeastcoders.pantroid.utils.TestUtils.tearDownRxAndroid;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by Majfrendmartin on 2017-01-04.
+ * Created by Majfrendmartin on 2017-01-23.
  */
 
 @RunWith(RxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class RetrievePantryItemUsecaseTest {
+public class RetrievePantryItemTypeUsecaseTest {
 
     private static final Long ID = 1L;
-    private static final PantryItem PANTRY_ITEM = new PantryItem(ID, "name", 1L, new Date(), new Date(), 1);
-
-    private RetrievePantryItemUsecase retrievePantryItemUsecase;
+    private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(ID, "name");
 
     @Mock
     private Repository repository;
+
+    private RetrievePantryItemTypeUsecase retrievePantryItemTypeUsecase;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         setupRxAndroid();
-        retrievePantryItemUsecase = new RetrievePantryItemUsecaseImpl(repository);
+        retrievePantryItemTypeUsecase = new RetrievePantryItemTypeUsecaseImpl(repository);
     }
 
     @After
@@ -55,32 +54,33 @@ public class RetrievePantryItemUsecaseTest {
 
     @Test
     public void init() throws Exception {
-        retrievePantryItemUsecase.init(ID);
-        assertEquals(ID, ((RetrievePantryItemUsecaseImpl) retrievePantryItemUsecase).getItemId());
+        retrievePantryItemTypeUsecase.init(ID);
+        assertEquals(ID, ((RetrievePantryItemTypeUsecaseImpl) retrievePantryItemTypeUsecase).getItemId());
     }
 
     @Test
     public void executeNotInitialized() throws Exception {
-        TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
-        retrievePantryItemUsecase.execute().subscribe(testSubscriber);
+        TestSubscriber<PantryItemType> testSubscriber = new TestSubscriber<>();
+        retrievePantryItemTypeUsecase.execute().subscribe(testSubscriber);
 
         testSubscriber.assertError(NullPointerException.class);
         final List<Throwable> errors = testSubscriber.getOnErrorEvents();
         assertEquals(1, errors.size());
-        assertEquals(MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT, errors.get(0).getMessage());
+        assertEquals(MISSING_PANTRY_ITEM_TYPE_OBJECT_ERROR_TEXT, errors.get(0).getMessage());
     }
 
     @Test
     public void executeInitialized() throws Exception {
-        when(repository.getItemById(ID)).thenReturn(Observable.just(PANTRY_ITEM));
+        when(repository.getTypeById(ID)).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
 
-        final TestSubscriber<PantryItem> testSubscriber = new TestSubscriber<>();
-        retrievePantryItemUsecase.init(ID);
-        retrievePantryItemUsecase.execute().subscribe(testSubscriber);
+        final TestSubscriber<PantryItemType> testSubscriber = new TestSubscriber<>();
+        retrievePantryItemTypeUsecase.init(ID);
+        retrievePantryItemTypeUsecase.execute()
+                .subscribe(testSubscriber);
 
         testSubscriber.assertNoErrors();
-        final List<PantryItem> events = testSubscriber.getOnNextEvents();
+        final List<PantryItemType> events = testSubscriber.getOnNextEvents();
         assertEquals(1, events.size());
-        assertEquals(PANTRY_ITEM, events.get(0));
+        assertEquals(PANTRY_ITEM_TYPE, events.get(0));
     }
 }
