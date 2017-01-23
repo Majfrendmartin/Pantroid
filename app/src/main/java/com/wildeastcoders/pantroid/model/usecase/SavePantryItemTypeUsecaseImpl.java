@@ -42,7 +42,6 @@ public class SavePantryItemTypeUsecaseImpl implements SavePantryItemTypeUsecase 
                 repository.addType(pantryItemType);
     }
 
-
     public PantryItemType getPantryItemType() {
         return pantryItemType;
     }

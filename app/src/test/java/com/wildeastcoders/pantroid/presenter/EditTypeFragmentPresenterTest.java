@@ -75,10 +75,11 @@ public class EditTypeFragmentPresenterTest {
         MockitoAnnotations.initMocks(this);
         setupRxAndroid();
         setupBundle();
-        presenter = new EditTypeFragmentPresenterImpl(savePantryItemTypeUsecase, retrievePantryItemTypeUsecase);
+        presenter = new EditTypeFragmentPresenterImpl(savePantryItemTypeUsecase, retrievePantryItemTypeUsecase, fieldsValidator);
         when(retrievePantryItemTypeUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
         when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
         when(fieldsValidator.validateName(ITEM_NAME)).thenReturn(VALID);
+        when(fieldsValidator.validateName(ITEM_NAME_2)).thenReturn(VALID);
         when(fieldsValidator.validateName("")).thenReturn(INVALID);
     }
 
@@ -206,7 +207,6 @@ public class EditTypeFragmentPresenterTest {
     @Test
     public void onSaveItemClickedValidationSucceedForEditItemViewBounded() throws Exception {
         bindView();
-        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
         ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
         presenter.onSaveItemClicked(ITEM_NAME_2);
         verify(savePantryItemTypeUsecase).init(PANTRY_ITEM_TYPE_2);
@@ -217,7 +217,6 @@ public class EditTypeFragmentPresenterTest {
 
     @Test
     public void onSaveItemClickedValidationSucceedForEditItemViewNotBounded() throws Exception {
-        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
         ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
         presenter.onSaveItemClicked(ITEM_NAME_2);
         verify(savePantryItemTypeUsecase).init(PANTRY_ITEM_TYPE_2);
@@ -229,8 +228,8 @@ public class EditTypeFragmentPresenterTest {
     @Test
     public void onSaveItemClickedValidationFailedForEditItemViewBounded() throws Exception {
         bindView();
-        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
         ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
+        when(fieldsValidator.validateName(ITEM_NAME_2)).thenReturn(INVALID);
         presenter.onSaveItemClicked(ITEM_NAME_2);
         verify(savePantryItemTypeUsecase, never()).init(PANTRY_ITEM_TYPE_2);
         verify(savePantryItemTypeUsecase, never()).execute();
@@ -241,8 +240,8 @@ public class EditTypeFragmentPresenterTest {
 
     @Test
     public void onSaveItemClickedValidationFailedForEditItemViewNotBounded() throws Exception {
-        when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.error(DATABASE_EXCEPTION));
         ((EditTypeFragmentPresenterImpl) presenter).setPantryItemType(PANTRY_ITEM_TYPE);
+        when(fieldsValidator.validateName(ITEM_NAME_2)).thenReturn(INVALID);
         presenter.onSaveItemClicked(ITEM_NAME_2);
         verify(savePantryItemTypeUsecase, never()).init(PANTRY_ITEM_TYPE_2);
         verify(savePantryItemTypeUsecase, never()).execute();
