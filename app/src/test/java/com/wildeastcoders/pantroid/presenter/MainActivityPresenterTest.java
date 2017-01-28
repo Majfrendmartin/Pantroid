@@ -33,10 +33,6 @@ public class MainActivityPresenterTest {
 
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void onManageTypesMenuOptionSelected() throws Exception {
         presenter.bindView(mainActivityView);

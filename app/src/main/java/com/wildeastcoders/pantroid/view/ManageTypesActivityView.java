@@ -5,4 +5,6 @@ package com.wildeastcoders.pantroid.view;
  */
 
 public interface ManageTypesActivityView extends View {
+    void onNavigateBack();
+    void showNewItemTypeDialog();
 }
