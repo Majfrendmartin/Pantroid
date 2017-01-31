@@ -29,10 +29,10 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
     private final UpdateItemQuantityUsecase updateItemQuantityUsecase;
     private final RemoveItemUsecase removeItemUsecase;
 
-    //TODO: handle subscribtions during lifecycle.
-    private Subscription getPantryItemsSubscribtion;
-    private Subscription removeItemSubscribtion;
-    private Subscription updateItemQuantitySubscribtion;
+    //TODO: handle subscriptions during lifecycle.
+    private Subscription getPantryItemsSubscription;
+    private Subscription removeItemSubscription;
+    private Subscription updateItemQuantitySubscription;
 
     private List<PantryItem> cachedItemsList;
 
@@ -56,11 +56,11 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     @Override
     public void requestPantryItemsUpdate() {
-        if (getPantryItemsSubscribtion != null && !getPantryItemsSubscribtion.isUnsubscribed()) {
-            getPantryItemsSubscribtion.unsubscribe();
+        if (getPantryItemsSubscription != null && !getPantryItemsSubscription.isUnsubscribed()) {
+            getPantryItemsSubscription.unsubscribe();
         }
 
-        getPantryItemsSubscribtion = retrievePantryItemsUsecase.execute()
+        getPantryItemsSubscription = retrievePantryItemsUsecase.execute()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(throwable -> {
@@ -111,7 +111,7 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
 
     private void performUpdateItemsQuantity(@NonNull final PantryItem pantryItem, final QuantityUpdateOperation operation) {
         updateItemQuantityUsecase.init(pantryItem, operation);
-        updateItemQuantitySubscribtion = updateItemQuantityUsecase.execute()
+        updateItemQuantitySubscription = updateItemQuantityUsecase.execute()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(throwable -> {
@@ -131,7 +131,7 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
     @Override
     public void onRemoveItemClicked(@NonNull final PantryItem pantryItem) {
         removeItemUsecase.init(pantryItem);
-        removeItemSubscribtion = removeItemUsecase.execute().subscribeOn(Schedulers.io())
+        removeItemSubscription = removeItemUsecase.execute().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(throwable -> {
                     handleRemoveItemError(throwable);
