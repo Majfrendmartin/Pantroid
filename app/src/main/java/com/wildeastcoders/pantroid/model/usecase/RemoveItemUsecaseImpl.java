@@ -31,6 +31,8 @@ public class RemoveItemUsecaseImpl implements RemoveItemUsecase {
             return Observable.error(new NullPointerException(MISSING_PANTRY_ITEM_OBJECT_ERROR_TEXT));
         }
 
-        return repository.removeItem(pantryItem).map(aVoid -> pantryItem);
+        return repository
+                .removeItem(pantryItem)
+                .map(aVoid -> pantryItem);
     }
 }

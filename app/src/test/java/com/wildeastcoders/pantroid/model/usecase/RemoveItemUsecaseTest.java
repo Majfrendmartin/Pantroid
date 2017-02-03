@@ -31,10 +31,10 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class)
 public class RemoveItemUsecaseTest {
 
-    public static final DaoException DAO_EXCEPTION = new DaoException("Test Dao Exception");
+    private static final DaoException DAO_EXCEPTION = new DaoException("Test Dao Exception");
 
     @Mock
-    Repository repository;
+    private Repository repository;
 
     private RemoveItemUsecase removeItemUsecase;
 

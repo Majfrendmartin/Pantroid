@@ -7,7 +7,7 @@ import com.wildeastcoders.pantroid.model.PantryItemType;
  */
 
 public interface RemoveTypeUsecase extends Usecase<PantryItemType> {
-    void init(PantryItemType pantryItem);
+    void init(PantryItemType pantryItemType);
 
     PantryItemType getPantryItemType();
 }
