@@ -16,4 +16,10 @@ public interface ManageTypesFragmentView extends View {
     void displayCreateTypeDialog();
 
     void onUpdateItem(int index, PantryItemType item);
+
+    void displayRetrieveTypesError();
+
+    void displayItemOptions(PantryItemType pantryItemType);
+
+    void displayRemoveItemFailed();
 }

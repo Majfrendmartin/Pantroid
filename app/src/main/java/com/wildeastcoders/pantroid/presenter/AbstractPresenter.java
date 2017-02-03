@@ -28,7 +28,6 @@ public abstract class AbstractPresenter<T extends View> implements Presenter<T> 
 
     @Override
     public void onCreate(@Nullable final Bundle bundle) {
-
     }
 
     @Override
