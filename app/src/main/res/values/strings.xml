@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Pantroid</string>
+    <string name="action_manage_types">Manage Types</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_edit_item">EditItemActivity</string>
+    <string name="title_activity_manage_types">ManageTypesActivity</string>
 </resources>

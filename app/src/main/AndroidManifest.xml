@@ -3,6 +3,7 @@
           package="com.wildeastcoders.pantroid">
 
     <application
+        android:name=".PantroidApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,6 +22,12 @@
         <activity
             android:name=".view.EditItemActivity"
             android:label="@string/title_activity_edit_item"
+            android:parentActivityName=".view.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".view.ManageTypesActivity"
+            android:label="@string/title_activity_manage_types"
             android:parentActivityName=".view.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

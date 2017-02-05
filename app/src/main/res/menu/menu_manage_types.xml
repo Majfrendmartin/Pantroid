@@ -1,10 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.wildeastcoders.pantroid.view.MainActivity">
+      tools:context="com.wildeastcoders.pantroid.view.ManageTypesActivity">
     <item
-        android:id="@+id/action_manage_types"
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_manage_types"
+        android:title="@string/action_settings"
         app:showAsAction="never"/>
 </menu>
