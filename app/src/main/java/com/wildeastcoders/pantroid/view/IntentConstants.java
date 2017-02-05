@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid.activities;
+package com.wildeastcoders.pantroid.view;
 
 /**
  * Created by Majfrendmartin on 2016-11-18.

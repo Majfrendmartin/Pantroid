@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".view.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,9 +19,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.EditItemActivity"
+            android:name=".view.EditItemActivity"
             android:label="@string/title_activity_edit_item"
-            android:parentActivityName=".activities.MainActivity"
+            android:parentActivityName=".view.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

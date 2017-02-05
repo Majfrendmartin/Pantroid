@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid.activities;
+package com.wildeastcoders.pantroid.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.wildeastcoders.pantroid.R;
-import com.wildeastcoders.pantroid.view.MainActivityView;
 
 public class MainActivity extends AppCompatActivity implements MainActivityView {
 
@@ -51,11 +50,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public void navigateToManageTypesActivity() {
-
+        startActivity(new Intent(this, ManageTypesActivity.class));
     }
 
     @Override
     public void navigateToNewItemActivity() {
-
+        startActivity(new Intent(this, EditItemActivity.class));
     }
 }

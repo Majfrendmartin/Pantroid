@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid.activities;
+package com.wildeastcoders.pantroid.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

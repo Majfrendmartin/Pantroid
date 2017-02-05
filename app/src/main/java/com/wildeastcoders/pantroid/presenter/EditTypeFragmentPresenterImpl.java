@@ -14,7 +14,7 @@ import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.wildeastcoders.pantroid.activities.IntentConstants.KEY_EDIT_ITEM_ID;
+import static com.wildeastcoders.pantroid.view.IntentConstants.KEY_EDIT_ITEM_ID;
 import static com.wildeastcoders.pantroid.model.ValidationResult.VALID;
 
 /**

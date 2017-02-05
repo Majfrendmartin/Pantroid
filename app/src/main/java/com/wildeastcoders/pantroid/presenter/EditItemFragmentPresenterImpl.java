@@ -24,7 +24,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.wildeastcoders.pantroid.activities.IntentConstants.KEY_EDIT_ITEM_ID;
+import static com.wildeastcoders.pantroid.view.IntentConstants.KEY_EDIT_ITEM_ID;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.ADDING_DATE;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.BEST_BEFORE_DATE;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.NAME;
@@ -318,6 +318,10 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
 
         if (retrieveItemDetailsSubscription != null && retrieveItemDetailsSubscription.isUnsubscribed()){
             retrieveItemDetailsSubscription.unsubscribe();
+        }
+
+        if (savePantryItemSubscription != null && savePantryItemSubscription.isUnsubscribed()){
+            savePantryItemSubscription.unsubscribe();
         }
 
         super.onDestroy();
