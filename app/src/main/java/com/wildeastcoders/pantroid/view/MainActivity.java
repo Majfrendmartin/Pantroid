@@ -10,20 +10,26 @@ import android.view.MenuItem;
 
 import com.wildeastcoders.pantroid.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity implements MainActivityView {
+
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            final Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
-            startActivity(intent);
-        });
+    @OnClick(R.id.fab)
+    public void plusButtonClicked() {
+        navigateToNewItemActivity();
     }
 
     @Override
@@ -48,13 +54,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         return super.onOptionsItemSelected(item);
     }
 
+    private void startActivityForClass(Class<?> cls) {
+        final Intent intent = new Intent(this, cls);
+        startActivity(intent);
+    }
+
     @Override
     public void navigateToManageTypesActivity() {
-        startActivity(new Intent(this, ManageTypesActivity.class));
+        startActivityForClass(ManageTypesActivity.class);
     }
 
     @Override
     public void navigateToNewItemActivity() {
-        startActivity(new Intent(this, EditItemActivity.class));
+        startActivityForClass(EditItemActivity.class);
     }
 }
