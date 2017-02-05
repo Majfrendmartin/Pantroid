@@ -1,9 +1,12 @@
 package com.wildeastcoders.pantroid.presenter;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.wildeastcoders.pantroid.view.View;
+
+import rx.Subscription;
 
 /**
  * Created by Majfrendmartin on 2016-11-11.
@@ -63,5 +66,13 @@ public abstract class AbstractPresenter<T extends View> implements Presenter<T> 
     @Override
     public void onDestroy() {
 
+    }
+
+    protected void cleanupSubscriptions(@NonNull Subscription... subscriptions) {
+        for (Subscription subscription : subscriptions) {
+            if (subscription != null && !subscription.isUnsubscribed()) {
+                subscription.unsubscribe();
+            }
+        }
     }
 }

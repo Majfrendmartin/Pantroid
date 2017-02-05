@@ -1,16 +1,19 @@
 package com.wildeastcoders.pantroid.presenter;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
-import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemsUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RemoveItemUsecase;
+import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemsUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation;
 import com.wildeastcoders.pantroid.view.MainActivityFragmentView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -52,6 +55,18 @@ public class MainActivityFragmentPresenterImpl extends AbstractPresenter<MainAct
             requestPantryItemsUpdate();
         }
         return cachedItemsList;
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle bundle) {
+        super.onCreate(bundle);
+        getPantryItems();
+    }
+
+    @Override
+    public void onDestroy() {
+        cleanupSubscriptions(getPantryItemsSubscription, removeItemSubscription, updateItemQuantitySubscription);
+        super.onDestroy();
     }
 
     @Override
