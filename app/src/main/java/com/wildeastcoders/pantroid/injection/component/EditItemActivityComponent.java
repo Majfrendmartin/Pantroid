@@ -2,9 +2,10 @@ package com.wildeastcoders.pantroid.injection.component;
 
 import com.wildeastcoders.pantroid.injection.module.ActivityModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
+import com.wildeastcoders.pantroid.injection.module.ReadPantryItemTypesModule;
 import com.wildeastcoders.pantroid.injection.scope.PerActivity;
-import com.wildeastcoders.pantroid.view.MainActivity;
-import com.wildeastcoders.pantroid.view.MainActivityFragment;
+import com.wildeastcoders.pantroid.view.EditItemActivity;
+import com.wildeastcoders.pantroid.view.EditItemActivityFragment;
 
 import dagger.Component;
 
@@ -15,10 +16,11 @@ import dagger.Component;
 @PerActivity
 @Component(dependencies = ApplicationComponent.class,
         modules = {ActivityModule.class,
-                PantryItemsModule.class})
+                PantryItemsModule.class,
+                ReadPantryItemTypesModule.class})
 
-public interface MainActivityComponent {
-    void inject(MainActivity mainActivity);
+public interface EditItemActivityComponent {
+    void inject(EditItemActivity mainActivity);
 
-    void inject(MainActivityFragment mainActivityFragment);
+    void inject(EditItemActivityFragment mainActivityFragment);
 }

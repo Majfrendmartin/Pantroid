@@ -3,6 +3,7 @@ package com.wildeastcoders.pantroid.model.usecase;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.database.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;

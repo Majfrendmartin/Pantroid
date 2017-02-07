@@ -14,7 +14,6 @@ import com.wildeastcoders.pantroid.PantroidApplication;
 import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.injection.component.ApplicationComponent;
 import com.wildeastcoders.pantroid.injection.component.DaggerMainActivityComponent;
-import com.wildeastcoders.pantroid.injection.component.MainActivityComponent;
 import com.wildeastcoders.pantroid.injection.module.ActivityModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
 import com.wildeastcoders.pantroid.model.PantryItem;
@@ -23,6 +22,8 @@ import com.wildeastcoders.pantroid.presenter.MainActivityFragmentPresenter;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import butterknife.ButterKnife;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -56,6 +57,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_main, container, false);
+        ButterKnife.bind(this, view);
         return view;
     }
 

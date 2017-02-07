@@ -4,15 +4,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.wildeastcoders.pantroid.model.FieldsValidator;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
-import com.wildeastcoders.pantroid.model.FieldsValidator;
 import com.wildeastcoders.pantroid.model.ValidationResult;
+import com.wildeastcoders.pantroid.model.events.SaveItemClickedEvent;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemUsecase;
-import com.wildeastcoders.pantroid.view.EditItemFragmentView;
+import com.wildeastcoders.pantroid.view.EditItemActivityFragmentView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -24,18 +28,18 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.wildeastcoders.pantroid.view.IntentConstants.KEY_EDIT_ITEM_ID;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.ADDING_DATE;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.BEST_BEFORE_DATE;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.NAME;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.QUANTITY;
 import static com.wildeastcoders.pantroid.model.PantryItemFieldType.TYPE;
 import static com.wildeastcoders.pantroid.model.ValidationResult.VALID;
+import static com.wildeastcoders.pantroid.view.IntentConstants.KEY_EDIT_ITEM_ID;
 
 /**
  * Created by Majfrendmartin on 15.11.2016.
  */
-public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFragmentView>
+public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemActivityFragmentView>
         implements EditItemFragmentPresenter {
 
     public static final int VALIDATION_RESULTS_CAPACITY = 5;
@@ -64,13 +68,12 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     public EditItemFragmentPresenterImpl(final FieldsValidator fieldsValidator,
                                          final RetrievePantryItemUsecase retrievePantryItemUsecase,
                                          final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase,
-    final SavePantryItemUsecase savePantryItemUsecase) {
+                                         final SavePantryItemUsecase savePantryItemUsecase) {
         this.fieldsValidator = fieldsValidator;
         this.retrievePantryItemUsecase = retrievePantryItemUsecase;
         this.retrievePantryItemTypesUsecase = retrievePantryItemTypesUsecase;
         this.savePantryItemUsecase = savePantryItemUsecase;
     }
-
 
 
     @Override
@@ -134,13 +137,15 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     @Override
     public void onCreate(@Nullable final Bundle bundle) {
         super.onCreate(bundle);
+
+        EventBus.getDefault().register(this);
+
         if (bundle != null && bundle.containsKey(KEY_EDIT_ITEM_ID)) {
             final Long itemId = bundle.getLong(KEY_EDIT_ITEM_ID);
             retrieveItemDetails(itemId);
         } else {
             populatePantryItemTypes();
         }
-
     }
 
     private void retrieveItemDetails(final Long itemId) {
@@ -174,7 +179,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
     private void handlePantryItemRetrieved(final PantryItem item) {
         itemCache = item;
         if (isViewBounded()) {
-            final EditItemFragmentView view = getView();
+            final EditItemActivityFragmentView view = getView();
             view.setupNameField(item.getName());
             view.setupTypeField(item.getType());
             view.setupQuantityField(item.getQuantity());
@@ -300,18 +305,10 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
         }
     }
 
-    private class RetrieveResult {
-        private List<PantryItemType> itemTypes;
-        private PantryItem item;
-
-        private RetrieveResult(final List<PantryItemType> itemTypes, final PantryItem item) {
-            this.itemTypes = itemTypes;
-            this.item = item;
-        }
-    }
-
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+
         if (retrievePantryItemTypesSubscription != null && retrievePantryItemTypesSubscription.isUnsubscribed()){
             retrievePantryItemTypesSubscription.unsubscribe();
         }
@@ -327,9 +324,26 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemFra
         super.onDestroy();
     }
 
+    @Subscribe
+    public void onSaveItemClickedEvent(@NonNull final SaveItemClickedEvent saveItemClickedEvent) {
+        if (isViewBounded()) {
+            getView().requestInputDataOnSaveItemClicked();
+        }
+    }
+
     private void handleValidationResult(PantryItemFieldType type, final ValidationResult validationResult, Map<PantryItemFieldType, ValidationResult> map) {
         if (validationResult != VALID) {
             map.put(type, validationResult);
+        }
+    }
+
+    private class RetrieveResult {
+        private List<PantryItemType> itemTypes;
+        private PantryItem item;
+
+        private RetrieveResult(final List<PantryItemType> itemTypes, final PantryItem item) {
+            this.itemTypes = itemTypes;
+            this.item = item;
         }
     }
 }

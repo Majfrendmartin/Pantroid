@@ -9,10 +9,10 @@ import com.wildeastcoders.pantroid.model.PantryItem;
  */
 
 public interface UpdateItemQuantityUsecase extends Usecase<PantryItem> {
+    void init(@NonNull PantryItem item, @NonNull QuantityUpdateOperation operation);
+
     enum QuantityUpdateOperation {
         INCREASE,
         DECREASE
     }
-
-    void init(@NonNull PantryItem item, @NonNull QuantityUpdateOperation operation);
 }

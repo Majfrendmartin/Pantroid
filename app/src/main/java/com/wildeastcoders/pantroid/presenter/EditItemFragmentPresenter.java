@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemType;
-import com.wildeastcoders.pantroid.view.EditItemFragmentView;
+import com.wildeastcoders.pantroid.view.EditItemActivityFragmentView;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Majfrendmartin on 2016-11-09.
  */
 
-public interface EditItemFragmentPresenter extends Presenter<EditItemFragmentView> {
+public interface EditItemFragmentPresenter extends Presenter<EditItemActivityFragmentView> {
     void onSaveItemClicked(String name, PantryItemType type, int quantity, Date addingDate,
                            Date bestBeforeDate);
 

@@ -12,7 +12,7 @@ import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemUsecase;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
-import com.wildeastcoders.pantroid.view.EditItemFragmentView;
+import com.wildeastcoders.pantroid.view.EditItemActivityFragmentView;
 
 import org.junit.After;
 import org.junit.Before;
@@ -58,7 +58,7 @@ public class EditItemFragmentPresenterTest {
     public static final String ITEM_SAVING_EXCEPTION = "ITEM TYPES RETRIEVING EXCEPTION";
 
     @Mock
-    private EditItemFragmentView view;
+    private EditItemActivityFragmentView view;
 
     @Mock
     private PantryItemType pantryItemType;

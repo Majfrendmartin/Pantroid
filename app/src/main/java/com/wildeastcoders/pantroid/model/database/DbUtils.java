@@ -1,6 +1,8 @@
 package com.wildeastcoders.pantroid.model.database;
 
 import android.app.Application;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import com.wildeastcoders.pantroid.model.DaoMaster;
 import com.wildeastcoders.pantroid.model.DaoSession;

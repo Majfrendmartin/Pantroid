@@ -3,6 +3,7 @@ package com.wildeastcoders.pantroid.injection.component;
 import com.wildeastcoders.pantroid.injection.module.ApplicationModule;
 import com.wildeastcoders.pantroid.injection.module.RepositoryModule;
 import com.wildeastcoders.pantroid.injection.scope.PerApplication;
+import com.wildeastcoders.pantroid.model.FieldsValidator;
 import com.wildeastcoders.pantroid.model.database.Repository;
 
 import dagger.Component;
@@ -16,4 +17,5 @@ import dagger.Component;
         RepositoryModule.class})
 public interface ApplicationComponent {
     Repository repository();
+    FieldsValidator fieldsValidator();
 }

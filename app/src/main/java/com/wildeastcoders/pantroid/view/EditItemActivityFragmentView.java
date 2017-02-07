@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by Majfrendmartin on 2016-11-09.
  */
 
-public interface EditItemFragmentView extends View {
+public interface EditItemActivityFragmentView extends View {
 
     void populateTypesSpinner(List<PantryItemType> types);
 
@@ -38,6 +38,8 @@ public interface EditItemFragmentView extends View {
     void displayValidationResults(Map<PantryItemFieldType, ValidationResult> resultsMap);
 
     void displayDiscardChangesDialog();
+
+    void requestInputDataOnSaveItemClicked();
 
     void finish();
 }

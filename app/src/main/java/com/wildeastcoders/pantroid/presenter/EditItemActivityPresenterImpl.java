@@ -1,6 +1,9 @@
 package com.wildeastcoders.pantroid.presenter;
 
+import com.wildeastcoders.pantroid.model.events.SaveItemClickedEvent;
 import com.wildeastcoders.pantroid.view.EditItemActivityView;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Majfrendmartin on 15.11.2016.
@@ -9,6 +12,7 @@ public class EditItemActivityPresenterImpl extends AbstractPresenter<EditItemAct
     @Override
     public void onSaveItemClicked() {
         if (isViewBounded()) {
+            EventBus.getDefault().post(new SaveItemClickedEvent());
             getView().handleSaveItemClicked();
         }
     }

@@ -35,13 +35,13 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class)
 public class UpdateItemQuantityUsecaseTest {
 
-    private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(1L, "TYPE_NAME");
     public static final String NAME = "";
     public static final Long TYPE_ID = 1L;
     public static final Date ADDING_DATE = new Date();
     public static final Date BEST_BEFORE_DATE = new Date();
     public static final int QUANTITY = 1;
     public static final Long ID = 1L;
+    private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(1L, "TYPE_NAME");
     private static final PantryItem PANTRY_ITEM = new PantryItem(ID, NAME, TYPE_ID, ADDING_DATE, BEST_BEFORE_DATE, QUANTITY);
     static {
         PANTRY_ITEM.setType(PANTRY_ITEM_TYPE);
