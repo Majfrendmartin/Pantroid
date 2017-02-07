@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,16 +22,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView {
+public class MainActivity extends PresenterActivity<MainActivityPresenter> implements MainActivityView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
-
-    @Inject
-    MainActivityPresenter presenter;
 
     @Inject
     Context context;
@@ -54,13 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 .inject(this);
 
         presenter.bindView(this);
-        presenter.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        presenter.onDestroy();
-        super.onDestroy();
+        onCreateAfterInjection(savedInstanceState);
     }
 
     @OnClick(R.id.fab)

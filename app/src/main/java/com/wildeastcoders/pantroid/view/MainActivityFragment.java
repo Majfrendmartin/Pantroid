@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,17 +20,12 @@ import com.wildeastcoders.pantroid.presenter.MainActivityFragmentPresenter;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements MainActivityFragmentView {
-
-    @Inject
-    MainActivityFragmentPresenter presenter;
+public class MainActivityFragment extends PresenterFragment<MainActivityFragmentPresenter> implements MainActivityFragmentView {
 
     public MainActivityFragment() {
     }
