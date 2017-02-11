@@ -8,11 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.wildeastcoders.pantroid.PantroidApplication;
 import com.wildeastcoders.pantroid.R;
-import com.wildeastcoders.pantroid.injection.component.ApplicationComponent;
 import com.wildeastcoders.pantroid.injection.component.DaggerMainActivityComponent;
-import com.wildeastcoders.pantroid.injection.module.ActivityModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
 import com.wildeastcoders.pantroid.presenter.MainActivityPresenter;
 
@@ -40,11 +37,9 @@ public class MainActivity extends PresenterActivity<MainActivityPresenter> imple
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        final ApplicationComponent applicationComponent = ((PantroidApplication) getApplication()).getApplicationComponent();
-
         DaggerMainActivityComponent.builder()
-                .applicationComponent(applicationComponent)
-                .activityModule(new ActivityModule(this))
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
                 .pantryItemsModule(new PantryItemsModule())
                 .build()
                 .inject(this);

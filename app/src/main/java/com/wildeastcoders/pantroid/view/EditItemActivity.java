@@ -1,6 +1,5 @@
 package com.wildeastcoders.pantroid.view;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -8,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.injection.component.DaggerEditItemActivityComponent;
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
-import com.wildeastcoders.pantroid.injection.module.ReadPantryItemTypesModule;
+import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.presenter.EditItemActivityPresenter;
 
 import butterknife.BindView;
@@ -35,7 +34,7 @@ public class EditItemActivity extends PresenterActivity<EditItemActivityPresente
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .pantryItemsModule(new PantryItemsModule())
-                .readPantryItemTypesModule(new ReadPantryItemTypesModule())
+                .pantryItemTypesModule(new PantryItemTypesModule())
                 .build()
                 .inject(this);
 

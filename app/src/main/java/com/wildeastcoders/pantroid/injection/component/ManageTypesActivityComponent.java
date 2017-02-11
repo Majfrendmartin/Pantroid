@@ -1,11 +1,11 @@
 package com.wildeastcoders.pantroid.injection.component;
 
 import com.wildeastcoders.pantroid.injection.module.ActivityModule;
-import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.injection.scope.PerActivity;
-import com.wildeastcoders.pantroid.view.EditItemActivity;
-import com.wildeastcoders.pantroid.view.EditItemActivityFragment;
+import com.wildeastcoders.pantroid.view.EditTypeFragment;
+import com.wildeastcoders.pantroid.view.ManageTypesActivity;
+import com.wildeastcoders.pantroid.view.ManageTypesActivityFragment;
 
 import dagger.Component;
 
@@ -16,11 +16,12 @@ import dagger.Component;
 @PerActivity
 @Component(dependencies = ApplicationComponent.class,
         modules = {ActivityModule.class,
-                PantryItemsModule.class,
                 PantryItemTypesModule.class})
 
-public interface EditItemActivityComponent {
-    void inject(EditItemActivity mainActivity);
+public interface ManageTypesActivityComponent {
+    void inject(ManageTypesActivity manageTypesActivity);
 
-    void inject(EditItemActivityFragment mainActivityFragment);
+    void inject(ManageTypesActivityFragment manageTypesActivityFragment);
+
+    void inject(EditTypeFragment manageTypesActivityFragment);
 }

@@ -5,7 +5,7 @@ import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.usecase.RemoveTypeUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
-import com.wildeastcoders.pantroid.view.ManageTypesFragmentView;
+import com.wildeastcoders.pantroid.view.ManageTypesActivityFragmentView;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RxJavaTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class ManageTypesFragmentPresenterTest {
+public class ManageTypesActivityFragmentPresenterTest {
 
     private static final Throwable THROWABLE = new Throwable("Message");
     private static final long LIST_SIZE = 5;
@@ -51,9 +51,9 @@ public class ManageTypesFragmentPresenterTest {
     private RemoveTypeUsecase removeTypeUsecase;
 
     @Mock
-    private ManageTypesFragmentView manageTypesFragmentView;
+    private ManageTypesActivityFragmentView manageTypesActivityFragmentView;
 
-    private ManageTypesFragmentPresenter presenter;
+    private ManageTypesActivityFragmentPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
@@ -63,7 +63,7 @@ public class ManageTypesFragmentPresenterTest {
         when(retrievePantryItemTypesUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPES));
         when(removeTypeUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
 
-        presenter = new ManageTypesFragmentPresenterImpl(retrievePantryItemTypesUsecase, removeTypeUsecase);
+        presenter = new ManageTypesActivityFragmentPresenterImpl(retrievePantryItemTypesUsecase, removeTypeUsecase);
     }
 
     @After
@@ -73,22 +73,22 @@ public class ManageTypesFragmentPresenterTest {
 
     @Test
     public void onCreateViewBounded() throws Exception {
-        presenter.bindView(manageTypesFragmentView);
+        presenter.bindView(manageTypesActivityFragmentView);
         presenter.onCreate(null);
 
         verify(retrievePantryItemTypesUsecase).execute();
-        verify(manageTypesFragmentView).onItemsListChanged(PANTRY_ITEM_TYPES);
+        verify(manageTypesActivityFragmentView).onItemsListChanged(PANTRY_ITEM_TYPES);
     }
 
     @Test
     public void onCreateViewBoundedRetrieveFailed() throws Exception {
-        presenter.bindView(manageTypesFragmentView);
+        presenter.bindView(manageTypesActivityFragmentView);
         when(retrievePantryItemTypesUsecase.execute()).thenReturn(Observable.error(THROWABLE));
         presenter.onCreate(null);
 
         verify(retrievePantryItemTypesUsecase).execute();
-        verify(manageTypesFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
-        verify(manageTypesFragmentView).displayRetrieveTypesError();
+        verify(manageTypesActivityFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
+        verify(manageTypesActivityFragmentView).displayRetrieveTypesError();
     }
 
     @Test
@@ -96,7 +96,7 @@ public class ManageTypesFragmentPresenterTest {
         presenter.onCreate(null);
 
         verify(retrievePantryItemTypesUsecase).execute();
-        verify(manageTypesFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
+        verify(manageTypesActivityFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
     }
 
     @Test
@@ -104,34 +104,34 @@ public class ManageTypesFragmentPresenterTest {
         presenter.onCreate(null);
 
         verify(retrievePantryItemTypesUsecase).execute();
-        verify(manageTypesFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
-        verify(manageTypesFragmentView, never()).displayRetrieveTypesError();
+        verify(manageTypesActivityFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
+        verify(manageTypesActivityFragmentView, never()).displayRetrieveTypesError();
     }
 
     @Test
     public void onItemLongClickedViewBounded() throws Exception {
-        presenter.bindView(manageTypesFragmentView);
+        presenter.bindView(manageTypesActivityFragmentView);
         presenter.onItemLongClicked(PANTRY_ITEM_TYPE);
 
-        verify(manageTypesFragmentView).displayItemOptions(PANTRY_ITEM_TYPE);
+        verify(manageTypesActivityFragmentView).displayItemOptions(PANTRY_ITEM_TYPE);
     }
 
     @Test
     public void onItemLongClickedViewNotBounded() throws Exception {
         presenter.onItemLongClicked(PANTRY_ITEM_TYPE);
 
-        verify(manageTypesFragmentView, never()).displayItemOptions(PANTRY_ITEM_TYPE);
+        verify(manageTypesActivityFragmentView, never()).displayItemOptions(PANTRY_ITEM_TYPE);
     }
 
     @Test
     public void onRemoveItemClickedViewBounded() throws Exception {
-        presenter.bindView(manageTypesFragmentView);
+        presenter.bindView(manageTypesActivityFragmentView);
         presenter.onRemoveItemClicked(PANTRY_ITEM_TYPE);
 
         verify(removeTypeUsecase).init(PANTRY_ITEM_TYPE);
         verify(removeTypeUsecase).execute();
         verify(retrievePantryItemTypesUsecase).execute();
-        verify(manageTypesFragmentView).onItemsListChanged(PANTRY_ITEM_TYPES);
+        verify(manageTypesActivityFragmentView).onItemsListChanged(PANTRY_ITEM_TYPES);
     }
 
     @Test
@@ -141,32 +141,32 @@ public class ManageTypesFragmentPresenterTest {
         verify(removeTypeUsecase).init(PANTRY_ITEM_TYPE);
         verify(removeTypeUsecase).execute();
         verify(retrievePantryItemTypesUsecase).execute();
-        verify(manageTypesFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
+        verify(manageTypesActivityFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
     }
 
     @Test
     public void onRemoveItemClickedViewBoundedFailed() throws Exception {
-        presenter.bindView(manageTypesFragmentView);
+        presenter.bindView(manageTypesActivityFragmentView);
         when(removeTypeUsecase.execute()).thenReturn(Observable.error(THROWABLE));
         presenter.onRemoveItemClicked(PANTRY_ITEM_TYPE);
 
         verify(removeTypeUsecase).init(PANTRY_ITEM_TYPE);
         verify(removeTypeUsecase).execute();
         verify(retrievePantryItemTypesUsecase, never()).execute();
-        verify(manageTypesFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
-        verify(manageTypesFragmentView).displayRemoveItemFailed();
+        verify(manageTypesActivityFragmentView, never()).onItemsListChanged(PANTRY_ITEM_TYPES);
+        verify(manageTypesActivityFragmentView).displayRemoveItemFailed();
     }
 
     @Test
     public void onEditItemClickedViewBounded() throws Exception {
-        presenter.bindView(manageTypesFragmentView);
+        presenter.bindView(manageTypesActivityFragmentView);
         presenter.onEditItemClicked(PANTRY_ITEM_TYPE);
-        verify(manageTypesFragmentView).displayEditTypeDialog(PANTRY_ITEM_TYPE);
+        verify(manageTypesActivityFragmentView).displayEditTypeDialog(PANTRY_ITEM_TYPE);
     }
 
     @Test
     public void onEditItemClickedViewNotBounded() throws Exception {
         presenter.onEditItemClicked(PANTRY_ITEM_TYPE);
-        verify(manageTypesFragmentView, never()).displayEditTypeDialog(PANTRY_ITEM_TYPE);
+        verify(manageTypesActivityFragmentView, never()).displayEditTypeDialog(PANTRY_ITEM_TYPE);
     }
 }

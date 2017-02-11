@@ -4,4 +4,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_edit_item">EditItemActivity</string>
     <string name="title_activity_manage_types">ManageTypesActivity</string>
+    <string name="save">Save</string>
+    <string name="type_name_hint">Pantry item type name</string>
+    <string name="edit_type_dialog_title">Edit type details</string>
 </resources>

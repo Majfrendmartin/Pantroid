@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.usecase.RemoveTypeUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
-import com.wildeastcoders.pantroid.view.ManageTypesFragmentView;
+import com.wildeastcoders.pantroid.view.ManageTypesActivityFragmentView;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -20,14 +20,14 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Majfrendmartin on 2016-11-11.
  */
-public class ManageTypesFragmentPresenterImpl extends AbstractPresenter<ManageTypesFragmentView> implements ManageTypesFragmentPresenter {
+public class ManageTypesActivityFragmentPresenterImpl extends AbstractPresenter<ManageTypesActivityFragmentView> implements ManageTypesActivityFragmentPresenter {
     private final RemoveTypeUsecase removeTypeUsecase;
     private final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase;
     private List<PantryItemType> itemTypes = new CopyOnWriteArrayList<>();
-    private Subscription retriveTypesSubscription;
+    private Subscription retrieveTypesSubscription;
     private Subscription removeTypesSubscription;
 
-    public ManageTypesFragmentPresenterImpl(final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase, final RemoveTypeUsecase removeTypeUsecase) {
+    public ManageTypesActivityFragmentPresenterImpl(final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase, final RemoveTypeUsecase removeTypeUsecase) {
         this.retrievePantryItemTypesUsecase = retrievePantryItemTypesUsecase;
         this.removeTypeUsecase = removeTypeUsecase;
     }
@@ -73,7 +73,7 @@ public class ManageTypesFragmentPresenterImpl extends AbstractPresenter<ManageTy
     }
 
     private void retrieveTypes() {
-         retriveTypesSubscription = getRetrieveObservable()
+         retrieveTypesSubscription = getRetrieveObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handlePantryItemTypesRetrieved);
@@ -87,7 +87,7 @@ public class ManageTypesFragmentPresenterImpl extends AbstractPresenter<ManageTy
 
     private void handlePantryItemTypesRetrieved(final List<PantryItemType> itemTypes) {
         final boolean viewBounded = isViewBounded();
-        final ManageTypesFragmentView view = getView();
+        final ManageTypesActivityFragmentView view = getView();
         if (itemTypes != null) {
             this.itemTypes.clear();
             this.itemTypes.addAll(itemTypes);
@@ -103,8 +103,8 @@ public class ManageTypesFragmentPresenterImpl extends AbstractPresenter<ManageTy
 
     @Override
     public void onDestroy() {
-        if (retriveTypesSubscription != null && retriveTypesSubscription.isUnsubscribed()) {
-            retriveTypesSubscription.unsubscribe();
+        if (retrieveTypesSubscription != null && retrieveTypesSubscription.isUnsubscribed()) {
+            retrieveTypesSubscription.unsubscribe();
         }
 
         if (removeTypesSubscription != null && removeTypesSubscription.isUnsubscribed()) {

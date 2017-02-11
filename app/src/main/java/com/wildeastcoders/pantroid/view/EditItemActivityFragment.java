@@ -2,7 +2,6 @@ package com.wildeastcoders.pantroid.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,8 @@ import android.widget.Toast;
 
 import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.injection.component.DaggerEditItemActivityComponent;
+import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
-import com.wildeastcoders.pantroid.injection.module.ReadPantryItemTypesModule;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
@@ -39,7 +38,7 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .pantryItemsModule(new PantryItemsModule())
-                .readPantryItemTypesModule(new ReadPantryItemTypesModule())
+                .pantryItemTypesModule(new PantryItemTypesModule())
                 .build()
                 .inject(this);
         presenter.bindView(this);
