@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid.view;
+package com.wildeastcoders.pantroid.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.ValidationResult;
 import com.wildeastcoders.pantroid.presenter.EditTypeFragmentPresenter;
+import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
+import com.wildeastcoders.pantroid.view.IntentConstants;
 
 import javax.inject.Inject;
 

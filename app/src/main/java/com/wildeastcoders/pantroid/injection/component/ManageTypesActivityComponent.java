@@ -3,9 +3,9 @@ package com.wildeastcoders.pantroid.injection.component;
 import com.wildeastcoders.pantroid.injection.module.ActivityModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.injection.scope.PerActivity;
-import com.wildeastcoders.pantroid.view.EditTypeFragment;
-import com.wildeastcoders.pantroid.view.ManageTypesActivity;
-import com.wildeastcoders.pantroid.view.ManageTypesActivityFragment;
+import com.wildeastcoders.pantroid.view.fragment.EditTypeFragment;
+import com.wildeastcoders.pantroid.view.activity.ManageTypesActivity;
+import com.wildeastcoders.pantroid.view.fragment.ManageTypesActivityFragment;
 
 import dagger.Component;
 

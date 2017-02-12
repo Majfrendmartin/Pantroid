@@ -1,15 +1,16 @@
-package com.wildeastcoders.pantroid.view;
+package com.wildeastcoders.pantroid.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatDialogFragment;
+import android.support.v7.app.AppCompatActivity;
 
 import com.wildeastcoders.pantroid.PantroidApplication;
 import com.wildeastcoders.pantroid.injection.component.ApplicationComponent;
 import com.wildeastcoders.pantroid.injection.module.ActivityModule;
 import com.wildeastcoders.pantroid.presenter.Presenter;
+import com.wildeastcoders.pantroid.view.View;
 
 import javax.inject.Inject;
 
@@ -17,7 +18,7 @@ import javax.inject.Inject;
  * Created by Majfrendmartin on 2017-02-07.
  */
 
-public abstract class PresenterDialogFragment<T extends Presenter<? extends View>> extends AppCompatDialogFragment {
+public abstract class PresenterFragment<T extends Presenter<? extends View>> extends Fragment {
 
     @Inject
     T presenter;

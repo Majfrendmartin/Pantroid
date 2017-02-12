@@ -4,6 +4,9 @@ import android.content.ComponentName;
 import android.content.Intent;
 
 import com.wildeastcoders.pantroid.BuildConfig;
+import com.wildeastcoders.pantroid.view.activity.EditItemActivity;
+import com.wildeastcoders.pantroid.view.activity.MainActivity;
+import com.wildeastcoders.pantroid.view.activity.ManageTypesActivity;
 
 import org.junit.After;
 import org.junit.Before;

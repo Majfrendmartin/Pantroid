@@ -1,7 +1,7 @@
 package com.wildeastcoders.pantroid.presenter;
 
-import com.wildeastcoders.pantroid.model.events.SaveItemClickedEvent;
-import com.wildeastcoders.pantroid.view.EditItemActivityView;
+import com.wildeastcoders.pantroid.model.event.SaveItemClickedEvent;
+import com.wildeastcoders.pantroid.view.activity.EditItemActivityView;
 
 import org.greenrobot.eventbus.EventBus;
 

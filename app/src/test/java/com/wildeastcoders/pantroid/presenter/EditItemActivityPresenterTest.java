@@ -1,6 +1,6 @@
 package com.wildeastcoders.pantroid.presenter;
 
-import com.wildeastcoders.pantroid.view.EditItemActivityView;
+import com.wildeastcoders.pantroid.view.activity.EditItemActivityView;
 
 import org.junit.After;
 import org.junit.Before;

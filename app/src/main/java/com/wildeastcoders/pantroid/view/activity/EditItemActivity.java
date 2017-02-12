@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid.view;
+package com.wildeastcoders.pantroid.view.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

@@ -4,8 +4,8 @@ import com.wildeastcoders.pantroid.injection.module.ActivityModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.injection.scope.PerActivity;
-import com.wildeastcoders.pantroid.view.EditItemActivity;
-import com.wildeastcoders.pantroid.view.EditItemActivityFragment;
+import com.wildeastcoders.pantroid.view.activity.EditItemActivity;
+import com.wildeastcoders.pantroid.view.fragment.EditItemActivityFragment;
 
 import dagger.Component;
 

@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid.view;
+package com.wildeastcoders.pantroid.view.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +11,8 @@ import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.injection.component.DaggerManageTypesActivityComponent;
 import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.presenter.ManageTypesActivityPresenter;
+import com.wildeastcoders.pantroid.view.fragment.EditTypeFragment;
+import com.wildeastcoders.pantroid.view.ManageTypesActivityView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
