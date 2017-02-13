@@ -7,13 +7,18 @@ import android.support.annotation.Nullable;
 import com.wildeastcoders.pantroid.model.FieldsValidator;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.ValidationResult;
+import com.wildeastcoders.pantroid.model.event.AddNewTypeEvent;
+import com.wildeastcoders.pantroid.model.event.NewItemAddedEvent;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypeUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemTypeUsecase;
 import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.wildeastcoders.pantroid.model.event.NewItemAddedEvent.EventItemTypes.ITEM_TYPE;
 import static com.wildeastcoders.pantroid.view.IntentConstants.KEY_EDIT_ITEM_ID;
 import static com.wildeastcoders.pantroid.model.ValidationResult.VALID;
 
@@ -72,6 +77,7 @@ public class EditTypeFragmentPresenterImpl extends AbstractPresenter<EditTypeFra
     private void handleSaveResult(@Nullable final PantryItemType item) {
         if (isViewBounded()) {
             if (item != null) {
+                EventBus.getDefault().post(new NewItemAddedEvent(ITEM_TYPE));
                 getView().displaySaveSucceedMessage();
                 getView().finish();
             } else {
