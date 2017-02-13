@@ -7,11 +7,10 @@ import android.support.annotation.Nullable;
 import com.wildeastcoders.pantroid.model.FieldsValidator;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.ValidationResult;
-import com.wildeastcoders.pantroid.model.event.AddNewTypeEvent;
 import com.wildeastcoders.pantroid.model.event.NewItemAddedEvent;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypeUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemTypeUsecase;
-import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.EditTypeFragmentView;
 
 import org.greenrobot.eventbus.EventBus;
 

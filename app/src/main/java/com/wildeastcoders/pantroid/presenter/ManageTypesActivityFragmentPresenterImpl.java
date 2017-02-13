@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.usecase.RemoveTypeUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
-import com.wildeastcoders.pantroid.view.ManageTypesActivityFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.ManageTypesActivityFragmentView;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

@@ -14,7 +14,6 @@ import com.wildeastcoders.pantroid.injection.component.DaggerManageTypesActivity
 import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.presenter.ManageTypesActivityFragmentPresenter;
-import com.wildeastcoders.pantroid.view.ManageTypesActivityFragmentView;
 import com.wildeastcoders.pantroid.view.adapter.PantryItemTypesAdapter;
 
 import java.util.List;

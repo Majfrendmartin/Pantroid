@@ -5,7 +5,7 @@ import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.usecase.RemoveTypeUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
-import com.wildeastcoders.pantroid.view.ManageTypesActivityFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.ManageTypesActivityFragmentView;
 
 import org.junit.After;
 import org.junit.Before;

@@ -12,7 +12,6 @@ import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.injection.component.DaggerMainActivityComponent;
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
 import com.wildeastcoders.pantroid.presenter.MainActivityPresenter;
-import com.wildeastcoders.pantroid.view.MainActivityView;
 
 import javax.inject.Inject;
 

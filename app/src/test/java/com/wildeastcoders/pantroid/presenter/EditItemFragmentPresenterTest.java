@@ -12,7 +12,7 @@ import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemUsecase;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
-import com.wildeastcoders.pantroid.view.EditItemActivityFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.EditItemActivityFragmentView;
 
 import org.junit.After;
 import org.junit.Before;

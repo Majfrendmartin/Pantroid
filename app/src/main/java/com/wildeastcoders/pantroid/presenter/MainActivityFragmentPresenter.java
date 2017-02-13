@@ -3,7 +3,7 @@ package com.wildeastcoders.pantroid.presenter;
 import android.support.annotation.NonNull;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
-import com.wildeastcoders.pantroid.view.MainActivityFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.MainActivityFragmentView;
 
 import java.util.List;
 

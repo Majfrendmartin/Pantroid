@@ -1,9 +1,10 @@
-package com.wildeastcoders.pantroid.view;
+package com.wildeastcoders.pantroid.view.fragment;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.ValidationResult;
+import com.wildeastcoders.pantroid.view.View;
 
 import java.util.Date;
 import java.util.List;

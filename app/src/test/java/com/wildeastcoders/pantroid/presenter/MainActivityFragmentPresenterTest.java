@@ -7,7 +7,7 @@ import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemsUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
-import com.wildeastcoders.pantroid.view.MainActivityFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.MainActivityFragmentView;
 
 import org.junit.After;
 import org.junit.Before;

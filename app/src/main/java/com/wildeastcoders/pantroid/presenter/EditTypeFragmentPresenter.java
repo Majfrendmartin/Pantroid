@@ -2,8 +2,7 @@ package com.wildeastcoders.pantroid.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.wildeastcoders.pantroid.model.PantryItemType;
-import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.EditTypeFragmentView;
 
 /**
  * Created by Majfrendmartin on 2016-11-09.

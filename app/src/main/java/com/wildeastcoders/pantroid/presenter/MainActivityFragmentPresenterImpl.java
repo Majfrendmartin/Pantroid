@@ -9,11 +9,10 @@ import com.wildeastcoders.pantroid.model.usecase.RemoveItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemsUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase;
 import com.wildeastcoders.pantroid.model.usecase.UpdateItemQuantityUsecase.QuantityUpdateOperation;
-import com.wildeastcoders.pantroid.view.MainActivityFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.MainActivityFragmentView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

@@ -1,6 +1,6 @@
 package com.wildeastcoders.pantroid.presenter;
 
-import com.wildeastcoders.pantroid.view.ManageTypesActivityView;
+import com.wildeastcoders.pantroid.view.activity.ManageTypesActivityView;
 
 /**
  * Created by Majfrendmartin on 2017-01-28.

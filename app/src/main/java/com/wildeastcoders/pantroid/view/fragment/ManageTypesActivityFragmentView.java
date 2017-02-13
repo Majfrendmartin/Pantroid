@@ -1,6 +1,7 @@
-package com.wildeastcoders.pantroid.view;
+package com.wildeastcoders.pantroid.view.fragment;
 
 import com.wildeastcoders.pantroid.model.PantryItemType;
+import com.wildeastcoders.pantroid.view.View;
 
 import java.util.List;
 

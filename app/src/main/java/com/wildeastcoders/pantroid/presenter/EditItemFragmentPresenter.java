@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemType;
-import com.wildeastcoders.pantroid.view.EditItemActivityFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.EditItemActivityFragmentView;
 
 import java.util.Date;
 import java.util.List;

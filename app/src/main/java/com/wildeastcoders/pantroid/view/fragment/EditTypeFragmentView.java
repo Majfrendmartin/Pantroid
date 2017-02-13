@@ -1,9 +1,10 @@
-package com.wildeastcoders.pantroid.view;
+package com.wildeastcoders.pantroid.view.fragment;
 
 import android.support.annotation.NonNull;
 
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.ValidationResult;
+import com.wildeastcoders.pantroid.view.View;
 
 
 /**

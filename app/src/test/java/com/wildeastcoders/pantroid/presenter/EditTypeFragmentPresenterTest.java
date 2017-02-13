@@ -8,7 +8,7 @@ import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypeUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemTypeUsecase;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
-import com.wildeastcoders.pantroid.view.EditTypeFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.EditTypeFragmentView;
 
 import org.junit.After;
 import org.junit.Before;

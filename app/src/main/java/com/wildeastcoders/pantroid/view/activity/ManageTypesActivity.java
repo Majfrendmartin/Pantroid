@@ -12,7 +12,6 @@ import com.wildeastcoders.pantroid.injection.component.DaggerManageTypesActivity
 import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.presenter.ManageTypesActivityPresenter;
 import com.wildeastcoders.pantroid.view.fragment.EditTypeFragment;
-import com.wildeastcoders.pantroid.view.ManageTypesActivityView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

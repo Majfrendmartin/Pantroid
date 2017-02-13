@@ -17,7 +17,6 @@ import com.wildeastcoders.pantroid.injection.module.ActivityModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.presenter.MainActivityFragmentPresenter;
-import com.wildeastcoders.pantroid.view.MainActivityFragmentView;
 
 import java.util.List;
 

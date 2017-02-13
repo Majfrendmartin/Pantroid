@@ -13,7 +13,7 @@ import com.wildeastcoders.pantroid.model.event.SaveItemClickedEvent;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemUsecase;
-import com.wildeastcoders.pantroid.view.EditItemActivityFragmentView;
+import com.wildeastcoders.pantroid.view.fragment.EditItemActivityFragmentView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
