@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid.view;
+package com.wildeastcoders.pantroid.view.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -30,12 +30,11 @@ import static org.mockito.Mockito.verify;
 @Config(constants = BuildConfig.class)
 public class MainActivityViewTest {
 
-    private MainActivity mainActivity;
     private MainActivity spyMainActivity;
 
     @Before
     public void setUp() throws Exception {
-        mainActivity = Robolectric
+        final MainActivity mainActivity = Robolectric
                 .buildActivity(MainActivity.class)
                 .create()
                 .resume()
@@ -54,7 +53,7 @@ public class MainActivityViewTest {
         ArgumentCaptor<Intent> argumentCaptor = ArgumentCaptor.forClass(Intent.class);
         verify(spyMainActivity).startActivity(argumentCaptor.capture());
         final ComponentName component = argumentCaptor.getValue().getComponent();
-        assertEquals(new Intent(mainActivity, ManageTypesActivity.class).getComponent(), component);
+        assertEquals(new Intent(spyMainActivity, ManageTypesActivity.class).getComponent(), component);
     }
 
     @Test
@@ -63,7 +62,7 @@ public class MainActivityViewTest {
         ArgumentCaptor<Intent> argumentCaptor = ArgumentCaptor.forClass(Intent.class);
         verify(spyMainActivity).startActivity(argumentCaptor.capture());
         final ComponentName component = argumentCaptor.getValue().getComponent();
-        assertEquals(new Intent(mainActivity, EditItemActivity.class).getComponent(), component);
+        assertEquals(new Intent(spyMainActivity, EditItemActivity.class).getComponent(), component);
     }
 
 }
