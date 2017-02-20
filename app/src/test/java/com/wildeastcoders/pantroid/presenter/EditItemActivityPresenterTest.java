@@ -1,19 +1,28 @@
 package com.wildeastcoders.pantroid.presenter;
 
+import com.wildeastcoders.pantroid.BuildConfig;
 import com.wildeastcoders.pantroid.view.activity.EditItemActivityView;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 /**
  * Created by Majfrendmartin on 15.11.2016.
  */
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class EditItemActivityPresenterTest {
 
     @Mock
@@ -33,17 +42,18 @@ public class EditItemActivityPresenterTest {
 
     }
 
+    @Ignore("Verifying calls to EventBus needed")
     @Test
     public void onSaveItemClickedViewBounded() throws Exception {
         presenter.bindView(editItemActivityView);
         presenter.onSaveItemClicked();
-        verify(editItemActivityView).handleSaveItemClicked();
     }
 
+    @Ignore("Verifying calls to EventBus needed")
     @Test
     public void onSaveItemClickedViewNotBounded() throws Exception {
         presenter.onSaveItemClicked();
-        verify(editItemActivityView, never()).handleSaveItemClicked();
+
     }
 
     @Test
@@ -56,6 +66,19 @@ public class EditItemActivityPresenterTest {
     @Test
     public void onBackClickedViewNotBonded() throws Exception {
         presenter.onBackClicked();
+        verify(editItemActivityView, never()).displayBackConfirmation();
+    }
+
+    @Test
+    public void onHomeClickedViewBounded() throws Exception {
+        presenter.bindView(editItemActivityView);
+        presenter.onHomeClicked();
+        verify(editItemActivityView).displayBackConfirmation();
+    }
+
+    @Test
+    public void onHomeClickedViewNotBonded() throws Exception {
+        presenter.onHomeClicked();
         verify(editItemActivityView, never()).displayBackConfirmation();
     }
 
@@ -73,28 +96,15 @@ public class EditItemActivityPresenterTest {
     }
 
     @Test
-    public void onStart() throws Exception {
-
+    public void onHomeConfirmedViewBounded() throws Exception {
+        presenter.bindView(editItemActivityView);
+        presenter.onHomeConfirmed();
+        verify(editItemActivityView).performHomeNavigation();
     }
 
     @Test
-    public void onStop() throws Exception {
-
+    public void onHomeConfirmedViewNotBounded() throws Exception {
+        presenter.onHomeConfirmed();
+        verify(editItemActivityView, never()).performHomeNavigation();
     }
-
-    @Test
-    public void onResume() throws Exception {
-
-    }
-
-    @Test
-    public void onPause() throws Exception {
-
-    }
-
-    @Test
-    public void onSaveInstanceState() throws Exception {
-
-    }
-
 }

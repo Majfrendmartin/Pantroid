@@ -7,4 +7,6 @@
     <string name="save">Save</string>
     <string name="type_name_hint">Pantry item type name</string>
     <string name="edit_type_dialog_title">Edit type details</string>
+    <string name="abandon_changes_dialog_title">Abandon changes</string>
+    <string name="abandon_changes_dialog_message">You are going to abandon current changes. Are you sure?</string>
 </resources>

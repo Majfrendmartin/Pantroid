@@ -12,5 +12,9 @@ public interface EditItemActivityPresenter extends Presenter<EditItemActivityVie
 
     void onBackClicked();
 
+    void onHomeClicked();
+
     void onBackConfirmed();
+
+    void onHomeConfirmed();
 }

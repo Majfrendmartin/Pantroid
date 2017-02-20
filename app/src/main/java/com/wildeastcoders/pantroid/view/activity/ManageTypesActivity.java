@@ -1,9 +1,6 @@
 package com.wildeastcoders.pantroid.view.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -11,6 +8,7 @@ import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.injection.component.DaggerManageTypesActivityComponent;
 import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.presenter.ManageTypesActivityPresenter;
+import com.wildeastcoders.pantroid.view.ViewUtils;
 import com.wildeastcoders.pantroid.view.fragment.EditTypeFragment;
 
 import butterknife.BindView;
@@ -54,15 +52,7 @@ public class ManageTypesActivity extends PresenterActivity<ManageTypesActivityPr
 
     @Override
     public void showNewItemTypeDialog() {
-        final FragmentManager supportFragmentManager = getSupportFragmentManager();
-        final FragmentTransaction ft = supportFragmentManager.beginTransaction();
-        final Fragment prev = supportFragmentManager.findFragmentByTag(EDIT_TYPE_FRAGMENT_TAG);
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
-
         final EditTypeFragment editTypeFragment = new EditTypeFragment();
-        editTypeFragment.show(supportFragmentManager, EDIT_TYPE_FRAGMENT_TAG);
+        ViewUtils.showDialogFragment(editTypeFragment, getSupportFragmentManager(), EDIT_TYPE_FRAGMENT_TAG);
     }
 }

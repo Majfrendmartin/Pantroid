@@ -13,4 +13,13 @@ public final class Constants {
     private Constants() {
         //no-op
     }
+
+    public static class DialogIdentifiers {
+        public static final int ABANDON_CHANGES_BACK_DIALOG_ID = 1;
+        public static final int ABANDON_CHANGES_HOME_DIALOG_ID = 2;
+
+        private DialogIdentifiers() {
+            //no-op
+        }
+    }
 }

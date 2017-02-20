@@ -7,9 +7,11 @@ import com.wildeastcoders.pantroid.view.View;
  */
 
 public interface EditItemActivityView extends View {
-    void handleSaveItemClicked();
-
     void displayBackConfirmation();
 
+    void displayHomeConfirmation();
+
     void performBackNavigation();
+
+    void performHomeNavigation();
 }
