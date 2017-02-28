@@ -1,4 +1,4 @@
-package com.wildeastcoders.pantroid;
+package com.wildeastcoders.pantroid.utils;
 
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
 import com.wildeastcoders.pantroid.presenter.EditItemActivityPresenter;

@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.wildeastcoders.pantroid.BuildConfig;
-import com.wildeastcoders.pantroid.MockPantryItemsModule;
+import com.wildeastcoders.pantroid.utils.MockPantryItemsModule;
 import com.wildeastcoders.pantroid.model.event.DialogButtonClickedEvent;
 import com.wildeastcoders.pantroid.presenter.EditItemActivityPresenter;
 import com.wildeastcoders.pantroid.view.ConfirmationDialogFragment;

@@ -49,13 +49,6 @@ public class EditItemActivityPresenterTest {
         presenter.onSaveItemClicked();
     }
 
-    @Ignore("Verifying calls to EventBus needed")
-    @Test
-    public void onSaveItemClickedViewNotBounded() throws Exception {
-        presenter.onSaveItemClicked();
-
-    }
-
     @Test
     public void onBackClickedViewBounded() throws Exception {
         presenter.bindView(editItemActivityView);

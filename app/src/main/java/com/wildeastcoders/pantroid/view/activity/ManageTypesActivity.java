@@ -47,12 +47,13 @@ public class ManageTypesActivity extends PresenterActivity<ManageTypesActivityPr
 
     @Override
     public void onNavigateBack() {
-
+        onBackPressed();
     }
 
     @Override
-    public void showNewItemTypeDialog() {
-        final EditTypeFragment editTypeFragment = new EditTypeFragment();
+    public EditTypeFragment showNewItemTypeDialog() {
+        final EditTypeFragment editTypeFragment = EditTypeFragment.newInstance();
         ViewUtils.showDialogFragment(editTypeFragment, getSupportFragmentManager(), EDIT_TYPE_FRAGMENT_TAG);
+        return editTypeFragment;
     }
 }

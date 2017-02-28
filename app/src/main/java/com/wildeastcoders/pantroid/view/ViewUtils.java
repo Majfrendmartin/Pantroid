@@ -15,7 +15,12 @@ import org.greenrobot.eventbus.EventBus;
  * Created by Majfrendmartin on 2017-02-15.
  */
 
-public final class ViewUtils {
+public class ViewUtils {
+
+    private ViewUtils() {
+        //no-op
+    }
+
     public static void showConfirmationAlertDialog(@NonNull FragmentManager fragmentManager,
                                                    @StringRes int titleId, @StringRes int messageId,
                                                    int dialogId, @NonNull String dialogTag) {
@@ -35,6 +40,7 @@ public final class ViewUtils {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
+
         fragment.show(fragmentManager, tag);
     }
 }
