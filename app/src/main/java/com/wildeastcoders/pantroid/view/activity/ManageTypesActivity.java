@@ -1,6 +1,7 @@
 package com.wildeastcoders.pantroid.view.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -51,9 +52,12 @@ public class ManageTypesActivity extends PresenterActivity<ManageTypesActivityPr
     }
 
     @Override
-    public EditTypeFragment showNewItemTypeDialog() {
-        final EditTypeFragment editTypeFragment = EditTypeFragment.newInstance();
-        ViewUtils.showDialogFragment(editTypeFragment, getSupportFragmentManager(), EDIT_TYPE_FRAGMENT_TAG);
-        return editTypeFragment;
+    public void showNewItemTypeDialog() {
+        ViewUtils.showDialogFragment(getEditTypeFragment(), getSupportFragmentManager(), EDIT_TYPE_FRAGMENT_TAG);
+    }
+
+    @NonNull
+    protected EditTypeFragment getEditTypeFragment() {
+        return EditTypeFragment.newInstance();
     }
 }

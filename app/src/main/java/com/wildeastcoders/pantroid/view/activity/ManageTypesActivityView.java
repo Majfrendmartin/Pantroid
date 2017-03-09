@@ -9,5 +9,5 @@ import com.wildeastcoders.pantroid.view.fragment.EditTypeFragment;
 
 public interface ManageTypesActivityView extends View {
     void onNavigateBack();
-    EditTypeFragment showNewItemTypeDialog();
+    void showNewItemTypeDialog();
 }
