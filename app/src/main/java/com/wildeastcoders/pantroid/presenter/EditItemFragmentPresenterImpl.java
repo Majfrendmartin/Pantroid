@@ -48,7 +48,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemAct
     private final RetrievePantryItemUsecase retrievePantryItemUsecase;
     private final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase;
     private final SavePantryItemUsecase savePantryItemUsecase;
-
+    private final EventBus eventBus;
 
     @Nullable
     private List<PantryItemType> itemTypesCache;
@@ -68,11 +68,13 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemAct
     public EditItemFragmentPresenterImpl(final FieldsValidator fieldsValidator,
                                          final RetrievePantryItemUsecase retrievePantryItemUsecase,
                                          final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase,
-                                         final SavePantryItemUsecase savePantryItemUsecase) {
+                                         final SavePantryItemUsecase savePantryItemUsecase,
+                                         final EventBus eventBus) {
         this.fieldsValidator = fieldsValidator;
         this.retrievePantryItemUsecase = retrievePantryItemUsecase;
         this.retrievePantryItemTypesUsecase = retrievePantryItemTypesUsecase;
         this.savePantryItemUsecase = savePantryItemUsecase;
+        this.eventBus = eventBus;
     }
 
 
@@ -138,7 +140,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemAct
     public void onCreate(@Nullable final Bundle bundle) {
         super.onCreate(bundle);
 
-        EventBus.getDefault().register(this);
+        eventBus.register(this);
 
         if (bundle != null && bundle.containsKey(KEY_EDIT_ITEM_ID)) {
             final Long itemId = bundle.getLong(KEY_EDIT_ITEM_ID);
@@ -307,7 +309,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemAct
 
     @Override
     public void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        eventBus.unregister(this);
 
         if (retrievePantryItemTypesSubscription != null && retrievePantryItemTypesSubscription.isUnsubscribed()){
             retrievePantryItemTypesSubscription.unsubscribe();

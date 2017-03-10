@@ -66,7 +66,7 @@ public class EditItemActivityPresenterTest {
     public void onHomeClickedViewBounded() throws Exception {
         presenter.bindView(editItemActivityView);
         presenter.onHomeClicked();
-        verify(editItemActivityView).displayBackConfirmation();
+        verify(editItemActivityView).displayHomeConfirmation();
     }
 
     @Test

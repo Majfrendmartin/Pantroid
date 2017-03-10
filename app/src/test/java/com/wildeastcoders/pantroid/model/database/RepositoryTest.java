@@ -48,9 +48,7 @@ public class RepositoryTest {
         MockitoAnnotations.initMocks(this);
         setupRxAndroid();
         daoSession = DbUtils.getDaoSession(RuntimeEnvironment.application, BuildConfig.DB_NAME);
-
         repository = new RepositoryImpl(daoSession);
-
     }
 
     @After

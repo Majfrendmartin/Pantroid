@@ -5,6 +5,8 @@ import android.app.Application;
 import com.wildeastcoders.pantroid.PantroidApplication;
 import com.wildeastcoders.pantroid.injection.scope.PerApplication;
 
+import org.greenrobot.eventbus.EventBus;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -30,5 +32,11 @@ public class ApplicationModule {
     @PerApplication
     public Application provideApplication() {
         return application;
+    }
+
+    @Provides
+    @PerApplication
+    public EventBus provideEventBus() {
+        return EventBus.getDefault();
     }
 }

@@ -22,6 +22,8 @@ public class ManageTypesActivity extends PresenterActivity<ManageTypesActivityPr
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    private PantryItemTypesModule pantryItemTypesModule;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,7 @@ public class ManageTypesActivity extends PresenterActivity<ManageTypesActivityPr
         DaggerManageTypesActivityComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .pantryItemTypesModule(new PantryItemTypesModule())
+                .pantryItemTypesModule(getPantryItemTypesModule())
                 .build()
                 .inject(this);
 
@@ -47,11 +49,6 @@ public class ManageTypesActivity extends PresenterActivity<ManageTypesActivityPr
     }
 
     @Override
-    public void onNavigateBack() {
-        onBackPressed();
-    }
-
-    @Override
     public void showNewItemTypeDialog() {
         ViewUtils.showDialogFragment(getEditTypeFragment(), getSupportFragmentManager(), EDIT_TYPE_FRAGMENT_TAG);
     }
@@ -59,5 +56,21 @@ public class ManageTypesActivity extends PresenterActivity<ManageTypesActivityPr
     @NonNull
     protected EditTypeFragment getEditTypeFragment() {
         return EditTypeFragment.newInstance();
+    }
+
+    /**
+     * For UNIT TESTs only. Setting custom module that injects mocks for certain classes.
+     *
+     * @param pantryItemTypesModule Custom module.
+     */
+    void setPantryItemTypesModule(@NonNull PantryItemTypesModule pantryItemTypesModule) {
+        this.pantryItemTypesModule = pantryItemTypesModule;
+    }
+
+    private PantryItemTypesModule getPantryItemTypesModule() {
+        if (pantryItemTypesModule == null) {
+            pantryItemTypesModule = new PantryItemTypesModule();
+        }
+        return pantryItemTypesModule;
     }
 }

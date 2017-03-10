@@ -34,22 +34,9 @@ public class ManageTypesActivityPresenterTest {
     }
 
     @Test
-    public void onBackButtonClickedViewBounded() throws Exception {
-        presenter.bindView(manageTypesActivityView);
-        presenter.onBackButtonClicked();
-        verify(manageTypesActivityView).onNavigateBack();
-    }
-
-    @Test
     public void onAddButtonClickedViewNotBounded() throws Exception {
         presenter.onAddButtonClicked();
         verify(manageTypesActivityView, never()).showNewItemTypeDialog();
-    }
-
-    @Test
-    public void onBackButtonClickedViewNotBounded() throws Exception {
-        presenter.onBackButtonClicked();
-        verify(manageTypesActivityView, never()).onNavigateBack();
     }
 
 }

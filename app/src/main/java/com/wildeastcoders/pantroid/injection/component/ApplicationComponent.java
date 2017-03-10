@@ -6,6 +6,8 @@ import com.wildeastcoders.pantroid.injection.scope.PerApplication;
 import com.wildeastcoders.pantroid.model.FieldsValidator;
 import com.wildeastcoders.pantroid.model.database.Repository;
 
+import org.greenrobot.eventbus.EventBus;
+
 import dagger.Component;
 
 /**
@@ -18,4 +20,5 @@ import dagger.Component;
 public interface ApplicationComponent {
     Repository repository();
     FieldsValidator fieldsValidator();
+    EventBus eventBus();
 }

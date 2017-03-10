@@ -23,6 +23,8 @@ import com.wildeastcoders.pantroid.presenter.MainActivityFragmentPresenterImpl;
 import com.wildeastcoders.pantroid.presenter.MainActivityPresenter;
 import com.wildeastcoders.pantroid.presenter.MainActivityPresenterImpl;
 
+import org.greenrobot.eventbus.EventBus;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -61,9 +63,10 @@ public class PantryItemsModule {
             FieldsValidator fieldsValidator,
             RetrievePantryItemUsecase retrievePantryItemUsecase,
             RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase,
-            SavePantryItemUsecase savePantryItemUsecase) {
+            SavePantryItemUsecase savePantryItemUsecase,
+            EventBus eventBus) {
         return new EditItemFragmentPresenterImpl(fieldsValidator, retrievePantryItemUsecase,
-                retrievePantryItemTypesUsecase, savePantryItemUsecase);
+                retrievePantryItemTypesUsecase, savePantryItemUsecase, eventBus);
     }
 
     @Provides

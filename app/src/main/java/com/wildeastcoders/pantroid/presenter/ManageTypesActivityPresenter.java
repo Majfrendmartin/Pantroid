@@ -8,5 +8,4 @@ import com.wildeastcoders.pantroid.view.activity.ManageTypesActivityView;
 
 public interface ManageTypesActivityPresenter extends Presenter<ManageTypesActivityView> {
     void onAddButtonClicked();
-    void onBackButtonClicked();
 }

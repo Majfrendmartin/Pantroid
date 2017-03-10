@@ -1,6 +1,8 @@
 package com.wildeastcoders.pantroid.view.activity;
 
 import com.wildeastcoders.pantroid.BuildConfig;
+import com.wildeastcoders.pantroid.presenter.ManageTypesActivityPresenter;
+import com.wildeastcoders.pantroid.utils.MockPantryItemTypesModule;
 import com.wildeastcoders.pantroid.view.fragment.EditTypeFragment;
 
 import org.junit.Before;
@@ -12,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.util.ActivityController;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -30,22 +33,29 @@ public class ManageTypesActivityViewTest {
     @Mock
     private EditTypeFragment editTypeFragment;
 
+    @Mock
+    private ManageTypesActivityPresenter presenter;
+
     @Before
     public void setUp() throws Exception {
-        final ManageTypesActivity activity = Robolectric
-                .buildActivity(ManageTypesActivity.class)
-                .create()
+        MockitoAnnotations.initMocks(this);
+
+        final ActivityController<ManageTypesActivity> activityController = Robolectric
+                .buildActivity(ManageTypesActivity.class);
+
+        final ManageTypesActivity activity = activityController.get();
+        activity.setPantryItemTypesModule(new MockPantryItemTypesModule(presenter));
+        activityController.create()
                 .resume()
                 .get();
-        spyActivity = Mockito.spy(activity);
 
-        MockitoAnnotations.initMocks(this);
+        spyActivity = Mockito.spy(activity);
     }
 
     @Test
-    public void onNavigateBack() throws Exception {
-        spyActivity.onNavigateBack();
-        verify(spyActivity).onBackPressed();
+    public void onFabClicked() throws Exception {
+        spyActivity.onFabClicked(null);
+        verify(presenter).onAddButtonClicked();
     }
 
     @Test

@@ -12,11 +12,4 @@ public class ManageTypesActivityPresenterImpl extends AbstractPresenter<ManageTy
             getView().showNewItemTypeDialog();
         }
     }
-
-    @Override
-    public void onBackButtonClicked() {
-        if (isViewBounded()) {
-            getView().onNavigateBack();
-        }
-    }
 }

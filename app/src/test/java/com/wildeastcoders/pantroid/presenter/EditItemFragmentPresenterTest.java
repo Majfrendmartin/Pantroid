@@ -11,9 +11,11 @@ import com.wildeastcoders.pantroid.model.ValidationResult;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemTypesUsecase;
 import com.wildeastcoders.pantroid.model.usecase.RetrievePantryItemUsecase;
 import com.wildeastcoders.pantroid.model.usecase.SavePantryItemUsecase;
+import com.wildeastcoders.pantroid.utils.RobolectricRxJavaTestRunner;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
 import com.wildeastcoders.pantroid.view.fragment.EditItemActivityFragmentView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,6 +87,9 @@ public class EditItemFragmentPresenterTest {
     private SavePantryItemUsecase savePantryItemUsecase;
 
     @Mock
+    private EventBus eventBus;
+
+    @Mock
     private SavePantryItemUsecase savePantryItemFailingUsecase;
 
     private EditItemFragmentPresenter presenter;
@@ -123,17 +128,17 @@ public class EditItemFragmentPresenterTest {
     private void setupPresenter(final RetrievePantryItemUsecase retrievePantryItemUsecase,
                                 final RetrievePantryItemTypesUsecase retrievePantryItemTypesUsecase) {
         presenter = new EditItemFragmentPresenterImpl(fieldsValidator,
-                retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
+                retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase, eventBus);
     }
 
     private void setupPresenter(final SavePantryItemUsecase savePantryItemUsecase) {
         presenter = new EditItemFragmentPresenterImpl(fieldsValidator,
-                retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
+                retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase, eventBus);
     }
 
     private void setupPresenter() {
         presenter = new EditItemFragmentPresenterImpl(fieldsValidator,
-                retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase);
+                retrievePantryItemUsecase, retrievePantryItemTypesUsecase, savePantryItemUsecase, eventBus);
     }
 
     private void setupItem() {
@@ -271,7 +276,7 @@ public class EditItemFragmentPresenterTest {
     @Test
     public void onCreateForNewItemErrorViewBounded() throws Exception {
         presenter = new EditItemFragmentPresenterImpl(fieldsValidator,
-                retrievePantryItemUsecase, retrievePantryItemTypesFailingUsecase, savePantryItemUsecase);
+                retrievePantryItemUsecase, retrievePantryItemTypesFailingUsecase, savePantryItemUsecase, eventBus);
         presenter.bindView(view);
         presenter.onCreate(null);
         verify(view, never()).populateTypesSpinner(pantryItemTypes);
