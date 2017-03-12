@@ -10,6 +10,7 @@ import com.wildeastcoders.pantroid.model.usecase.SavePantryItemTypeUsecase;
 import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
 import com.wildeastcoders.pantroid.view.fragment.EditTypeFragmentView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,6 +60,9 @@ public class EditTypeFragmentPresenterTest {
     @Mock
     private FieldsValidator fieldsValidator;
 
+    @Mock
+    private EventBus eventBus;
+
     private EditTypeFragmentPresenter presenter;
 
     private void bindView() {
@@ -75,7 +79,8 @@ public class EditTypeFragmentPresenterTest {
         MockitoAnnotations.initMocks(this);
         setupRxAndroid();
         setupBundle();
-        presenter = new EditTypeFragmentPresenterImpl(savePantryItemTypeUsecase, retrievePantryItemTypeUsecase, fieldsValidator);
+        presenter = new EditTypeFragmentPresenterImpl(savePantryItemTypeUsecase, retrievePantryItemTypeUsecase,
+                fieldsValidator, eventBus);
         when(retrievePantryItemTypeUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
         when(savePantryItemTypeUsecase.execute()).thenReturn(Observable.just(PANTRY_ITEM_TYPE));
         when(fieldsValidator.validateName(ITEM_NAME)).thenReturn(VALID);

@@ -18,6 +18,8 @@ import com.wildeastcoders.pantroid.presenter.ManageTypesActivityFragmentPresente
 import com.wildeastcoders.pantroid.presenter.ManageTypesActivityPresenter;
 import com.wildeastcoders.pantroid.presenter.ManageTypesActivityPresenterImpl;
 
+import org.greenrobot.eventbus.EventBus;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -69,7 +71,9 @@ public class PantryItemTypesModule {
     @PerActivity
     public EditTypeFragmentPresenter provideEditTypeFragmentPresenter(SavePantryItemTypeUsecase savePantryItemTypeUsecase,
                                                                       RetrievePantryItemTypeUsecase retrievePantryItemTypeUsecase,
-                                                                      FieldsValidator fieldsValidator) {
-        return new EditTypeFragmentPresenterImpl(savePantryItemTypeUsecase, retrievePantryItemTypeUsecase, fieldsValidator);
+                                                                      FieldsValidator fieldsValidator,
+                                                                      EventBus eventBus) {
+        return new EditTypeFragmentPresenterImpl(savePantryItemTypeUsecase, retrievePantryItemTypeUsecase,
+                fieldsValidator, eventBus);
     }
 }

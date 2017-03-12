@@ -28,13 +28,17 @@ public class EditTypeFragmentPresenterImpl extends AbstractPresenter<EditTypeFra
     private final SavePantryItemTypeUsecase savePantryItemTypeUsecase;
     private final RetrievePantryItemTypeUsecase retrievePantryItemTypeUsecase;
     private final FieldsValidator fieldsValidator;
+    private final EventBus eventBus;
 
     private PantryItemType pantryItemType;
 
-    public EditTypeFragmentPresenterImpl(final SavePantryItemTypeUsecase savePantryItemTypeUsecase, final RetrievePantryItemTypeUsecase retrievePantryItemTypeUsecase, final FieldsValidator fieldsValidator) {
+    public EditTypeFragmentPresenterImpl(SavePantryItemTypeUsecase savePantryItemTypeUsecase,
+                                         RetrievePantryItemTypeUsecase retrievePantryItemTypeUsecase,
+                                         FieldsValidator fieldsValidator, EventBus eventBus) {
         this.savePantryItemTypeUsecase = savePantryItemTypeUsecase;
         this.retrievePantryItemTypeUsecase = retrievePantryItemTypeUsecase;
         this.fieldsValidator = fieldsValidator;
+        this.eventBus = eventBus;
     }
 
     /**
@@ -76,7 +80,7 @@ public class EditTypeFragmentPresenterImpl extends AbstractPresenter<EditTypeFra
     private void handleSaveResult(@Nullable final PantryItemType item) {
         if (isViewBounded()) {
             if (item != null) {
-                EventBus.getDefault().post(new NewItemAddedEvent(ITEM_TYPE));
+                eventBus.post(new NewItemAddedEvent(ITEM_TYPE));
                 getView().displaySaveSucceedMessage();
                 getView().finish();
             } else {
