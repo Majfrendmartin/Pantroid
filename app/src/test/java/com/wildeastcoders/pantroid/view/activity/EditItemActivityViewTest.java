@@ -76,18 +76,6 @@ public class EditItemActivityViewTest {
         final Fragment fragment = spyActivity.getSupportFragmentManager().findFragmentByTag(ABANDON_CHANGES_DIALOG_TAG);
         assertTrue(fragment instanceof ConfirmationDialogFragment);
     }
-
-    @Test
-    public void handleBackConfirmation() throws Exception {
-        spyActivity.onDialogButtonClickedEvent(new DialogButtonClickedEvent(ABANDON_CHANGES_BACK_DIALOG_ID, BUTTON_POSITIVE));
-        verify(presenter).onBackConfirmed();
-    }
-
-    @Test
-    public void handleHomeConfirmation() throws Exception {
-        spyActivity.onDialogButtonClickedEvent(new DialogButtonClickedEvent(ABANDON_CHANGES_HOME_DIALOG_ID, BUTTON_POSITIVE));
-        verify(presenter).onHomeConfirmed();
-    }
     
     @Test
     public void onBackPressed() throws Exception {

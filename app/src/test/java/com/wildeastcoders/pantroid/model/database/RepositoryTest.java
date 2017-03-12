@@ -7,7 +7,6 @@ import com.wildeastcoders.pantroid.model.PantryItemDao;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.PantryItemTypeDao;
 import com.wildeastcoders.pantroid.utils.RobolectricRxJavaTestRunner;
-import com.wildeastcoders.pantroid.utils.RxJavaTestRunner;
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.query.Query;
@@ -17,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.Date;
 import java.util.List;
@@ -35,7 +33,6 @@ import static org.junit.Assert.assertEquals;
  */
 
 @RunWith(RobolectricRxJavaTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class RepositoryTest {
 
     private static final PantryItemType PANTRY_ITEM_TYPE = new PantryItemType(null, "PANTRY_ITEM_TYPE_0");

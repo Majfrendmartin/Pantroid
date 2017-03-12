@@ -13,12 +13,8 @@ import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.injection.component.DaggerEditItemActivityComponent;
 import com.wildeastcoders.pantroid.injection.module.PantryItemTypesModule;
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
-import com.wildeastcoders.pantroid.model.event.DialogButtonClickedEvent;
 import com.wildeastcoders.pantroid.presenter.EditItemActivityPresenter;
 import com.wildeastcoders.pantroid.view.ViewUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +22,6 @@ import butterknife.OnClick;
 
 import static com.wildeastcoders.pantroid.model.Constants.DialogIdentifiers.ABANDON_CHANGES_BACK_DIALOG_ID;
 import static com.wildeastcoders.pantroid.model.Constants.DialogIdentifiers.ABANDON_CHANGES_HOME_DIALOG_ID;
-import static com.wildeastcoders.pantroid.view.ConfirmationDialogFragment.BUTTON_POSITIVE;
 
 public class EditItemActivity extends PresenterActivity<EditItemActivityPresenter> implements EditItemActivityView {
 
@@ -63,18 +58,6 @@ public class EditItemActivity extends PresenterActivity<EditItemActivityPresente
 
         presenter.bindView(this);
         onCreateAfterInjection(savedInstanceState);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onPause() {
-        EventBus.getDefault().unregister(this);
-        super.onPause();
     }
 
     @NonNull
@@ -127,20 +110,6 @@ public class EditItemActivity extends PresenterActivity<EditItemActivityPresente
     @Override
     public void performHomeNavigation() {
         NavUtils.navigateUpFromSameTask(this);
-    }
-
-    @Subscribe
-    public void onDialogButtonClickedEvent(@NonNull DialogButtonClickedEvent event) {
-        if (event.getButtonId() == BUTTON_POSITIVE) {
-            switch (event.getDialogId()) {
-                case ABANDON_CHANGES_BACK_DIALOG_ID:
-                    presenter.onBackConfirmed();
-                    break;
-                case ABANDON_CHANGES_HOME_DIALOG_ID:
-                    presenter.onHomeConfirmed();
-                    break;
-            }
-        }
     }
 
     @Override

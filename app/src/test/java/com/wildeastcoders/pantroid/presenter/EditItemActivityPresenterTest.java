@@ -1,18 +1,24 @@
 package com.wildeastcoders.pantroid.presenter;
 
 import com.wildeastcoders.pantroid.BuildConfig;
+import com.wildeastcoders.pantroid.model.event.DialogButtonClickedEvent;
 import com.wildeastcoders.pantroid.view.activity.EditItemActivityView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import static com.wildeastcoders.pantroid.model.Constants.DialogIdentifiers.ABANDON_CHANGES_BACK_DIALOG_ID;
+import static com.wildeastcoders.pantroid.model.Constants.DialogIdentifiers.ABANDON_CHANGES_HOME_DIALOG_ID;
+import static com.wildeastcoders.pantroid.view.ConfirmationDialogFragment.BUTTON_POSITIVE;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.never;
@@ -28,13 +34,15 @@ public class EditItemActivityPresenterTest {
     @Mock
     private EditItemActivityView editItemActivityView;
 
-    private EditItemActivityPresenter presenter;
+    @Mock
+    private EventBus eventBus;
 
+    private EditItemActivityPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        presenter = new EditItemActivityPresenterImpl();
+        presenter = new EditItemActivityPresenterImpl(eventBus);
     }
 
     @After
@@ -99,5 +107,19 @@ public class EditItemActivityPresenterTest {
     public void onHomeConfirmedViewNotBounded() throws Exception {
         presenter.onHomeConfirmed();
         verify(editItemActivityView, never()).performHomeNavigation();
+    }
+
+    @Test
+    public void handleBackConfirmation() throws Exception {
+        final EditItemActivityPresenter spyPresenter = Mockito.spy(presenter);
+        ((EditItemActivityPresenterImpl) spyPresenter).onDialogButtonClickedEvent(new DialogButtonClickedEvent(ABANDON_CHANGES_BACK_DIALOG_ID, BUTTON_POSITIVE));
+        verify(spyPresenter).onBackConfirmed();
+    }
+
+    @Test
+    public void handleHomeConfirmation() throws Exception {
+        final EditItemActivityPresenter spyPresenter = Mockito.spy(presenter);
+        ((EditItemActivityPresenterImpl)spyPresenter).onDialogButtonClickedEvent(new DialogButtonClickedEvent(ABANDON_CHANGES_HOME_DIALOG_ID, BUTTON_POSITIVE));
+        verify(spyPresenter).onHomeConfirmed();
     }
 }

@@ -43,8 +43,8 @@ public class PantryItemsModule {
 
     @Provides
     @PerActivity
-    public EditItemActivityPresenter provideEditItemActivityPresenter() {
-        return new EditItemActivityPresenterImpl();
+    public EditItemActivityPresenter provideEditItemActivityPresenter(EventBus eventBus) {
+        return new EditItemActivityPresenterImpl(eventBus);
     }
 
     @Provides
