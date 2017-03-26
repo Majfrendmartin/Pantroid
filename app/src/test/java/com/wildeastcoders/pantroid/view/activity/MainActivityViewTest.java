@@ -4,15 +4,20 @@ import android.content.ComponentName;
 import android.content.Intent;
 
 import com.wildeastcoders.pantroid.BuildConfig;
+import com.wildeastcoders.pantroid.presenter.MainActivityPresenter;
+import com.wildeastcoders.pantroid.presenter.Presenter;
+import com.wildeastcoders.pantroid.utils.MockPantryItemsModule;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.util.ActivityController;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -23,36 +28,45 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class MainActivityViewTest {
+public class MainActivityViewTest extends PresenterActivityTest<MainActivity> {
 
-    private MainActivity spyMainActivity;
+    @Mock
+    private MainActivityPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
-        final MainActivity mainActivity = Robolectric
-                .buildActivity(MainActivity.class)
-                .create()
-                .resume()
-                .get();
-        spyMainActivity = Mockito.spy(mainActivity);
+        MockitoAnnotations.initMocks(this);
+        final ActivityController<MainActivity> activityController = Robolectric
+                .buildActivity(MainActivity.class);
+        super.setup(activityController);
+        final MainActivity activity = getActivity();
+        activity.setPantryItemModule(new MockPantryItemsModule(presenter));
     }
 
     @Test
     public void navigateToManageTypesActivity() throws Exception {
-        spyMainActivity.navigateToManageTypesActivity();
+        initializeActivity();
+        spyActivity.navigateToManageTypesActivity();
         ArgumentCaptor<Intent> argumentCaptor = ArgumentCaptor.forClass(Intent.class);
-        verify(spyMainActivity).startActivity(argumentCaptor.capture());
+        verify(spyActivity).startActivity(argumentCaptor.capture());
         final ComponentName component = argumentCaptor.getValue().getComponent();
-        assertEquals(new Intent(spyMainActivity, ManageTypesActivity.class).getComponent(), component);
+        assertEquals(new Intent(spyActivity, ManageTypesActivity.class).getComponent(), component);
     }
 
     @Test
     public void navigateToNewItemActivity() throws Exception {
-        spyMainActivity.navigateToNewItemActivity();
+        initializeActivity();
+        spyActivity.navigateToNewItemActivity();
         final ArgumentCaptor<Intent> argumentCaptor = ArgumentCaptor.forClass(Intent.class);
-        verify(spyMainActivity).startActivity(argumentCaptor.capture());
+        verify(spyActivity).startActivity(argumentCaptor.capture());
         final ComponentName component = argumentCaptor.getValue().getComponent();
-        assertEquals(new Intent(spyMainActivity, EditItemActivity.class).getComponent(), component);
+        assertEquals(new Intent(spyActivity, EditItemActivity.class).getComponent(), component);
     }
+
+    @Override
+    protected Presenter getPresenterMock() {
+        return presenter;
+    }
+
 
 }

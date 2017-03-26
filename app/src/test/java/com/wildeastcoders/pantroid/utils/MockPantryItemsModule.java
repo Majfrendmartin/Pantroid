@@ -2,6 +2,8 @@ package com.wildeastcoders.pantroid.utils;
 
 import com.wildeastcoders.pantroid.injection.module.PantryItemsModule;
 import com.wildeastcoders.pantroid.presenter.EditItemActivityPresenter;
+import com.wildeastcoders.pantroid.presenter.MainActivityPresenter;
+import com.wildeastcoders.pantroid.presenter.Presenter;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -11,14 +13,23 @@ import org.greenrobot.eventbus.EventBus;
 
 public class MockPantryItemsModule extends PantryItemsModule {
 
-    private final EditItemActivityPresenter editItemActivityPresenter;
+    private final Presenter presenter;
 
     public MockPantryItemsModule(EditItemActivityPresenter editItemActivityPresenter) {
-        this.editItemActivityPresenter = editItemActivityPresenter;
+        presenter = editItemActivityPresenter;
+    }
+
+    public MockPantryItemsModule(MainActivityPresenter mainActivityPresenter) {
+        presenter = mainActivityPresenter;
     }
 
     @Override
     public EditItemActivityPresenter provideEditItemActivityPresenter(EventBus eventBus) {
-        return editItemActivityPresenter;
+        return (EditItemActivityPresenter) presenter;
+    }
+
+    @Override
+    public MainActivityPresenter provideMainActivityPresenter() {
+        return (MainActivityPresenter) presenter;
     }
 }
