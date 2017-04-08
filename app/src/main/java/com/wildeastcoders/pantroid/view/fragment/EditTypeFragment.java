@@ -38,6 +38,8 @@ public class EditTypeFragment extends PresenterDialogFragment<EditTypeFragmentPr
     @Inject
     Context context;
 
+    private PantryItemTypesModule pantryItemTypesModule;
+
     public static EditTypeFragment newInstance() {
         return new EditTypeFragment();
     }
@@ -59,12 +61,24 @@ public class EditTypeFragment extends PresenterDialogFragment<EditTypeFragmentPr
         DaggerManageTypesActivityComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
-                .pantryItemTypesModule(new PantryItemTypesModule())
+                .pantryItemTypesModule(getPantryItemTypesModule())
                 .build()
                 .inject(this);
 
         presenter.bindView(this);
         onCreateAfterInjection(savedInstanceState);
+    }
+
+    void setPantryItemTypesModule(@NonNull PantryItemTypesModule pantryItemTypesModule) {
+        this.pantryItemTypesModule = pantryItemTypesModule;
+    }
+
+    @NonNull
+    private PantryItemTypesModule getPantryItemTypesModule() {
+        if (pantryItemTypesModule == null) {
+            pantryItemTypesModule = new PantryItemTypesModule();
+        }
+        return pantryItemTypesModule;
     }
 
     @Nullable

@@ -1,17 +1,18 @@
 package com.wildeastcoders.pantroid.view.fragment;
 
 import com.wildeastcoders.pantroid.BuildConfig;
+import com.wildeastcoders.pantroid.presenter.EditTypeFragmentPresenter;
+import com.wildeastcoders.pantroid.presenter.Presenter;
+import com.wildeastcoders.pantroid.utils.MockPantryItemTypesModule;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
-import static junit.framework.Assert.assertNotNull;
-import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment;
-import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startVisibleFragment;
 
 /**
  * Created by Majfrendmartin on 2017-03-26.
@@ -19,12 +20,22 @@ import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startVi
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class EditTypeFragmentTest {
+public class EditTypeFragmentTest extends PresenterFragmentTest<EditTypeFragment> {
+
+    @Mock
+    private EditTypeFragmentPresenter presenter;
+
+    @Override
+    protected Presenter getPresenterMock() {
+        return presenter;
+    }
+
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         final EditTypeFragment fragment = EditTypeFragment.newInstance();
-        startFragment(fragment);
-        assertNotNull(fragment);
+        fragment.setPantryItemTypesModule(new MockPantryItemTypesModule(presenter));
+        setup(fragment);
     }
 
     @After
@@ -39,11 +50,6 @@ public class EditTypeFragmentTest {
 
     @Test
     public void newInstance1() throws Exception {
-
-    }
-
-    @Test
-    public void onCreate() throws Exception {
 
     }
 
