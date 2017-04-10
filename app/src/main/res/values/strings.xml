@@ -9,4 +9,5 @@
     <string name="edit_type_dialog_title">Edit type details</string>
     <string name="abandon_changes_dialog_title">Abandon changes</string>
     <string name="abandon_changes_dialog_message">You are going to abandon current changes. Are you sure?</string>
+    <string name="edit_type_validation_error_text">Validation error</string>
 </resources>

@@ -104,7 +104,7 @@ public class EditTypeFragment extends PresenterDialogFragment<EditTypeFragmentPr
 
     @Override
     public void displayValidationError(@NonNull final ValidationResult validationResult) {
-        Toast.makeText(context, "Validation error", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, R.string.edit_type_validation_error_text, Toast.LENGTH_LONG).show();
     }
 
     @Override

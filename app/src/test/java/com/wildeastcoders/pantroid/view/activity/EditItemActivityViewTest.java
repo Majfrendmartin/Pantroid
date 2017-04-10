@@ -1,12 +1,21 @@
 package com.wildeastcoders.pantroid.view.activity;
 
+import android.app.Dialog;
+import android.content.res.Resources;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.wildeastcoders.pantroid.BuildConfig;
+import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.presenter.Presenter;
 import com.wildeastcoders.pantroid.utils.MockPantryItemsModule;
 import com.wildeastcoders.pantroid.presenter.EditItemActivityPresenter;
+import com.wildeastcoders.pantroid.utils.TestUtils;
 import com.wildeastcoders.pantroid.view.ConfirmationDialogFragment;
 
 import org.junit.Before;
@@ -20,6 +29,9 @@ import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
 
 import static com.wildeastcoders.pantroid.view.activity.EditItemActivity.ABANDON_CHANGES_DIALOG_TAG;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -56,17 +68,18 @@ public class EditItemActivityViewTest extends PresenterActivityTest<EditItemActi
         initializeActivity();
         spyActivity.displayBackConfirmation();
         verify(spyActivity).getSupportFragmentManager();
-        final Fragment fragment = spyActivity.getSupportFragmentManager().findFragmentByTag(ABANDON_CHANGES_DIALOG_TAG);
-        assertTrue(fragment instanceof ConfirmationDialogFragment);
+        TestUtils.assertConfirmationDialogDisplayed(spyActivity.getResources(),
+                spyActivity.getSupportFragmentManager(), ABANDON_CHANGES_DIALOG_TAG);
     }
+
 
     @Test
     public void displayHomeConfirmation() throws Exception {
         initializeActivity();
         spyActivity.displayHomeConfirmation();
         verify(spyActivity).getSupportFragmentManager();
-        final Fragment fragment = spyActivity.getSupportFragmentManager().findFragmentByTag(ABANDON_CHANGES_DIALOG_TAG);
-        assertTrue(fragment instanceof ConfirmationDialogFragment);
+        TestUtils.assertConfirmationDialogDisplayed(spyActivity.getResources(),
+                spyActivity.getSupportFragmentManager(), ABANDON_CHANGES_DIALOG_TAG);
     }
     
     @Test
