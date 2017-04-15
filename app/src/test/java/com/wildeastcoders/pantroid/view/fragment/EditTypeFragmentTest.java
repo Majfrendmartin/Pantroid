@@ -11,6 +11,7 @@ import com.wildeastcoders.pantroid.model.ValidationResult;
 import com.wildeastcoders.pantroid.presenter.EditTypeFragmentPresenter;
 import com.wildeastcoders.pantroid.presenter.Presenter;
 import com.wildeastcoders.pantroid.utils.MockPantryItemTypesModule;
+import com.wildeastcoders.pantroid.utils.TestUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,9 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
 
 import static com.wildeastcoders.pantroid.model.ValidationResult.INVALID;
+import static com.wildeastcoders.pantroid.utils.TestUtils.assertToastDisplayed;
 import static com.wildeastcoders.pantroid.view.IntentConstants.KEY_EDIT_TYPE_ID;
+import static com.wildeastcoders.pantroid.view.activity.EditItemActivity.ABANDON_CHANGES_DIALOG_TAG;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
@@ -114,36 +117,43 @@ public class EditTypeFragmentTest extends PresenterFragmentTest<EditTypeFragment
     public void displayValidationError() throws Exception {
         initializeFragment();
         spyFragment.displayValidationError(INVALID);
-
-        final String textOfLatestToast = ShadowToast.getTextOfLatestToast();
-        final String expectedString = context.getString(R.string.edit_type_validation_error_text);
-        assertEquals(expectedString, textOfLatestToast);
+        assertToastDisplayed(context, R.string.edit_type_validation_error_text);
     }
 
     @Test
     public void displayDiscardChangesMessage() throws Exception {
         initializeFragment();
         spyFragment.displayDiscardChangesMessage();
+        TestUtils.assertConfirmationDialogDisplayed(spyFragment.getResources(),
+                spyFragment.getActivity().getSupportFragmentManager(), ABANDON_CHANGES_DIALOG_TAG);
     }
 
     @Test
     public void displayTypeNotFoundErrorMessage() throws Exception {
-
+        initializeFragment();
+        spyFragment.displayTypeNotFoundErrorMessage();
+        assertToastDisplayed(context, R.string.edit_type_type_not_found_text);
     }
 
     @Test
     public void displaySaveSucceedMessage() throws Exception {
-
+        initializeFragment();
+        spyFragment.displaySaveSucceedMessage();
+        assertToastDisplayed(context, R.string.edit_type_item_saved_successfully);
     }
 
     @Test
     public void displaySaveFailedMessage() throws Exception {
-
+        initializeFragment();
+        spyFragment.displaySaveFailedMessage();
+        assertToastDisplayed(context, R.string.edit_type_item_saving_failed);
     }
 
     @Test
     public void finish() throws Exception {
-
+        initializeFragment();
+        spyFragment.finish();
+        verify(spyFragment).dismiss();
     }
 
 }

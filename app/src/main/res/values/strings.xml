@@ -10,4 +10,7 @@
     <string name="abandon_changes_dialog_title">Abandon changes</string>
     <string name="abandon_changes_dialog_message">You are going to abandon current changes. Are you sure?</string>
     <string name="edit_type_validation_error_text">Validation error</string>
+    <string name="edit_type_type_not_found_text">Selected type not found</string>
+    <string name="edit_type_item_saved_successfully">New type saved successfully</string>
+    <string name="edit_type_item_saving_failed">New type saving failed</string>
 </resources>

@@ -17,12 +17,16 @@ import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.ValidationResult;
 import com.wildeastcoders.pantroid.presenter.EditTypeFragmentPresenter;
 import com.wildeastcoders.pantroid.view.IntentConstants;
+import com.wildeastcoders.pantroid.view.ViewUtils;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.wildeastcoders.pantroid.model.Constants.DialogIdentifiers.ABANDON_CHANGES_BACK_DIALOG_ID;
+import static com.wildeastcoders.pantroid.view.activity.EditItemActivity.ABANDON_CHANGES_DIALOG_TAG;
 
 
 /**
@@ -109,22 +113,32 @@ public class EditTypeFragment extends PresenterDialogFragment<EditTypeFragmentPr
 
     @Override
     public void displayDiscardChangesMessage() {
-
+        showConfirmationDialog(ABANDON_CHANGES_BACK_DIALOG_ID);
     }
 
     @Override
     public void displayTypeNotFoundErrorMessage() {
+        Toast.makeText(context, R.string.edit_type_type_not_found_text, Toast.LENGTH_LONG).show();
+    }
 
+    private void showConfirmationDialog(int dialogId) {
+        ViewUtils.showConfirmationAlertDialog(
+                getActivity().getSupportFragmentManager(),
+                R.string.abandon_changes_dialog_title,
+                R.string.abandon_changes_dialog_message,
+                dialogId,
+                ABANDON_CHANGES_DIALOG_TAG
+        );
     }
 
     @Override
     public void displaySaveSucceedMessage() {
-        Toast.makeText(context, "Item saved", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, R.string.edit_type_item_saved_successfully, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void displaySaveFailedMessage() {
-
+        Toast.makeText(context, R.string.edit_type_item_saving_failed, Toast.LENGTH_LONG).show();
     }
 
     @Override
