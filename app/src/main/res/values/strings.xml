@@ -13,4 +13,11 @@
     <string name="edit_type_type_not_found_text">Selected type not found</string>
     <string name="edit_type_item_saved_successfully">New type saved successfully</string>
     <string name="edit_type_item_saving_failed">New type saving failed</string>
+    <string name="edit_item_name_label">Item name:</string>
+    <string name="edit_item_name_hint">Enter item name here</string>
+    <string name="edit_item_type_label">Item type</string>
+    <string name="edit_item_adding_date_label">Item adding date</string>
+    <string name="edit_item_bb_date_label">\"Best before\" date</string>
+    <string name="edit_item_quantity_label">Item quantity</string>
+    <string name="edit_item_no_types_error">Could not find any pantry item types!</string>
 </resources>

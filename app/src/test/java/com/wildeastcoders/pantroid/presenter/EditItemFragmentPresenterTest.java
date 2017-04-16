@@ -203,6 +203,7 @@ public class EditItemFragmentPresenterTest {
 
         assertEquals(pantryItemTypes, presenter.getItemTypesCache());
         assertEquals(pantryItem, presenter.getPantryItem());
+        assertEquals(PantryItemType.createEmptyType(), presenter.getItemTypesCache().get(0));
 
         verifyFieldsPopulationMethodsCalled();
     }
@@ -219,6 +220,7 @@ public class EditItemFragmentPresenterTest {
 
         assertEquals(pantryItemTypes, presenter.getItemTypesCache());
         assertEquals(pantryItem, presenter.getPantryItem());
+        assertEquals(PantryItemType.createEmptyType(), presenter.getItemTypesCache().get(0));
 
         verifyFieldsPopulationMethodsNeverCalled();
     }

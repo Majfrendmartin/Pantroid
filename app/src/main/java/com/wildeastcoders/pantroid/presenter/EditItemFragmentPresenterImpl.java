@@ -89,7 +89,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemAct
             return;
         }
 
-        final Map<PantryItemFieldType,ValidationResult> validationResults = new HashMap<>(VALIDATION_RESULTS_CAPACITY);
+        final Map<PantryItemFieldType, ValidationResult> validationResults = new HashMap<>(VALIDATION_RESULTS_CAPACITY);
 
         handleValidationResult(NAME, fieldsValidator.validateName(name), validationResults);
         handleValidationResult(TYPE, fieldsValidator.validateType(type), validationResults);
@@ -250,6 +250,10 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemAct
         return retrievePantryItemTypesUsecase.execute()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map(pantryItemTypes -> {
+                    pantryItemTypes.add(0, PantryItemType.createEmptyType());
+                    return pantryItemTypes;
+                })
                 .onErrorReturn(throwable -> {
                     handleRetrievePantryItemTypesError();
                     return null;
@@ -311,15 +315,15 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemAct
     public void onDestroy() {
         eventBus.unregister(this);
 
-        if (retrievePantryItemTypesSubscription != null && retrievePantryItemTypesSubscription.isUnsubscribed()){
+        if (retrievePantryItemTypesSubscription != null && retrievePantryItemTypesSubscription.isUnsubscribed()) {
             retrievePantryItemTypesSubscription.unsubscribe();
         }
 
-        if (retrieveItemDetailsSubscription != null && retrieveItemDetailsSubscription.isUnsubscribed()){
+        if (retrieveItemDetailsSubscription != null && retrieveItemDetailsSubscription.isUnsubscribed()) {
             retrieveItemDetailsSubscription.unsubscribe();
         }
 
-        if (savePantryItemSubscription != null && savePantryItemSubscription.isUnsubscribed()){
+        if (savePantryItemSubscription != null && savePantryItemSubscription.isUnsubscribed()) {
             savePantryItemSubscription.unsubscribe();
         }
 

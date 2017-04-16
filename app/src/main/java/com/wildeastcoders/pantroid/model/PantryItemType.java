@@ -61,4 +61,8 @@ public class PantryItemType {
         final PantryItemType o = (PantryItemType) other;
         return name.equals(o.name) && id.equals(o.id);
     }
+
+    public static PantryItemType createEmptyType() {
+        return new PantryItemType(-1L, "");
+    }
 }

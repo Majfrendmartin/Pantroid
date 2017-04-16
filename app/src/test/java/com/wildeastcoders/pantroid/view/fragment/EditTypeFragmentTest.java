@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.wildeastcoders.pantroid.BuildConfig;
 import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.model.PantryItemType;
-import com.wildeastcoders.pantroid.model.ValidationResult;
 import com.wildeastcoders.pantroid.presenter.EditTypeFragmentPresenter;
 import com.wildeastcoders.pantroid.presenter.Presenter;
 import com.wildeastcoders.pantroid.utils.MockPantryItemTypesModule;
@@ -18,11 +17,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowToast;
 
 import static com.wildeastcoders.pantroid.model.ValidationResult.INVALID;
 import static com.wildeastcoders.pantroid.utils.TestUtils.assertToastDisplayed;
@@ -58,13 +55,12 @@ public class EditTypeFragmentTest extends PresenterFragmentTest<EditTypeFragment
 
     @Before
     public void setUp() throws Exception {
-        PowerMockito.mockStatic(Toast.class);
         MockitoAnnotations.initMocks(this);
         final EditTypeFragment fragment = EditTypeFragment.newInstance();
-        createFragment(fragment);
+        setupFragment(fragment);
     }
 
-    private void createFragment(EditTypeFragment fragment) {
+    private void setupFragment(EditTypeFragment fragment) {
         fragment.setPantryItemTypesModule(new MockPantryItemTypesModule(presenter));
         setup(fragment);
     }
@@ -101,7 +97,7 @@ public class EditTypeFragmentTest extends PresenterFragmentTest<EditTypeFragment
     @Test
     public void populateTypeDetails() throws Exception {
         final EditTypeFragment fragment = EditTypeFragment.newInstance(TYPE_ID);
-        createFragment(fragment);
+        setupFragment(fragment);
         setup(fragment);
 
         initializeFragment();

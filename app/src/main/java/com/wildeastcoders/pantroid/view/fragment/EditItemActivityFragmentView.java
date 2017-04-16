@@ -1,5 +1,8 @@
 package com.wildeastcoders.pantroid.view.fragment;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.wildeastcoders.pantroid.model.PantryItem;
 import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
@@ -16,9 +19,9 @@ import java.util.Map;
 
 public interface EditItemActivityFragmentView extends View {
 
-    void populateTypesSpinner(List<PantryItemType> types);
+    void populateTypesSpinner(@NonNull List<PantryItemType> types);
 
-    void setupNameField(String name);
+    void setupNameField(@Nullable String name);
 
     void setupQuantityField(int quantity);
 
