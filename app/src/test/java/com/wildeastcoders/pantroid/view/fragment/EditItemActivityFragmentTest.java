@@ -2,6 +2,10 @@ package com.wildeastcoders.pantroid.view.fragment;
 
 import android.app.Application;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.wildeastcoders.pantroid.R;
@@ -23,7 +27,6 @@ import java.util.List;
 
 import static com.wildeastcoders.pantroid.view.IntentConstants.KEY_EDIT_ITEM_ID;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.verify;
 
 /**
  * Created by Majfrendmartin on 15.04.2017.
@@ -38,6 +41,7 @@ public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItem
             add(new PantryItemType(i, "PANTRY_ITEM_TYPE_" + i));
         }
     }};
+    private static final String ITEM_NAME = "ITEM_NAME";
 
     @Mock
     private EditItemFragmentPresenter presenter;
@@ -77,9 +81,9 @@ public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItem
     @Test
     public void populateTypesSpinner() throws Exception {
         initializeFragment();
-        spyFragment.populateTypesSpinner(PANTRY_ITEM_TYPES);
         final Spinner spItemType = spyFragment.spItemType;
         assertNotNull(spItemType);
+        spyFragment.populateTypesSpinner(PANTRY_ITEM_TYPES);
         final int count = spItemType.getCount();
         assertEquals(PANTRY_ITEM_TYPES.size(), count);
         final Object selectedItem = spItemType.getSelectedItem();
@@ -91,8 +95,31 @@ public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItem
     }
 
     @Test
-    public void setupNameField() throws Exception {
+    public void setupNameFieldWithNull() throws Exception {
+        testSetNameField(null, true);
+    }
 
+    @Test
+    public void setupNameFieldWithEmptyString() throws Exception {
+        testSetNameField("", true);
+    }
+
+    @Test
+    public void setupNameFieldWithString() throws Exception {
+        testSetNameField(ITEM_NAME, false);
+    }
+
+    private void testSetNameField(@Nullable String content, boolean shouldBeEmpty) {
+        initializeFragment();
+        final EditText etItemName = spyFragment.etItemName;
+        assertNotNull(etItemName);
+        spyFragment.setupNameField(content);
+
+        final Editable text = spyFragment.etItemName.getText();
+        assertEquals(shouldBeEmpty, TextUtils.isEmpty(text));
+        if (!shouldBeEmpty) {
+            assertEquals(content, text.toString());
+        }
     }
 
     @Test

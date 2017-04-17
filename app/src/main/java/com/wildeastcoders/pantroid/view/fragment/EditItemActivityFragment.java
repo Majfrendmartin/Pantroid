@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,6 +40,9 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
 
     @BindView(R.id.sp_item_type)
     Spinner spItemType;
+
+    @BindView(R.id.et_item_name)
+    EditText etItemName;
 
     public static EditItemActivityFragment newInstance() {
         return new EditItemActivityFragment();
@@ -108,7 +112,7 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
 
     @Override
     public void setupNameField(final String name) {
-
+        etItemName.setText(name);
     }
 
     @Override
