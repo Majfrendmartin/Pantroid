@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         tools:text="@string/edit_item_adding_date_label"/>
 
-    <Button
+    <com.wildeastcoders.pantroid.view.DatePickerButton
         android:id="@+id/btn_item_adding_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         tools:text="@string/edit_item_bb_date_label"/>
 
-    <Button
+    <com.wildeastcoders.pantroid.view.DatePickerButton
         android:id="@+id/btn_item_bb_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -242,7 +242,7 @@ public class EditItemFragmentPresenterImpl extends AbstractPresenter<EditItemAct
     }
 
     @Override
-    public void setPantryItem(final PantryItem pantryItem) {
+    public void setPantryItem(@Nullable PantryItem pantryItem) {
         itemCache = pantryItem;
     }
 
