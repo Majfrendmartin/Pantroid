@@ -20,5 +20,5 @@
     <string name="edit_item_bb_date_label">\"Best before\" date</string>
     <string name="edit_item_quantity_label">Item quantity</string>
     <string name="edit_item_no_types_error">Could not find any pantry item types!</string>
-    <string name="enter_quantity_here">edit_item_quantity_hint</string>
+    <string name="enter_quantity_here">Enter quantity</string>
 </resources>

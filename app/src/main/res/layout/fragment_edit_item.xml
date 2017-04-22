@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/edit_item_name_label"/>
+        android:text="@string/edit_item_name_label"/>
 
     <EditText
         android:id="@+id/et_item_name"
@@ -31,7 +31,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/edit_item_type_label"/>
+        android:text="@string/edit_item_type_label"/>
 
     <Spinner
         android:id="@+id/sp_item_type"
@@ -41,7 +41,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/edit_item_adding_date_label"/>
+        android:text="@string/edit_item_adding_date_label"/>
 
     <com.wildeastcoders.pantroid.view.DatePickerButton
         android:id="@+id/btn_item_adding_date"
@@ -52,7 +52,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/edit_item_bb_date_label"/>
+        android:text="@string/edit_item_bb_date_label"/>
 
     <com.wildeastcoders.pantroid.view.DatePickerButton
         android:id="@+id/btn_item_bb_date"
@@ -63,7 +63,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/edit_item_quantity_label"/>
+        android:text="@string/edit_item_quantity_label"/>
 
     <EditText
         android:id="@+id/et_item_quantity"
