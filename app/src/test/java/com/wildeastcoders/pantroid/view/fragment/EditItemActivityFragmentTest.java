@@ -1,6 +1,5 @@
 package com.wildeastcoders.pantroid.view.fragment;
 
-import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -8,31 +7,35 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.presenter.EditItemFragmentPresenter;
 import com.wildeastcoders.pantroid.presenter.Presenter;
 import com.wildeastcoders.pantroid.utils.MockPantryItemTypesModule;
 import com.wildeastcoders.pantroid.utils.MockPantryItemsModule;
+import com.wildeastcoders.pantroid.view.DatePickerButton;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.wildeastcoders.pantroid.view.IntentConstants.KEY_EDIT_ITEM_ID;
-import static org.junit.Assert.*;
+import static com.wildeastcoders.pantroid.view.fragment.EditItemActivityFragment.DATE_FORMAT_FOR_BUTTONS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Majfrendmartin on 15.04.2017.
  */
 public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItemActivityFragment> {
 
+    public static final Date ADDING_DATE = new Date();
     private static final long ITEM_ID = 1L;
     private static final long LIST_SIZE = 10;
     private static final List<PantryItemType> PANTRY_ITEM_TYPES = new ArrayList<PantryItemType>() {{
@@ -43,6 +46,7 @@ public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItem
     }};
     private static final String ITEM_NAME = "ITEM_NAME";
     private static final int ITEM_QUANTITY = 10;
+    private static final String FORMATTED_ADDING_DATE = DATE_FORMAT_FOR_BUTTONS.format(ADDING_DATE);
 
     @Mock
     private EditItemFragmentPresenter presenter;
@@ -136,7 +140,15 @@ public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItem
 
     @Test
     public void setupAddingDateField() throws Exception {
+        initializeFragment();
+        final DatePickerButton btnItemAddingDate = spyFragment.btnItemAddingDate;
+        assertNotNull(btnItemAddingDate);
+        assertTrue(TextUtils.isEmpty(btnItemAddingDate.getText()));
 
+        spyFragment.setupAddingDateField(ADDING_DATE);
+
+        assertEquals(ADDING_DATE, btnItemAddingDate.getDate());
+        assertEquals(FORMATTED_ADDING_DATE, btnItemAddingDate.getText());
     }
 
     @Test

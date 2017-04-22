@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
@@ -19,9 +20,11 @@ import static com.wildeastcoders.pantroid.view.fragment.EditItemActivityFragment
 
 public class DatePickerButton extends android.support.v7.widget.AppCompatButton implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
+    public static final String EMPTY_STRING = "";
     private static final String SUPER_STATE = "SUPER_STATE";
     private static final String SELECTED_DATE = "SELECTED_DATE";
-    private Date selectedDate = new Date();
+    @Nullable
+    private Date selectedDate = null;
 
     public DatePickerButton(Context context) {
         super(context);
@@ -38,18 +41,18 @@ public class DatePickerButton extends android.support.v7.widget.AppCompatButton 
         initialize();
     }
 
-    public Date getSelectedDate() {
+    @Nullable
+    public Date getDate() {
         return selectedDate;
     }
 
-    public void setSelectedDate(Date selectedDate) {
-        this.selectedDate = selectedDate;
+    public void setDate(@Nullable Date date) {
+        selectedDate = date;
         displaySelectedDate();
     }
 
     private void initialize() {
         setOnClickListener(this);
-        displaySelectedDate();
     }
 
     @Override
@@ -68,11 +71,13 @@ public class DatePickerButton extends android.support.v7.widget.AppCompatButton 
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         final Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
-        setSelectedDate(calendar.getTime());
+        setDate(calendar.getTime());
     }
 
     private void displaySelectedDate() {
-        setText(DATE_FORMAT_FOR_BUTTONS.format(selectedDate));
+        setText(selectedDate == null ?
+                EMPTY_STRING :
+                DATE_FORMAT_FOR_BUTTONS.format(selectedDate));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.wildeastcoders.pantroid.view.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,8 +21,10 @@ import com.wildeastcoders.pantroid.model.PantryItemFieldType;
 import com.wildeastcoders.pantroid.model.PantryItemType;
 import com.wildeastcoders.pantroid.model.ValidationResult;
 import com.wildeastcoders.pantroid.presenter.EditItemFragmentPresenter;
+import com.wildeastcoders.pantroid.view.DatePickerButton;
 import com.wildeastcoders.pantroid.view.IntentConstants;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,8 @@ import butterknife.ButterKnife;
  */
 public class EditItemActivityFragment extends PresenterFragment<EditItemFragmentPresenter> implements EditItemActivityFragmentView {
 
+    public static final SimpleDateFormat DATE_FORMAT_FOR_BUTTONS = new SimpleDateFormat("yyyy MMM dd");
+
     private PantryItemTypesModule pantryItemTypesModule;
     private PantryItemsModule pantryItemsModule;
 
@@ -46,6 +50,9 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
 
     @BindView(R.id.et_item_quantity)
     EditText etItemQuantity;
+
+    @BindView(R.id.btn_item_adding_date)
+    DatePickerButton btnItemAddingDate;
 
     public static EditItemActivityFragment newInstance() {
         return new EditItemActivityFragment();
@@ -125,7 +132,7 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
 
     @Override
     public void setupAddingDateField(final Date addingDate) {
-
+        btnItemAddingDate.setDate(addingDate);
     }
 
     @Override
