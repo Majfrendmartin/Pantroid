@@ -42,6 +42,7 @@ public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItem
         }
     }};
     private static final String ITEM_NAME = "ITEM_NAME";
+    private static final int ITEM_QUANTITY = 10;
 
     @Mock
     private EditItemFragmentPresenter presenter;
@@ -124,7 +125,13 @@ public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItem
 
     @Test
     public void setupQuantityField() throws Exception {
+        initializeFragment();
+        final EditText etItemQuantity = spyFragment.etItemQuantity;
+        assertNotNull(etItemQuantity);
+        assertEquals(0, Integer.parseInt(spyFragment.etItemQuantity.getText().toString()));
 
+        spyFragment.setupQuantityField(ITEM_QUANTITY);
+        assertEquals(ITEM_QUANTITY, Integer.parseInt(spyFragment.etItemQuantity.getText().toString()));
     }
 
     @Test

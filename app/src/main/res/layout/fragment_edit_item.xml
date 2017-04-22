@@ -65,10 +65,14 @@
         android:layout_height="wrap_content"
         tools:text="@string/edit_item_quantity_label"/>
 
-    <Button
-        android:id="@+id/btn_item_quantity"
+    <EditText
+        android:id="@+id/et_item_quantity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="0"/>
+        android:hint="@string/enter_quantity_here"
+        tools:text="0"
+        android:inputType="numberSigned"
+        android:digits="0123456789"
+        android:text="0"/>
 
 </LinearLayout>

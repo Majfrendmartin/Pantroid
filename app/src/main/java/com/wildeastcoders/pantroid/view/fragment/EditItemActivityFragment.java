@@ -44,6 +44,9 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
     @BindView(R.id.et_item_name)
     EditText etItemName;
 
+    @BindView(R.id.et_item_quantity)
+    EditText etItemQuantity;
+
     public static EditItemActivityFragment newInstance() {
         return new EditItemActivityFragment();
     }
@@ -117,7 +120,7 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
 
     @Override
     public void setupQuantityField(final int quantity) {
-
+        this.etItemQuantity.setText(Integer.toString(quantity));
     }
 
     @Override
