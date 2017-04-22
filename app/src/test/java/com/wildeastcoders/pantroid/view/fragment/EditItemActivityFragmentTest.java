@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItemActivityFragment> {
 
-    public static final Date ADDING_DATE = new Date();
+    public static final Date DATE = new Date();
     private static final long ITEM_ID = 1L;
     private static final long LIST_SIZE = 10;
     private static final List<PantryItemType> PANTRY_ITEM_TYPES = new ArrayList<PantryItemType>() {{
@@ -46,7 +46,7 @@ public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItem
     }};
     private static final String ITEM_NAME = "ITEM_NAME";
     private static final int ITEM_QUANTITY = 10;
-    private static final String FORMATTED_ADDING_DATE = DATE_FORMAT_FOR_BUTTONS.format(ADDING_DATE);
+    private static final String FORMATTED_DATE = DATE_FORMAT_FOR_BUTTONS.format(DATE);
 
     @Mock
     private EditItemFragmentPresenter presenter;
@@ -145,15 +145,23 @@ public class EditItemActivityFragmentTest extends PresenterFragmentTest<EditItem
         assertNotNull(btnItemAddingDate);
         assertTrue(TextUtils.isEmpty(btnItemAddingDate.getText()));
 
-        spyFragment.setupAddingDateField(ADDING_DATE);
+        spyFragment.setupAddingDateField(DATE);
 
-        assertEquals(ADDING_DATE, btnItemAddingDate.getDate());
-        assertEquals(FORMATTED_ADDING_DATE, btnItemAddingDate.getText());
+        assertEquals(DATE, btnItemAddingDate.getDate());
+        assertEquals(FORMATTED_DATE, btnItemAddingDate.getText());
     }
 
     @Test
     public void setupBestBeforeField() throws Exception {
+        initializeFragment();
+        final DatePickerButton btnItemBBDate = spyFragment.btnItemBBDate;
+        assertNotNull(btnItemBBDate);
+        assertTrue(TextUtils.isEmpty(btnItemBBDate.getText()));
 
+        spyFragment.setupBestBeforeField(DATE);
+
+        assertEquals(DATE, btnItemBBDate.getDate());
+        assertEquals(FORMATTED_DATE, btnItemBBDate.getText());
     }
 
     @Test

@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.wildeastcoders.pantroid.R;
 import com.wildeastcoders.pantroid.injection.component.DaggerEditItemActivityComponent;
@@ -39,9 +37,6 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
 
     public static final SimpleDateFormat DATE_FORMAT_FOR_BUTTONS = new SimpleDateFormat("yyyy MMM dd");
 
-    private PantryItemTypesModule pantryItemTypesModule;
-    private PantryItemsModule pantryItemsModule;
-
     @BindView(R.id.sp_item_type)
     Spinner spItemType;
 
@@ -53,6 +48,13 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
 
     @BindView(R.id.btn_item_adding_date)
     DatePickerButton btnItemAddingDate;
+
+    @BindView(R.id.btn_item_bb_date)
+    DatePickerButton btnItemBBDate;
+
+    private PantryItemTypesModule pantryItemTypesModule;
+
+    private PantryItemsModule pantryItemsModule;
 
     public static EditItemActivityFragment newInstance() {
         return new EditItemActivityFragment();
@@ -80,10 +82,6 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
         onCreateAfterInjection(savedInstanceState);
     }
 
-    void setPantryItemTypesModule(@NonNull PantryItemTypesModule pantryItemTypesModule) {
-        this.pantryItemTypesModule = pantryItemTypesModule;
-    }
-
     @NonNull
     private PantryItemTypesModule getPantryItemTypesModule() {
         if (pantryItemTypesModule == null) {
@@ -92,8 +90,8 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
         return pantryItemTypesModule;
     }
 
-    void setPantryItemsModule(@NonNull PantryItemsModule pantryItemsModule){
-        this.pantryItemsModule = pantryItemsModule;
+    void setPantryItemTypesModule(@NonNull PantryItemTypesModule pantryItemTypesModule) {
+        this.pantryItemTypesModule = pantryItemTypesModule;
     }
 
     @NonNull
@@ -102,6 +100,10 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
             pantryItemsModule = new PantryItemsModule();
         }
         return pantryItemsModule;
+    }
+
+    void setPantryItemsModule(@NonNull PantryItemsModule pantryItemsModule) {
+        this.pantryItemsModule = pantryItemsModule;
     }
 
     @Override
@@ -121,7 +123,7 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
     }
 
     @Override
-    public void setupNameField(final String name) {
+    public void setupNameField(@NonNull String name) {
         etItemName.setText(name);
     }
 
@@ -131,17 +133,17 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
     }
 
     @Override
-    public void setupAddingDateField(final Date addingDate) {
+    public void setupAddingDateField(@NonNull Date addingDate) {
         btnItemAddingDate.setDate(addingDate);
     }
 
     @Override
-    public void setupBestBeforeField(final Date bestBeforeDate) {
-
+    public void setupBestBeforeField(@NonNull Date bestBeforeDate) {
+        btnItemBBDate.setDate(bestBeforeDate);
     }
 
     @Override
-    public void setupTypeField(final PantryItemType type) {
+    public void setupTypeField(@NonNull PantryItemType type) {
 
     }
 
@@ -156,7 +158,7 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
     }
 
     @Override
-    public void displayPantryItemSavedDialog(final PantryItem pantryItem) {
+    public void displayPantryItemSavedDialog(@NonNull PantryItem pantryItem) {
 
     }
 
@@ -166,7 +168,7 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
     }
 
     @Override
-    public void displayValidationResults(final Map<PantryItemFieldType, ValidationResult> resultsMap) {
+    public void displayValidationResults(@NonNull Map<PantryItemFieldType, ValidationResult> resultsMap) {
 
     }
 
@@ -177,7 +179,7 @@ public class EditItemActivityFragment extends PresenterFragment<EditItemFragment
 
     @Override
     public void requestInputDataOnSaveItemClicked() {
-        Toast.makeText(getContext(), "Dziala", Toast.LENGTH_LONG).show();
+
     }
 
     @Override

@@ -58,7 +58,9 @@ public class DatePickerButton extends android.support.v7.widget.AppCompatButton 
     @Override
     public void onClick(View view) {
         final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(selectedDate);
+        if (selectedDate != null) {
+            calendar.setTime(selectedDate);
+        }
         final DatePickerDialog datePickerDialog =
                 new DatePickerDialog(getContext(), this,
                         calendar.get(Calendar.YEAR),

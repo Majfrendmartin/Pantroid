@@ -25,21 +25,21 @@ public interface EditItemActivityFragmentView extends View {
 
     void setupQuantityField(int quantity);
 
-    void setupAddingDateField(Date addingDate);
+    void setupAddingDateField(@NonNull Date addingDate);
 
-    void setupBestBeforeField(Date bestBeforeDate);
+    void setupBestBeforeField(@NonNull Date bestBeforeDate);
 
-    void setupTypeField(PantryItemType type);
+    void setupTypeField(@NonNull PantryItemType type);
 
     void displayTypeErrorDialog();
 
     void displayDataErrorDialog();
 
-    void displayPantryItemSavedDialog(PantryItem pantryItem);
+    void displayPantryItemSavedDialog(@NonNull PantryItem pantryItem);
 
     void displayNothingChangedDialog();
 
-    void displayValidationResults(Map<PantryItemFieldType, ValidationResult> resultsMap);
+    void displayValidationResults(@NonNull Map<PantryItemFieldType, ValidationResult> resultsMap);
 
     void displayDiscardChangesDialog();
 
